@@ -79,6 +79,7 @@ const Registration = () => {
             placeholder="Email-cím"
             onChange={(e) => setEmail(e.target.value)}
             autoComplete="off"
+            className="input"
           />
         </div>
         <div className="form-row">
@@ -88,6 +89,7 @@ const Registration = () => {
             name="jelszo"
             placeholder="Jelszó"
             onChange={(e) => setJelszo(e.target.value)}
+            className="input"
           />
         </div>
 
@@ -98,13 +100,16 @@ const Registration = () => {
             name="jelszoismetles"
             placeholder="Jelszó ismét"
             onChange={(e) => setJelszoismetles(e.target.value)}
+            className="input"
           />
         </div>
         <div className="button-container">
-          <Link to={"/belepes"}>Már van fiókod? Jelentkezz be!</Link>
           <button type="submit" disabled={isLoading}>
             Regisztráció
           </button>
+        </div>
+        <div className="links">
+          <Link to={"/belepes"}>Már van fiókod? Jelentkezz be!</Link>
         </div>
         {error && <div className="error">{error}</div>}
         {success && <div className="success">{success}</div>}

@@ -84,6 +84,7 @@ const Login = () => {
             placeholder="Email-cím"
             onChange={(e) => setEmail(e.target.value)}
             autoComplete="off"
+            className="input"
           />
         </div>
         <div className="form-row">
@@ -93,13 +94,16 @@ const Login = () => {
             name="jelszo"
             placeholder="Jelszó"
             onChange={(e) => setJelszo(e.target.value)}
+            className="input"
           />
         </div>
         <div className="button-container">
-          <Link to={"/regisztracio"}>Még nincs fiókod? Regisztrálj!</Link>
           <button type="submit" disabled={isLoading}>
             Belépés
           </button>
+        </div>
+        <div className="links">
+          <Link to={"/regisztracio"}>Még nincs fiókod? Regisztrálj!</Link>
         </div>
         {error && <div className="error">{error}</div>}
         {success && <div className="success">{success}</div>}

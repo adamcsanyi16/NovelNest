@@ -10,12 +10,13 @@ const Navbar = () => {
     logout();
   };
   return (
-    <div>
-      <Link to={"/"}>Kezdőlap</Link>
-      <Link to={"/belepes"}>Belépés</Link>
-      <Link to={"/regisztracio"}>Regisztráció</Link>
+    <div className="navbar">
+        <Link to={"/"}>Kezdőlap</Link>
+        <Link to={"/belepes"}>Belépés</Link>
+        <Link to={"/regisztracio"}>Regisztráció</Link>
+
       {user && (
-        <div>
+        <div className="userinfo">
           <span>{user.email}</span>
           <button className="logout-btn" onClick={klikk}>
             Kilépés
