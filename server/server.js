@@ -44,19 +44,25 @@ app.post("/regisztral", async (req, res) => {
   }
 });
 
-app.post("/belepes", async (req, res) => {
+app.post("/belepesJelszo", async (req, res) => {
   try {
-    const { email, jelszo } = req.body;
+    const { email } = req.body;
     const user = await User.findOne({ email });
     if (!user) {
       throw Error("Ez az email nincs regisztrálva!");
     }
-    console.log(jelszo);
-    const talalat = await bcrypt.compare(jelszo, user.jelszo);
+    const jelszo = user.jelszo;
 
-    if (!talalat) {
-      throw Error("A jelszó nem egyezik!");
-    }
+    res.status(200).json({ msg: jelszo });
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+});
+
+app.post("/belepes", async (req, res) => {
+  try {
+    const { email } = req.body;
+    const user = await User.findOne({ email });
     const token = createToken(user._id, user.isAdmin);
     console.log(email, token);
     res.status(200).json({ msg: "Sikeres belépés", email, token });
@@ -65,13 +71,14 @@ app.post("/belepes", async (req, res) => {
   }
 });
 
-app.use(requireAuth);
-
-//DATABASE
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log("Sikeres adatbázis elérés!"))
   .catch(() => console.log(error.message));
+
+app.use(requireAuth);
+
+//DATABASE
 
 const port = process.env.PORT || 3500;
 app.listen(port, () => {

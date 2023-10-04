@@ -25,24 +25,44 @@ const Login = () => {
       return;
     }
 
-    const adat = await fetch(url + "/belepes", {
+    const data = await fetch(url + "/belepesJelszo", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email, jelszo }),
+      body: JSON.stringify({ email }),
     });
 
-    if (!adat.ok) {
-      const response = await adat.json();
-      setIsLoading(false);
-      setError(response.msg);
-    } else {
-      const response = await adat.json();
-      setSuccess(response.msg);
-      localStorage.setItem("user", JSON.stringify(response));
-      dispatch({ type: "LOGIN", payload: response });
+    if (data.ok) {
+      const response = await data.json();
+      const talalat = await bcrypt.compare(jelszo, response.msg);
+      if (talalat) {
+        const adat = await fetch(url + "/belepes", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email }),
+        });
 
+        if (!adat.ok) {
+          const response = await adat.json();
+          setIsLoading(false);
+          setError(response.msg);
+        } else {
+          const response = await adat.json();
+          setSuccess(response.msg);
+          localStorage.setItem("user", JSON.stringify(response));
+          dispatch({ type: "LOGIN", payload: response });
+          setIsLoading(false);
+        }
+      } else {
+        setError("A jelszó nem egyezik!");
+        setIsLoading(false);
+      }
+    } else {
+      const response = await data.json();
+      setError(response.msg);
       setIsLoading(false);
     }
   };
