@@ -27,12 +27,13 @@ app.get("/", (req, res) => {
 
 app.post("/regisztral", async (req, res) => {
   try {
-    const { email, jelszo } = req.body;
+    const { felhasznalonev, email, jelszo } = req.body;
     const letezik = await User.findOne({ email });
     if (letezik) {
       throw Error("Az email már létezik!");
     }
     const user = User.create({
+      felhasznalonev,
       email,
       jelszo,
     });

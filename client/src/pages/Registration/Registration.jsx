@@ -4,6 +4,7 @@ import { useAuthContext } from "../../hooks/useAuthContext";
 import bcrypt from "bcryptjs";
 
 const Registration = () => {
+  const [felhasznalonev, setFelhasznalonev] = useState("");
   const [email, setEmail] = useState("");
   const [jelszo, setJelszo] = useState("");
   const [jelszoismetles, setJelszoismetles] = useState("");
@@ -42,7 +43,7 @@ const Registration = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email, jelszo: hashedPassword }),
+      body: JSON.stringify({ felhasznalonev, email, jelszo: hashedPassword }),
     });
 
     if (!adat.ok) {
@@ -71,6 +72,17 @@ const Registration = () => {
     <div className="forms-container">
       <form onSubmit={regisztral}>
         <h2>Regisztráció</h2>
+        <div className="form-row">
+          <input
+            type="text"
+            id="felhasznalonev"
+            name="felhasznalonev"
+            placeholder="Felhasználónév"
+            onChange={(e) => setFelhasznalonev(e.target.value)}
+            autoComplete="off"
+            className="input"
+          />
+        </div>
         <div className="form-row">
           <input
             type="text"
