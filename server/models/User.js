@@ -20,6 +20,10 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    profilkep: {
+      name: String,
+      data: Buffer,
+    },
   },
   { timestamps: true }
 );
