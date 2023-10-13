@@ -8,6 +8,7 @@ const jwt = require("jsonwebtoken");
 const User = require("./models/User");
 const fs = require('fs');
 const path = require('path');
+const { promisify } = require('util');
 const bcrypt = require("bcrypt");
 const requireAuth = require("./middlewares/requireAuth");
 
@@ -33,34 +34,36 @@ app.get("/", (req, res) => {
   res.send("Hello World");
 });
 
-app.post("/regisztral", async (req, res) => {
+app.post('/regisztral', async (req, res) => {
   try {
     const { felhasznalonev, email, jelszo } = req.body;
     const letezik = await User.findOne({ email });
-    
+
     if (letezik) {
-      throw Error("Az email már létezik!");
+      throw Error('Az email már létezik!');
     }
 
-    // Read the profile image from a file using fs.readFile
-    const profilePath = path.join(__dirname, 'public', 'user.png');
-    fs.readFile(profilePath, (err, imageBuffer) => {
-      if (err) {
-        res.status(404).send('Image not found');
-      } else {
-        const user = User.create({
-          felhasznalonev,
-          email,
-          jelszo,
-          profilkep: {
-            name: 'user.png', // Set the image filename
-            data: imageBuffer, // Save the binary data of the file
-          },
-        });
-        const token = createToken(user._id, user.isAdmin);
-        res.status(200).json({ msg: "Sikeres regisztráció", email, token });
-      }
+    const profilePath = path.join(__dirname, 'public', 'user.jpg');
+    const profileFilename = path.basename(profilePath);
+    const readFileAsync = promisify(fs.readFile);
+    
+    const imageBuffer = await readFileAsync(profilePath);
+    
+    const user = User.create({
+      felhasznalonev,
+      email,
+      jelszo,
+      profilkep: {
+        name: profileFilename,
+        data: imageBuffer,
+      },
     });
+
+    const userprofilkep = user.profilkep;
+    const userfelhasznalonev = user.felhasznalonev
+
+    const token = createToken(user._id, user.isAdmin);
+    res.status(200).json({ msg: 'Sikeres regisztráció', email, token,});
   } catch (error) {
     res.status(500).json({ msg: error.message });
   }
@@ -86,8 +89,10 @@ app.post("/belepes", async (req, res) => {
     const { email } = req.body;
     const user = await User.findOne({ email });
     const token = createToken(user._id, user.isAdmin);
+    const userfelhasznalonev = user.felhasznalonev
+    const userprofilkep = user.profilkep
     console.log(email, token);
-    res.status(200).json({ msg: "Sikeres belépés", email, token });
+    res.status(200).json({ msg: "Sikeres belépés", email, token, userfelhasznalonev, userprofilkep });
   } catch (error) {
     res.status(500).json({ msg: error.message });
   }
