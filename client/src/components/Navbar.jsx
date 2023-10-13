@@ -23,8 +23,8 @@ const Navbar = () => {
           <span>{user.email}</span>
           {user.userprofilkep && (
             <img
-            src={`data:image/jpeg;base64,${user.userprofilkep.data}`}
-            alt={user.userprofilkep.name}
+            src={`data:image/jpeg;base64,${user.userprofilkep}`}
+            alt="Profilkép"
             className="profile-image"
           />
           )}

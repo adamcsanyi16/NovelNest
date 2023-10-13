@@ -94,9 +94,9 @@ app.post("/belepes", async (req, res) => {
     const user = await User.findOne({ email });
     const token = createToken(user._id, user.isAdmin);
     const userfelhasznalonev = user.felhasznalonev
-    const userprofilkep = user.profilkep
+    const userprofilkep = user.profilkep.data.toString('base64')
     console.log(email, token);
-    res.status(200).json({ msg: "Sikeres belépés", email, token, userfelhasznalonev, userprofilkep });
+    res.status(200).json({ msg: "Sikeres belépés", email, token, userfelhasznalonev, userprofilkep, });
   } catch (error) {
     res.status(500).json({ msg: error.message });
   }
