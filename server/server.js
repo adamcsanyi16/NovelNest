@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 const multer = require("multer")
 const jwt = require("jsonwebtoken");
 const User = require("./models/User");
+const validator = require("validator");
 const fs = require('fs');
 const path = require('path');
 const { promisify } = require('util');
@@ -41,6 +42,9 @@ app.post('/regisztral', async (req, res) => {
 
     if (letezik) {
       throw Error('Az email már létezik!');
+    }
+    if (!validator.isEmail(email)) {
+      throw Error("Nem jó email formátum!");
     }
 
     const profilePath = path.join(__dirname, 'public', 'user.jpg');
