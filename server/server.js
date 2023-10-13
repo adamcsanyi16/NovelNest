@@ -3,10 +3,19 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const mongoose = require("mongoose");
+const multer = require("multer")
 const jwt = require("jsonwebtoken");
 const User = require("./models/User");
 const validator = require("validator");
+const fs = require('fs');
+const path = require('path');
+const bcrypt = require("bcrypt");
 const requireAuth = require("./middlewares/requireAuth");
+
+
+//MULTER SETUP
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 //TOKEN CREATION
 const createToken = (_id, isAdmin) => {
@@ -27,8 +36,9 @@ app.get("/", (req, res) => {
 
 app.post("/regisztral", async (req, res) => {
   try {
-    const { email, jelszo } = req.body;
+    const { felhasznalonev, email, jelszo } = req.body;
     const letezik = await User.findOne({ email });
+    
     if (letezik) {
       throw Error("Az email már létezik!");
     }
@@ -40,8 +50,25 @@ app.post("/regisztral", async (req, res) => {
       jelszo,
     });
 
-    const token = createToken(user._id, user.isAdmin);
-    res.status(200).json({ msg: "Sikeres regisztráció", email, token });
+    // Read the profile image from a file using fs.readFile
+    const profilePath = path.join(__dirname, 'public', 'user.png');
+    fs.readFile(profilePath, (err, imageBuffer) => {
+      if (err) {
+        res.status(404).send('Image not found');
+      } else {
+        const user = User.create({
+          felhasznalonev,
+          email,
+          jelszo,
+          profilkep: {
+            name: 'user.png', // Set the image filename
+            data: imageBuffer, // Save the binary data of the file
+          },
+        });
+        const token = createToken(user._id, user.isAdmin);
+        res.status(200).json({ msg: "Sikeres regisztráció", email, token });
+      }
+    });
   } catch (error) {
     res.status(500).json({ msg: error.message });
   }
