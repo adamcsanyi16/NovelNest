@@ -45,10 +45,6 @@ app.post("/regisztral", async (req, res) => {
     if (!validator.isEmail(email)) {
       throw Error("Nem jó email formátum!");
     }
-    const user = User.create({
-      email,
-      jelszo,
-    });
 
     // Read the profile image from a file using fs.readFile
     const profilePath = path.join(__dirname, 'public', 'user.png');
