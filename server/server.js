@@ -5,7 +5,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const User = require("./models/User");
-const bcrypt = require("bcrypt");
+const validator = require("validator");
 const requireAuth = require("./middlewares/requireAuth");
 
 //TOKEN CREATION
@@ -31,6 +31,9 @@ app.post("/regisztral", async (req, res) => {
     const letezik = await User.findOne({ email });
     if (letezik) {
       throw Error("Az email már létezik!");
+    }
+    if (!validator.isEmail(email)) {
+      throw Error("Nem jó email formátum!");
     }
     const user = User.create({
       email,
