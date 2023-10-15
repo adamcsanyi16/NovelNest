@@ -3,16 +3,15 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const mongoose = require("mongoose");
-const multer = require("multer")
+const multer = require("multer");
 const jwt = require("jsonwebtoken");
 const User = require("./models/User");
 const validator = require("validator");
-const fs = require('fs');
-const path = require('path');
-const { promisify } = require('util');
+const fs = require("fs");
+const path = require("path");
+const { promisify } = require("util");
 const bcrypt = require("bcrypt");
 const requireAuth = require("./middlewares/requireAuth");
-
 
 //MULTER SETUP
 const storage = multer.memoryStorage();
@@ -35,24 +34,28 @@ app.get("/", (req, res) => {
   res.send("Hello World");
 });
 
-app.post('/regisztral', async (req, res) => {
+app.post("/regisztral", async (req, res) => {
   try {
     const { felhasznalonev, email, jelszo } = req.body;
-    const letezik = await User.findOne({ email });
+    const emailLetezik = await User.findOne({ email });
+    const felhasznalonevLetezik = await User.findOne({ felhasznalonev });
 
-    if (letezik) {
-      throw Error('Az email már létezik!');
+    if (felhasznalonevLetezik) {
+      throw Error("A felhasználó név már létezik!");
+    }
+    if (emailLetezik) {
+      throw Error("Az email már létezik!");
     }
     if (!validator.isEmail(email)) {
       throw Error("Nem jó email formátum!");
     }
 
-    const profilePath = path.join(__dirname, 'public', 'user.jpg');
+    const profilePath = path.join(__dirname, "public", "user.jpg");
     const profileFilename = path.basename(profilePath);
     const readFileAsync = promisify(fs.readFile);
-    
+
     const imageBuffer = await readFileAsync(profilePath);
-    
+
     const user = User.create({
       felhasznalonev,
       email,
@@ -63,11 +66,11 @@ app.post('/regisztral', async (req, res) => {
       },
     });
 
-    const userprofilkep = user.profilkep;
-    const userfelhasznalonev = user.felhasznalonev
+    //const userprofilkep = user.profilkep;
+    //const userfelhasznalonev = user.felhasznalonev
 
     const token = createToken(user._id, user.isAdmin);
-    res.status(200).json({ msg: 'Sikeres regisztráció', email, token,});
+    res.status(200).json({ msg: "Sikeres regisztráció", email, token });
   } catch (error) {
     res.status(500).json({ msg: error.message });
   }
@@ -75,10 +78,10 @@ app.post('/regisztral', async (req, res) => {
 
 app.post("/belepesJelszo", async (req, res) => {
   try {
-    const { email } = req.body;
-    const user = await User.findOne({ email });
+    const { felhasznalonev } = req.body;
+    const user = await User.findOne({ felhasznalonev });
     if (!user) {
-      throw Error("Ez az email nincs regisztrálva!");
+      throw Error("Ez a felhasználó nincs regisztrálva!");
     }
     const jelszo = user.jelszo;
 
@@ -90,13 +93,19 @@ app.post("/belepesJelszo", async (req, res) => {
 
 app.post("/belepes", async (req, res) => {
   try {
-    const { email } = req.body;
-    const user = await User.findOne({ email });
+    const { felhasznalonev } = req.body;
+    const user = await User.findOne({ felhasznalonev });
     const token = createToken(user._id, user.isAdmin);
-    const userfelhasznalonev = user.felhasznalonev
-    const userprofilkep = user.profilkep.data.toString('base64')
-    console.log(email, token);
-    res.status(200).json({ msg: "Sikeres belépés", email, token, userfelhasznalonev, userprofilkep, });
+    const userfelhasznalonev = user.felhasznalonev;
+    const userprofilkep = user.profilkep.data.toString("base64");
+    console.log(felhasznalonev, token);
+    res.status(200).json({
+      msg: "Sikeres belépés",
+      felhasznalonev,
+      token,
+      userfelhasznalonev,
+      userprofilkep,
+    });
   } catch (error) {
     res.status(500).json({ msg: error.message });
   }

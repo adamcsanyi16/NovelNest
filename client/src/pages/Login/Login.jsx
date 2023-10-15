@@ -4,7 +4,7 @@ import { useAuthContext } from "../../hooks/useAuthContext";
 import bcrypt from "bcryptjs";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
+  const [felhasznalonev, setFelhasznalonev] = useState("");
   const [jelszo, setJelszo] = useState("");
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
@@ -12,14 +12,14 @@ const Login = () => {
   const { dispatch } = useAuthContext();
   const url = "http://localhost:3500";
 
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
 
   const belep = async () => {
     setIsLoading(true);
     setError(null);
     setSuccess(null);
 
-    if (jelszo.trim() === "" || email.trim() === "") {
+    if (jelszo.trim() === "" || felhasznalonev.trim() === "") {
       setError("Nem maradhat üres cella!");
       setIsLoading(false);
       return;
@@ -30,7 +30,7 @@ const Login = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email }),
+      body: JSON.stringify({ felhasznalonev }),
     });
 
     if (data.ok) {
@@ -42,7 +42,7 @@ const Login = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ email }),
+          body: JSON.stringify({ felhasznalonev }),
         });
 
         if (!adat.ok) {
@@ -79,10 +79,10 @@ const Login = () => {
         <div className="form-row">
           <input
             type="text"
-            id="email"
-            name="email"
-            placeholder="Email-cím"
-            onChange={(e) => setEmail(e.target.value)}
+            id="felhasznalonev"
+            name="felhasznalonev"
+            placeholder="Felhasználó név"
+            onChange={(e) => setFelhasznalonev(e.target.value)}
             autoComplete="off"
             className="input"
           />

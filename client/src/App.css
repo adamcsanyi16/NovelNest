@@ -22,12 +22,19 @@ body {
   align-items: center;
 }
 
-.navbar a {
+.main {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  align-items: center;
+}
+
+.main a {
   text-decoration: none;
   color: #2c3639;
 }
 
-.navbar a:hover {
+.main a:hover {
   transition-duration: 0.2s;
   transform: scale(1.1);
 }

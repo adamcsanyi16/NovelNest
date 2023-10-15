@@ -10,6 +10,7 @@ import Home from "./pages/Home/Home";
 import Notfound from "./pages/Notfound/Notfound";
 import Login from "./pages/Login/Login";
 import Registration from "./pages/Registration/Registration";
+import Addstory from "./pages/Story/Addstory";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/belepes" element={<Login />} />
           <Route path="/regisztracio" element={<Registration />} />
+          <Route path="/storyfelvetel" element={<Addstory />} />
         </Routes>
       </Router>
     </div>
