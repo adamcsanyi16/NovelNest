@@ -25,11 +25,13 @@ const Navbar = () => {
         <div className="userinfo">
           <span>{user.felhasznalonev}</span>
           {user.userprofilkep && (
-            <img
-              src={`data:image/jpeg;base64,${user.userprofilkep}`}
-              alt="Profilkép"
-              className="profile-image"
-            />
+            <Link to="/profilom">
+              <img
+            src={`data:image/jpeg;base64,${user.userprofilkep}`}
+            alt="Profilkép"
+            className="profile-image"
+          /></Link>
+            
           )}
           <button className="logout-btn" onClick={handleLogout}>
             Kilépés

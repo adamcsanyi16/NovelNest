@@ -55,7 +55,7 @@ const Updateuser = () => {
       <tbody>
         <tr>
         <td>Felhasználónév: </td>
-        <td>{ felhasznalonev }</td>
+        <td><input type="text" defaultValue={ felhasznalonev } /></td>
         </tr>
         <tr>
         <td>Email: </td>

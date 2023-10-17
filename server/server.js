@@ -125,6 +125,9 @@ app.post("/belepes", async (req, res) => {
   }
 });
 
+
+app.use(requireAuth);
+
 app.get("/userinfo", async (req, res) => {
   try {
     const felhasznalonev = req.query.felhasznalonev;
@@ -143,9 +146,6 @@ app.get("/userinfo", async (req, res) => {
     res.status(500).json({ msg: error.message });
   }
 });
-
-app.use(requireAuth);
-
 
 //DATABASE
 mongoose
