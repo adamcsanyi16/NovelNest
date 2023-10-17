@@ -125,7 +125,27 @@ app.post("/belepes", async (req, res) => {
   }
 });
 
+app.get("/userinfo", async (req, res) => {
+  try {
+    const felhasznalonev = req.query.felhasznalonev;
+    const user = await User.findOne({ felhasznalonev });
+
+    if (user) {
+      res.status(200).send({
+        felhasznalonev: user.felhasznalonev,
+        email: user.email,
+        profilkep: user.profilkep.data.toString("base64")
+      });
+    } else {
+      res.status(404).json({ msg: "User not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+});
+
 app.use(requireAuth);
+
 
 //DATABASE
 mongoose
