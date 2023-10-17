@@ -125,17 +125,6 @@ app.post("/belepes", async (req, res) => {
 
 app.use(requireAuth);
 
-app.get("/userinfo", async (req, res) => {
-  try {
-    const users = await User.find({});
-    const userprofilkep = users.profilkep.data.toString("base64");
-    console.log(userprofilkep);
-    res.status(200).json({ users, userprofilkep});
-  } catch (error) {
-    res.status(500).json({ msg: "Valami hiba történt" + error.message });
-  }
-});
-
 //DATABASE
 mongoose
   .connect(process.env.MONGO_URI)

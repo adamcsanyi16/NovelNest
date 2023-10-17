@@ -6,36 +6,11 @@ import { useAuthContext } from "../hooks/useAuthContext";
 const Navbar = () => {
   const { user } = useAuthContext();
   const { logout } = useLogout();
-  const [profilkep, setProfilkep] = useState("");
   const url = "http://localhost:3500";
 
   const handleLogout = () => {
     logout();
   };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const adat = await fetch(url + "/userinfo", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${user.token}`,
-          },
-        });
-
-        if (adat.ok) {
-          const response = await adat.json();
-          
-          setProfilkep(profilkep);
-        }
-      } catch (error) {
-        console.log("Fetch error:", error);
-      }
-    };
-
-    fetchData();
-  }, [user]);
 
   return (
     <div className="navbar">
