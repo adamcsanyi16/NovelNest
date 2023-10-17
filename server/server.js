@@ -80,10 +80,12 @@ app.post("/regisztral", async (req, res) => {
     //const userfelhasznalonev = user.felhasznalonev
 
     const token = createToken(user._id, user.isAdmin);
+    const userprofilkep = imageBuffer.toString("base64");
     res.status(200).json({
       msg: "Sikeres regisztráció",
       felhasznalonev,
       token,
+      userprofilkep,
     });
   } catch (error) {
     res.status(500).json({ msg: error.message });

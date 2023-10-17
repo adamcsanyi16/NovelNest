@@ -75,10 +75,10 @@ const Registration = () => {
         <div className="form-row">
           <input
             type="text"
-            id="felhasznalonev"
-            name="felhasznalonev"
-            placeholder="Felhasználónév"
-            onChange={(e) => setFelhasznalonev(e.target.value)}
+            id="email"
+            name="email"
+            placeholder="Email-cím"
+            onChange={(e) => setEmail(e.target.value)}
             autoComplete="off"
             className="input"
           />
@@ -86,10 +86,10 @@ const Registration = () => {
         <div className="form-row">
           <input
             type="text"
-            id="email"
-            name="email"
-            placeholder="Email-cím"
-            onChange={(e) => setEmail(e.target.value)}
+            id="felhasznalonev"
+            name="felhasznalonev"
+            placeholder="Felhasználónév"
+            onChange={(e) => setFelhasznalonev(e.target.value)}
             autoComplete="off"
             className="input"
           />

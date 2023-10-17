@@ -43,6 +43,7 @@ body {
   position: absolute;
   right: 0;
   top: 5;
+  display: flex;
   align-items: center;
   margin-left: 20px;
 }
@@ -50,6 +51,7 @@ body {
 .userinfo span {
   color: #2c3639;
   font-size: 11px;
+  margin-right: 10px;
 }
 
 .links {
@@ -69,9 +71,10 @@ body {
 
 .profile-image {
   border-radius: 50%;
-  margin-left: 20px;
+  margin-left: 10px;
   justify-content: center;
   height: 30px;
+  width: 30px;
 }
 
 /*BUTTONS*/
