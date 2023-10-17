@@ -10,7 +10,6 @@ const validator = require("validator");
 const fs = require("fs");
 const path = require("path");
 const { promisify } = require("util");
-const bcrypt = require("bcrypt");
 const requireAuth = require("./middlewares/requireAuth");
 
 //MULTER SETUP
@@ -34,6 +33,17 @@ app.get("/", (req, res) => {
   res.send("Hello World");
 });
 
+/*app.get("/userprofile", async (req, res) => {
+  try {
+    try {
+      const users = await User.find({});
+      res.status(200).json({ msg: users });
+    } catch (error) {
+      res.status(500).json({ msg: "Valami hiba történt" + error.message });
+    }
+  } catch (error) {}
+});*/
+
 app.post("/regisztral", async (req, res) => {
   try {
     const { felhasznalonev, email, jelszo } = req.body;
@@ -41,7 +51,7 @@ app.post("/regisztral", async (req, res) => {
     const felhasznalonevLetezik = await User.findOne({ felhasznalonev });
 
     if (felhasznalonevLetezik) {
-      throw Error("A felhasználó név már létezik!");
+      throw Error("A felhasználónév már létezik!");
     }
     if (emailLetezik) {
       throw Error("Az email már létezik!");
@@ -70,7 +80,11 @@ app.post("/regisztral", async (req, res) => {
     //const userfelhasznalonev = user.felhasznalonev
 
     const token = createToken(user._id, user.isAdmin);
-    res.status(200).json({ msg: "Sikeres regisztráció", email, token });
+    res.status(200).json({
+      msg: "Sikeres regisztráció",
+      felhasznalonev,
+      token,
+    });
   } catch (error) {
     res.status(500).json({ msg: error.message });
   }
@@ -96,14 +110,12 @@ app.post("/belepes", async (req, res) => {
     const { felhasznalonev } = req.body;
     const user = await User.findOne({ felhasznalonev });
     const token = createToken(user._id, user.isAdmin);
-    const userfelhasznalonev = user.felhasznalonev;
     const userprofilkep = user.profilkep.data.toString("base64");
     console.log(felhasznalonev, token);
     res.status(200).json({
       msg: "Sikeres belépés",
       felhasznalonev,
       token,
-      userfelhasznalonev,
       userprofilkep,
     });
   } catch (error) {
@@ -111,14 +123,24 @@ app.post("/belepes", async (req, res) => {
   }
 });
 
+app.use(requireAuth);
+
+app.get("/userinfo", async (req, res) => {
+  try {
+    const users = await User.find({});
+    const userprofilkep = users.profilkep.data.toString("base64");
+    console.log(userprofilkep);
+    res.status(200).json({ users, userprofilkep});
+  } catch (error) {
+    res.status(500).json({ msg: "Valami hiba történt" + error.message });
+  }
+});
+
+//DATABASE
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log("Sikeres adatbázis elérés!"))
   .catch(() => console.log(error.message));
-
-app.use(requireAuth);
-
-//DATABASE
 
 const port = process.env.PORT || 3500;
 app.listen(port, () => {

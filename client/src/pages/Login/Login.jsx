@@ -81,7 +81,7 @@ const Login = () => {
             type="text"
             id="felhasznalonev"
             name="felhasznalonev"
-            placeholder="Felhasználó név"
+            placeholder="Felhasználónév"
             onChange={(e) => setFelhasznalonev(e.target.value)}
             autoComplete="off"
             className="input"
