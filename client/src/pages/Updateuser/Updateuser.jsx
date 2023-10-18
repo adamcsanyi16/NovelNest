@@ -14,66 +14,67 @@ const Updateuser = () => {
   const userinfo = async () => {
     setIsLoading(true);
     setError(null);
-  
+
     try {
-      const adat = await fetch(url + `/userinfo?felhasznalonev=${user.felhasznalonev}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user.token}`,
-        },
-      });
-    
+      const adat = await fetch(
+        url + `/userinfo?felhasznalonev=${user.felhasznalonev}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+
       if (adat.ok) {
         const response = await adat.json();
-        setFelhasznalonev(response.felhasznalonev)
-        setEmail(response.email)
-        setProfilkep(response.profilkep)
+        setFelhasznalonev(response.felhasznalonev);
+        setEmail(response.email);
+        setProfilkep(response.profilkep);
 
         console.log(response);
-      }
-      else {
+      } else {
         const response = await adat.json();
-        console.log(response.msg);
+        setError(response.msg)
       }
     } catch (error) {
       setIsLoading(false);
       setError("An error occurred while fetching data.");
     }
   };
-  
 
-  const showUserinfo = async (event) => {
-    event.preventDefault();
-    await userinfo();
-  };
+  useEffect(() => {
+    userinfo();
+  }, [user]);
 
-  return ( 
+  return (
     <div>
       <center>
-      <table>
-      <tbody>
-        <tr>
-        <td>Felhasználónév: </td>
-        <td><input type="text" defaultValue={ felhasznalonev } /></td>
-        </tr>
-        <tr>
-        <td>Email: </td>
-        <td>{ email }</td>
-        </tr>
-        <tr>
-        <td>Profilkép: </td>
-        <td><img
-              src={`data:image/jpeg;base64,${profilkep}`}
-              alt="Profilkép"
-              className="profile-image"
-            /></td>
-        </tr>
-        </tbody>
+        <table>
+          <tbody>
+            <tr>
+              <td>Felhasználónév: </td>
+              <td>
+                <input type="text" value={felhasznalonev} />
+              </td>
+            </tr>
+            <tr>
+              <td>Email: </td>
+              <td>{email}</td>
+            </tr>
+            <tr>
+              <td>Profilkép: </td>
+              <td>
+                <img
+                  src={`data:image/jpeg;base64,${profilkep}`}
+                  alt="Profilkép"
+                  className="profile-image"
+                />
+              </td>
+            </tr>
+          </tbody>
         </table>
-
-      
-      <button onClick={showUserinfo}>nyomj meg</button>
       </center>
     </div>
   );
