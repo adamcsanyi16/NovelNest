@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 const multer = require("multer");
 const jwt = require("jsonwebtoken");
 const User = require("./models/User");
+const Story = require("./models/Story");
 const validator = require("validator");
 const fs = require("fs");
 const path = require("path");
@@ -17,8 +18,8 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 //TOKEN CREATION
-const createToken = (_id, isAdmin) => {
-  return jwt.sign({ _id, isAdmin }, process.env.SECRET, {
+const createToken = (_id, isAdmin, felhasznalonev) => {
+  return jwt.sign({ _id, isAdmin, felhasznalonev }, process.env.SECRET, {
     expiresIn: "3h",
   });
 };
@@ -75,11 +76,10 @@ app.post("/regisztral", async (req, res) => {
         data: imageBuffer,
       },
     });
-
     //const userprofilkep = user.profilkep;
     //const userfelhasznalonev = user.felhasznalonev
 
-    const token = createToken(user._id, user.isAdmin);
+    const token = createToken(user._id, user.isAdmin,  user.felhasznalonev);
     const userprofilkep = imageBuffer.toString("base64");
     res.status(200).json({
       msg: "Sikeres regisztráció",
@@ -111,12 +111,11 @@ app.post("/belepes", async (req, res) => {
   try {
     const { felhasznalonev } = req.body;
     const user = await User.findOne({ felhasznalonev });
-    const token = createToken(user._id, user.isAdmin);
+    const token = createToken(user._id, user.isAdmin, user.felhasznalonev);
     const userprofilkep = user.profilkep.data.toString("base64");
     console.log(felhasznalonev, token);
     res.status(200).json({
       msg: "Sikeres belépés",
-      felhasznalonev,
       token,
       userprofilkep,
     });
@@ -125,36 +124,61 @@ app.post("/belepes", async (req, res) => {
   }
 });
 
-
 app.use(requireAuth);
 
-app.get("/isAdmin", async (req, res) => {
-  try {
-    const isAdmin = res.locals.isAdmin;
-    res.status(200).json({ isAdmin });
-  } catch (error) {
-    res.status(500).json({ msg: "Valami hiba történt: " + error.message });
-  }
-});
-
-app.get(`/userinfo/:felhasznalonevKuld`, async (req, res) => {
+app.get("/userinfo", async (req, res) => {
   try {
     const felhasznalonev = req.params.felhasznalonevKuld;
     const user = await User.findOne({ felhasznalonev });
 
     if (user) {
       res.status(200).send({
-        viewFelhasznalonev: user.felhasznalonev,
-        viewEmail: user.email,
-        viewProfilkep: user.profilkep.data.toString("base64"),
-        viewRolam: user.rolam,
-        viewIsAdmin: user.isAdmin
+        felhasznalonev: user.felhasznalonev,
+        email: user.email,
+        profilkep: user.profilkep.data.toString("base64")
       });
     } else {
       res.status(404).json({ msg: "User not found" });
     }
   } catch (error) {
     res.status(500).json({ msg: error.message });
+  }
+});
+
+//STORY
+app.post("/addstory", async (req, res) => {
+  try {
+    const { cim, szerzo, boritokep, story, karakterek, nyelv, kategoria } =
+      req.body;
+
+    const storyLetezik = await Story.findOne({ cim });
+    if (storyLetezik) {
+      throw Error("Már létezik egy történet ezzel a címmel")
+    }
+
+    const newStory = new Story({
+      cim,
+      szerzo,
+      boritokep,
+      story,
+      karakterek,
+      nyelv,
+      kategoria,
+    });
+    await newStory.save();
+    res.status(200).json({ msg: "Sikeres történet létrehozás!" });
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+});
+
+app.get("/isAdmin", async (req, res) => {
+  try {
+    const isAdmin = res.locals.isAdmin;
+    const felhasznalonev = res.locals.felhasznalonev;
+    res.status(200).json({ isAdmin, felhasznalonev });
+  } catch (error) {
+    res.status(500).json({ msg: "Valami hiba történt: " + error.message });
   }
 });
 
