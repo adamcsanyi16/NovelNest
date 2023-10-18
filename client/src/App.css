@@ -220,3 +220,75 @@ input:hover {
   color: #008006;
   gap: 5px;
 }
+
+
+/* PROFILOM OLDAL */
+
+.profilomHatter {
+  background-image: url(https://www.dropz.com.au/cdn/shop/products/backdrop-bookshelves-library-room-1_1340x.jpg?v=1612742972);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 10px;
+  height: 450px;
+  width: 100%;
+  opacity: 90%;
+  margin-top: 10px;
+}
+
+.profilomInfo_Tarto {
+  display: grid;
+  grid-template-columns: 33% 33% 33%;
+  height: 100%;
+}
+
+.profilomInfo_container {
+  display: flex;
+  position: relative;
+  margin-top: 20px;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(128, 128, 128, 0.485);
+  height: 180px;
+  width: 455px;
+  max-width: 100%;
+  border-radius: 10px;
+}
+
+.profilomProfil {
+  border-radius: 50%;
+  height: 70%;
+}
+
+.profilomFelhasznalonev {
+  text-align: left;
+  color: white;
+  height: 30%;
+  margin-left: 10px;
+}
+
+.profilomBio_container {
+  background-color: rgba(128, 128, 128, 0.646);
+  border-radius: 10px;
+  margin-top: 20px;
+  height: 90%;
+  width: 455px;
+}
+
+textarea {
+  background: transparent;
+  color: white;
+  margin: auto;
+  border-radius: 1px;
+  height: 98%;
+  width: 100%;
+  resize: none;
+
+}
+
+@media only screen and (max-width: 650px) {
+  .profilomInfo_container {
+    margin-top: 0px;
+    width: 100%;
+  }
+}

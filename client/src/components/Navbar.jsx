@@ -25,7 +25,7 @@ const Navbar = () => {
         <div className="userinfo">
           <span>{user.felhasznalonev}</span>
           {user.userprofilkep && (
-            <Link to="/profilom">
+            <Link to={`/profil/${user.felhasznalonev}`}>
               <img
             src={`data:image/jpeg;base64,${user.userprofilkep}`}
             alt="Profilkép"

@@ -128,16 +128,27 @@ app.post("/belepes", async (req, res) => {
 
 app.use(requireAuth);
 
-app.get("/userinfo", async (req, res) => {
+app.get("/isAdmin", async (req, res) => {
   try {
-    const felhasznalonev = req.query.felhasznalonev;
+    const isAdmin = res.locals.isAdmin;
+    res.status(200).json({ isAdmin });
+  } catch (error) {
+    res.status(500).json({ msg: "Valami hiba történt: " + error.message });
+  }
+});
+
+app.get(`/userinfo/:felhasznalonevKuld`, async (req, res) => {
+  try {
+    const felhasznalonev = req.params.felhasznalonevKuld;
     const user = await User.findOne({ felhasznalonev });
 
     if (user) {
       res.status(200).send({
-        felhasznalonev: user.felhasznalonev,
-        email: user.email,
-        profilkep: user.profilkep.data.toString("base64")
+        viewFelhasznalonev: user.felhasznalonev,
+        viewEmail: user.email,
+        viewProfilkep: user.profilkep.data.toString("base64"),
+        viewRolam: user.rolam,
+        viewIsAdmin: user.isAdmin
       });
     } else {
       res.status(404).json({ msg: "User not found" });

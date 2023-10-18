@@ -11,7 +11,7 @@ import Notfound from "./pages/Notfound/Notfound";
 import Login from "./pages/Login/Login";
 import Registration from "./pages/Registration/Registration";
 import Addstory from "./pages/Story/Addstory";
-import Updateuser from "./pages/Updateuser/Updateuser";
+import User from "./pages/User/User";
 
 function App() {
   return (
@@ -24,7 +24,7 @@ function App() {
           <Route path="/belepes" element={<Login />} />
           <Route path="/regisztracio" element={<Registration />} />
           <Route path="/storyfelvetel" element={<Addstory />} />
-          <Route path="/profilom" element={<Updateuser />} />
+          <Route path="/profil/:felhasznalonevKuld" element={<User />} />
         </Routes>
       </Router>
     </div>
