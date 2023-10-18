@@ -161,11 +161,28 @@ input:hover {
 
 .input::placeholder {
   color: #2c3639;
+  font-family: "Martian Mono", monospace;
+  font-size: 9px;
 }
 
 .input:focus::placeholder {
   opacity: 0;
   transition: opacity 0.3s;
+}
+
+/*TEXTAREA*/
+textarea {
+  resize: none;
+}
+
+/*STORY*/
+.form-container {
+  display: grid;
+  grid-template-columns: 40% 60%;
+}
+
+.storyform {
+  width: 100%;
 }
 
 /*ERROR AND SUCCESS*/

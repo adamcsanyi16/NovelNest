@@ -10,7 +10,6 @@ const storySchema = new mongoose.Schema(
     szerzo: {
       type: String,
       required: true,
-      unique: true,
     },
     boritokep: {
       type: String,
@@ -31,6 +30,10 @@ const storySchema = new mongoose.Schema(
     kategoria: {
       type: String,
       required: true,
+    },
+    isPublished: {
+      type: Boolean,
+      default: false,
     },
   },
   { timestamps: true }
