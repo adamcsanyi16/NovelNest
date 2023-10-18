@@ -4,11 +4,8 @@ import { useParams } from 'react-router-dom';
 
 const User = () => {
   const { user } = useAuthContext();
+  const [felhasznalonev, setFelhasznalonev] = useState("");
   const { felhasznalonevKuld } = useParams();
-  const storedData = localStorage.getItem("user");
-  const userData = JSON.parse(storedData);
-  const felhasznalonev = userData.felhasznalonev;
-  console.log(felhasznalonev)
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -18,7 +15,31 @@ const User = () => {
   const [viewRolam, setViewRolam] = useState("");
   const [viewIsAdmin, setViewIsAdmin] = useState("");
   const url = "http://localhost:3500";
- 
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(url + "/isAdmin", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          const isAdmin = data.isAdmin;
+          const felhasznalonev = data.felhasznalonev;
+          setFelhasznalonev(felhasznalonev);
+        }
+      } catch (error) {
+        console.log("Fetch error:", error);
+      }
+    };
+
+    fetchData();
+  }, [user, felhasznalonev, felhasznalonevKuld]);
 
   const userinfo = async () => {
     setIsLoading(true);
@@ -57,7 +78,7 @@ const User = () => {
 
   useEffect(() => {
     userinfo();
-  }, [user]);
+  }, [user, felhasznalonev, felhasznalonevKuld]);
 
   return (
     <div className="profilom">

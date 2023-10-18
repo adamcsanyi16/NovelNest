@@ -32,7 +32,7 @@ const Navbar = () => {
     };
 
     fetchData();
-  }, [user]);
+  }, [user, felhasznalonev]);
 
   const handleLogout = () => {
     logout();
@@ -55,7 +55,7 @@ const Navbar = () => {
         <div className="userinfo">
           <span>{felhasznalonev}</span>
           {user.userprofilkep && (
-            <Link to={`/profil/${user.felhasznalonev}`}>
+            <Link to={`/profil/${felhasznalonev}`}>
               <img
                 src={`data:image/jpeg;base64,${user.userprofilkep}`}
                 alt="Profilkép"
