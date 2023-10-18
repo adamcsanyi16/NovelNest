@@ -28,6 +28,12 @@ const userSchema = new mongoose.Schema(
       name: String,
       data: Buffer,
     },
+    koveteseim: {
+      type: Array,
+    },
+    kovetoim: {
+      type: Array,
+    }
   },
   { timestamps: true }
 );

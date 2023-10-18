@@ -94,6 +94,9 @@ const User = () => {
                 )}
               <div className="profilomFelhasznalonev">
                 <h2>{ viewFelhasznalonev }</h2>
+                {viewFelhasznalonev == felhasznalonev && (
+                  <input type="text" defaultValue={viewEmail} />
+                )}
                 <h4>Követők: 34</h4>
                 {viewIsAdmin &&(
                   <h5>Admin😎</h5>
