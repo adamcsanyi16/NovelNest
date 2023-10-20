@@ -76,6 +76,34 @@ const User = () => {
     }
   };
 
+
+  const valtoztatas = async () => {
+    try {
+      const response = await fetch(url + `/userupdate`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+        body: JSON.stringify({
+          felhasznalonev: felhasznalonev,
+          email: viewEmail,
+          rolam: viewRolam,
+        }),
+      });
+
+      if (response.ok) {
+        setSuccess("Changes saved successfully!");
+        console.log("mentve");
+      } else {
+        const response = await response.json();
+        setError(response.error);
+      }
+    } catch (error) {
+      setError("An error occurred while saving changes.");
+    }
+  };
+
   useEffect(() => {
     userinfo();
   }, [user, felhasznalonev, felhasznalonevKuld]);
@@ -85,17 +113,20 @@ const User = () => {
         <div className="profilomHatter">
           <div className="profilomInfo_Tarto">
         <div className="profilomInfo_container">
+          <input type="file" />
                 {viewProfilkep && (
+                  <div>
+                  <input type="file" accept="image/*" className="file-input"/>
                 <img
                   src={`data:image/jpeg;base64,${viewProfilkep}`}
                   alt="Profilkép"
                   className="profilomProfil"
-                />
+                /></div>
                 )}
               <div className="profilomFelhasznalonev">
                 <h2>{ viewFelhasznalonev }</h2>
                 {viewFelhasznalonev == felhasznalonev && (
-                  <p type="text" contenteditable="true" >{viewEmail}</p>
+                  <input type="text" value={viewEmail} onChange={(e) => setViewEmail(e.target.value)}></input>
                 )}
                 <h4>Követők: 34</h4>
                 {viewIsAdmin &&(
@@ -105,12 +136,17 @@ const User = () => {
             </div>
             <div className="profilomBio_container">
               {viewFelhasznalonev == felhasznalonev ?
-                <textarea type="text" defaultValue={viewRolam} /> :
+              <textarea type="text" onChange={(e) => setViewRolam(e.target.value)} defaultValue={viewRolam} />  :
                 <textarea defaultValue={viewRolam} readOnly />
               }
+            {viewFelhasznalonev == felhasznalonev && (
+              <button onClick={valtoztatas}>Mentés</button>
+              )}
+              {error && <div className="error">{error}</div>}
+              {success && <div className="success">{success}</div>}
             </div>
-            <button>Változások mentése</button>
             </div>
+            
           </div>
     </div>
   );

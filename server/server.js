@@ -147,6 +147,27 @@ app.get(`/userinfo/:felhasznalonevKuld`, async (req, res) => {
   }
 });
 
+app.post("/userupdate", async (req, res) => {
+  try {
+    const { felhasznalonev, rolam, email } = req.body;
+
+    const updatedUser = await User.findOneAndUpdate(
+      { felhasznalonev },
+      { rolam, email },
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
 //STORY
 app.post("/addstory", async (req, res) => {
   try {
