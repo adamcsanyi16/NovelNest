@@ -149,11 +149,20 @@ app.get(`/userinfo/:felhasznalonevKuld`, async (req, res) => {
 
 app.post("/userupdate", async (req, res) => {
   try {
-    const { felhasznalonev, rolam, email } = req.body;
+    const { felhasznalonev, rolam, email, profilkep} = req.body;
+
+    const profilkepdata = profilkep.data
+    const profilkepnev = profilkep.name
 
     const updatedUser = await User.findOneAndUpdate(
       { felhasznalonev },
-      { rolam, email },
+      { rolam, 
+        email,
+        profilkep: {
+          name: profilkepnev,
+          data: profilkepdata,
+        },
+       },
     );
 
     if (!updatedUser) {

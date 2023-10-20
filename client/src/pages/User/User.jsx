@@ -12,6 +12,7 @@ const User = () => {
   const [viewFelhasznalonev, setViewFelhasznalonev] = useState("");
   const [viewEmail, setViewEmail] = useState("");
   const [viewProfilkep, setViewProfilkep] = useState("");
+  const [sendProfilkep, setSendProfilkep] = useState("")
   const [viewRolam, setViewRolam] = useState("");
   const [viewIsAdmin, setViewIsAdmin] = useState("");
   const url = "http://localhost:3500";
@@ -75,7 +76,7 @@ const User = () => {
       setError("An error occurred while fetching data.");
     }
   };
-
+    
 
   const valtoztatas = async () => {
     try {
@@ -89,9 +90,12 @@ const User = () => {
           felhasznalonev: felhasznalonev,
           email: viewEmail,
           rolam: viewRolam,
+          profilkep: {
+            name: felhasznalonev + " profilképe",
+            data: sendProfilkep,
+          },
         }),
       });
-
       if (response.ok) {
         setSuccess("Changes saved successfully!");
         console.log("mentve");
@@ -113,15 +117,15 @@ const User = () => {
         <div className="profilomHatter">
           <div className="profilomInfo_Tarto">
         <div className="profilomInfo_container">
-          <input type="file" />
+        {viewFelhasznalonev == felhasznalonev && (
+          <input type="file" accept="image/*" onChange={(e) => setSendProfilkep(e.target.value)} className="profile-input" />
+        )}
                 {viewProfilkep && (
-                  <div>
-                  <input type="file" accept="image/*" className="file-input"/>
                 <img
                   src={`data:image/jpeg;base64,${viewProfilkep}`}
                   alt="Profilkép"
                   className="profilomProfil"
-                /></div>
+                />
                 )}
               <div className="profilomFelhasznalonev">
                 <h2>{ viewFelhasznalonev }</h2>

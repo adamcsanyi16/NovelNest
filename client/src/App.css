@@ -337,6 +337,14 @@ textarea {
   height: 70%;
 }
 
+.profile-input {
+  opacity: 100;
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+  cursor: pointer !important;
+}
+
 .profilomFelhasznalonev {
   text-align: left;
   color: white;
