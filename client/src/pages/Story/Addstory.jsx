@@ -90,14 +90,33 @@ const Addstory = () => {
 
   return (
     <div className="form-container">
-      <form onSubmit={feldolgoz} className="storyform">
-        <div className="form-row">
-          <input
-            type="file"
-            accept="image/*"
-            className="file-input"
-            onChange={(e) => setBoritokep(e.target.value)}
-          />
+      <form onSubmit={feldolgoz} className="storyform" id="file-storyform">
+        <div class="card">
+          <div class="card__content">
+            <input
+              type="file"
+              accept="image/*"
+              className="file-input"
+              onChange={(e) => setBoritokep(e.target.value)}
+            />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="1em"
+              height="1em"
+              stroke-linejoin="round"
+              stroke-linecap="round"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+              fill="none"
+              stroke="currentColor"
+              className="icon"
+            >
+              <polyline points="16 16 12 12 8 16"></polyline>
+              <line y2="21" x2="12" y1="12" x1="12"></line>
+              <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"></path>
+              <polyline points="16 16 12 12 8 16"></polyline>
+            </svg>
+          </div>
         </div>
       </form>
       <form onSubmit={feldolgoz} className="storyform">
@@ -128,14 +147,6 @@ const Addstory = () => {
           />
         </div>
         <div className="form-row">
-          <textarea
-            type="text"
-            placeholder="Kezd el a történetedet!"
-            className="input"
-            onChange={(e) => setStory(e.target.value)}
-          />
-        </div>
-        <div className="form-row">
           <input
             type="text"
             placeholder="Karakterek"
@@ -149,6 +160,15 @@ const Addstory = () => {
             placeholder="Nyelv"
             className="input"
             onChange={(e) => setNyelv(e.target.value)}
+          />
+        </div>
+        <div className="form-row">
+          <textarea
+            type="text"
+            placeholder="Kezd el a történetedet!"
+            className="input"
+            id="storyText"
+            onChange={(e) => setStory(e.target.value)}
           />
         </div>
         <div className="button-row">
