@@ -174,7 +174,7 @@ app.post("/addstory", async (req, res) => {
   }
 });
 
-app.get("/isAdmin", async (req, res) => {
+app.get("/getInfos", async (req, res) => {
   try {
     const isAdmin = res.locals.isAdmin;
     const felhasznalonev = res.locals.felhasznalonev;

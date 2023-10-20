@@ -111,6 +111,12 @@ button:active {
   justify-content: center;
 }
 
+.button-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 /*FORMS*/
 form {
   width: 400px;
@@ -173,6 +179,7 @@ input:hover {
 /*TEXTAREA*/
 textarea {
   resize: none;
+  height: 300px;
 }
 
 /*STORY*/
@@ -238,7 +245,6 @@ textarea {
   gap: 5px;
 }
 
-
 /* PROFILOM OLDAL */
 
 .profilomHatter {
@@ -300,7 +306,6 @@ textarea {
   height: 98%;
   width: 100%;
   resize: none;
-
 }
 
 @media only screen and (max-width: 650px) {

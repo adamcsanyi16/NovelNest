@@ -3,6 +3,7 @@ import { useAuthContext } from "../../hooks/useAuthContext";
 
 const Addstory = () => {
   const { user } = useAuthContext();
+  const [felhasznalonev, setFelhasznalonev] = useState("");
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -14,6 +15,32 @@ const Addstory = () => {
   const [nyelv, setNyelv] = useState("");
   const [kategoria, setKategoria] = useState("");
   const url = "http://localhost:3500";
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(url + "/getInfos", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          const isAdmin = data.isAdmin;
+          const felhasznalonev = data.felhasznalonev;
+          setSzerzo(felhasznalonev);
+          setFelhasznalonev(felhasznalonev);
+        }
+      } catch (error) {
+        console.log("Fetch error:", error);
+      }
+    };
+
+    fetchData();
+  }, [user, felhasznalonev]);
 
   const feldolgoz = (event) => {
     event.preventDefault();
@@ -61,10 +88,6 @@ const Addstory = () => {
     elkuld();
   };
 
-  useEffect(() => {
-    setSzerzo(user.felhasznalonev);
-  }, [user]);
-
   return (
     <div className="form-container">
       <form onSubmit={feldolgoz} className="storyform">
@@ -72,7 +95,7 @@ const Addstory = () => {
           <input
             type="file"
             accept="image/*"
-            className="input"
+            className="file-input"
             onChange={(e) => setBoritokep(e.target.value)}
           />
         </div>
