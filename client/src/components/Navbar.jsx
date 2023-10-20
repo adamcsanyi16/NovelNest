@@ -12,7 +12,7 @@ const Navbar = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(url + "/isAdmin", {
+        const response = await fetch(url + "/getInfos", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
