@@ -95,7 +95,7 @@ const User = () => {
               <div className="profilomFelhasznalonev">
                 <h2>{ viewFelhasznalonev }</h2>
                 {viewFelhasznalonev == felhasznalonev && (
-                  <input type="text" defaultValue={viewEmail} />
+                  <p type="text" contenteditable="true" >{viewEmail}</p>
                 )}
                 <h4>Követők: 34</h4>
                 {viewIsAdmin &&(
@@ -109,6 +109,7 @@ const User = () => {
                 <textarea defaultValue={viewRolam} readOnly />
               }
             </div>
+            <button>Változások mentése</button>
             </div>
           </div>
     </div>
