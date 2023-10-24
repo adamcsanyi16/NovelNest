@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuthContext } from "../../hooks/useAuthContext";
-import { useParams } from 'react-router-dom';
+import { useParams } from "react-router-dom";
 
 const User = () => {
   const { user } = useAuthContext();
@@ -12,11 +12,12 @@ const User = () => {
   const [viewFelhasznalonev, setViewFelhasznalonev] = useState("");
   const [viewEmail, setViewEmail] = useState("");
   const [viewProfilkep, setViewProfilkep] = useState("");
-  const [sendProfilkep, setSendProfilkep] = useState("")
+  const [sendProfilkep, setSendProfilkep] = useState("");
   const [viewRolam, setViewRolam] = useState("");
   const [viewIsAdmin, setViewIsAdmin] = useState("");
   const url = "http://localhost:3500";
 
+  //GETTING USER DATA FEOM TOKEN
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -38,45 +39,41 @@ const User = () => {
         console.log("Fetch error:", error);
       }
     };
-
     fetchData();
   }, [user, felhasznalonev, felhasznalonevKuld]);
 
+  //LOADING DATA FOR VIEWING USERS
   const userinfo = async () => {
     setIsLoading(true);
     setError(null);
 
     try {
-      const adat = await fetch(
-        url + `/userinfo/${felhasznalonevKuld}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${user.token}`,
-          },
-        }
-      );
+      const adat = await fetch(url + `/userinfo/${felhasznalonevKuld}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
 
       if (adat.ok) {
         const response = await adat.json();
         setViewFelhasznalonev(response.viewFelhasznalonev);
         setViewEmail(response.viewEmail);
         setViewProfilkep(response.viewProfilkep);
-        setViewRolam(response.viewRolam)
-        setViewIsAdmin(response.viewIsAdmin)
+        setViewRolam(response.viewRolam);
+        setViewIsAdmin(response.viewIsAdmin);
 
         console.log(response);
       } else {
         const response = await adat.json();
-        setError(response.msg)
+        setError(response.msg);
       }
     } catch (error) {
       setIsLoading(false);
       setError("An error occurred while fetching data.");
     }
   };
-    
 
   const valtoztatas = async () => {
     try {
@@ -90,21 +87,18 @@ const User = () => {
           felhasznalonev: felhasznalonev,
           email: viewEmail,
           rolam: viewRolam,
-          profilkep: {
-            name: felhasznalonev + " profilképe",
-            data: sendProfilkep,
-          },
+          profilkep: sendProfilkep,
         }),
       });
       if (response.ok) {
-        setSuccess("Changes saved successfully!");
+        setSuccess("Profil sikeresen mentve!");
         console.log("mentve");
       } else {
         const response = await response.json();
         setError(response.error);
       }
     } catch (error) {
-      setError("An error occurred while saving changes.");
+      setError("Valami hiba történt a mentés során. Próbáld meg később!");
     }
   };
 
@@ -114,44 +108,55 @@ const User = () => {
 
   return (
     <div className="profilom">
-        <div className="profilomHatter">
-          <div className="profilomInfo_Tarto">
-        <div className="profilomInfo_container">
-        {viewFelhasznalonev == felhasznalonev && (
-          <input type="file" accept="image/*" onChange={(e) => setSendProfilkep(e.target.value)} className="profile-input" />
-        )}
-                {viewProfilkep && (
-                <img
-                  src={`data:image/jpeg;base64,${viewProfilkep}`}
-                  alt="Profilkép"
-                  className="profilomProfil"
-                />
-                )}
-              <div className="profilomFelhasznalonev">
-                <h2>{ viewFelhasznalonev }</h2>
-                {viewFelhasznalonev == felhasznalonev && (
-                  <input type="text" value={viewEmail} onChange={(e) => setViewEmail(e.target.value)}></input>
-                )}
-                <h4>Követők: 34</h4>
-                {viewIsAdmin &&(
-                  <h5>Admin😎</h5>
-                )}
-                </div>
+      <div className="profilomHatter">
+        <div className="profilomInfo_Tarto">
+          <div className="profilomInfo_container">
+            {viewFelhasznalonev == felhasznalonev && (
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => setSendProfilkep(e.target.value)}
+                className="profile-input"
+              />
+            )}
+            {viewProfilkep && (
+              <img
+                src={`${viewProfilkep}`}
+                alt="Profilkép"
+                className="profilomProfil"
+              />
+            )}
+            <div className="profilomFelhasznalonev">
+              <h2>{viewFelhasznalonev}</h2>
+              {viewFelhasznalonev == felhasznalonev && (
+                <input
+                  type="text"
+                  value={viewEmail}
+                  onChange={(e) => setViewEmail(e.target.value)}
+                ></input>
+              )}
+              <h4>Követők: 34</h4>
+              {viewIsAdmin && <h5>Admin😎</h5>}
             </div>
-            <div className="profilomBio_container">
-              {viewFelhasznalonev == felhasznalonev ?
-              <textarea type="text" onChange={(e) => setViewRolam(e.target.value)} defaultValue={viewRolam} />  :
-                <textarea defaultValue={viewRolam} readOnly />
-              }
+          </div>
+          <div className="profilomBio_container">
+            {viewFelhasznalonev == felhasznalonev ? (
+              <textarea
+                type="text"
+                onChange={(e) => setViewRolam(e.target.value)}
+                defaultValue={viewRolam}
+              />
+            ) : (
+              <textarea defaultValue={viewRolam} readOnly />
+            )}
             {viewFelhasznalonev == felhasznalonev && (
               <button onClick={valtoztatas}>Mentés</button>
-              )}
-              {error && <div className="error">{error}</div>}
-              {success && <div className="success">{success}</div>}
-            </div>
-            </div>
-            
+            )}
+            {error && <div className="error">{error}</div>}
+            {success && <div className="success">{success}</div>}
           </div>
+        </div>
+      </div>
     </div>
   );
 };

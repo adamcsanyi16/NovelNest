@@ -25,8 +25,7 @@ const userSchema = new mongoose.Schema(
       default: false,
     },
     profilkep: {
-      name: String,
-      data: Buffer,
+      type:String,
     },
     koveteseim: {
       type: Array,

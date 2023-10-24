@@ -54,10 +54,10 @@ const Navbar = () => {
       {user && (
         <div className="userinfo">
           <span>{felhasznalonev}</span>
-          {user.userprofilkep && (
+          {user.profilkep && (
             <Link to={`/profil/${felhasznalonev}`}>
               <img
-                src={`data:image/jpeg;base64,${user.userprofilkep}`}
+                src={`${user.profilkep}`}
                 alt="Profilkép"
                 className="profile-image"
               />

@@ -196,6 +196,11 @@ form {
   padding: 5px;
   box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
   background-image: linear-gradient(144deg, #2c3639, #a27b5c 50%, #3f4e4f);
+  text-align: center;
+}
+
+.card span {
+  font-size: 10px;
 }
 
 .card__content {
@@ -220,14 +225,10 @@ form {
 }
 
 /*TEXTAREA*/
-textarea {
-  resize: none;
-  height: 300px;
-}
-
 #storyText {
   width: 80%;
-  height: 400px;
+  height: 300px;
+  margin: 70px 70px;
 }
 
 /*STORY*/
@@ -360,7 +361,7 @@ textarea {
   width: 455px;
 }
 
-textarea {
+.profilomBio_container textarea {
   background: transparent;
   color: white;
   margin: auto;

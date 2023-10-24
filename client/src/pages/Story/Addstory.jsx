@@ -88,6 +88,24 @@ const Addstory = () => {
     elkuld();
   };
 
+  function displayImage(e) {
+    const fileInput = e.target;
+
+    if (fileInput.files && fileInput.files[0]) {
+      const reader = new FileReader();
+
+      reader.onload = function (e) {
+        setBoritokep(e.target.result);
+      };
+
+      reader.readAsDataURL(fileInput.files[0]);
+    }
+  }
+
+  function resetPic() {
+    setBoritokep("");
+  }
+
   return (
     <div className="form-container">
       <form onSubmit={feldolgoz} className="storyform" id="file-storyform">
@@ -97,7 +115,7 @@ const Addstory = () => {
               type="file"
               accept="image/*"
               className="file-input"
-              onChange={(e) => setBoritokep(e.target.value)}
+              onChange={(e) => displayImage(e)}
             />
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -116,7 +134,12 @@ const Addstory = () => {
               <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"></path>
               <polyline points="16 16 12 12 8 16"></polyline>
             </svg>
+            {boritokep && <img src={boritokep} alt="Uploaded Image" />}
           </div>
+          <span>Ajánlott képméret 300x400px</span>
+          <button id="reset" onClick={resetPic}>
+            Töröl
+          </button>
         </div>
       </form>
       <form onSubmit={feldolgoz} className="storyform">
