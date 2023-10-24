@@ -68,7 +68,6 @@ app.post("/regisztral", async (req, res) => {
       profilkep: profilkep,
     });
     await newUser.save();
-    console.log(newUser._id, newUser.isAdmin, newUser.felhasznalonev);
     const token = createToken(
       newUser._id,
       newUser.isAdmin,
@@ -124,7 +123,7 @@ app.get(`/userinfo/:felhasznalonevKuld`, async (req, res) => {
     const user = await User.findOne({ felhasznalonev });
 
     if (user) {
-      res.status(200).json({
+      res.status(200).send({
         viewFelhasznalonev: user.felhasznalonev,
         viewEmail: user.email,
         viewProfilkep: user.profilkep,
@@ -177,7 +176,7 @@ app.post("/userupdate", async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ msg: error.message});
+    res.status(500).json({ msg: error.message });
   }
 });
 
