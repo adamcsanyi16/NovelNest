@@ -21,6 +21,29 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_SECRET_KEY,
 });
 
+const profileOptions = {
+  transformation: [
+    {
+      width: 250,
+      height: 250,
+      crop: "scale",
+      quality: "35",
+      fetch_format: "auto",
+    },
+  ],
+};
+
+const coverOptions = {
+  transformation: [
+    {
+      height: 400,
+      crop: "scale",
+      quality: "auto",
+      fetch_format: "auto",
+    },
+  ],
+};
+
 //MULTER SETUP
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
@@ -155,24 +178,30 @@ app.post("/userupdate", async (req, res) => {
       }
       res.status(200).json(updatedUser);
     } else {
-      cloudinary.uploader.upload(profilkep, async (error, result) => {
-        if (error) {
-          console.log(error);
-          throw new Error("Hiba történt az képfeltöltés közben");
-        }
-        const updatedUser = await User.findOneAndUpdate(
-          { felhasznalonev },
-          {
-            rolam,
-            email,
-            profilkep: result.secure_url,
+      cloudinary.uploader.upload(
+        profilkep,
+        profileOptions,
+        async (error, result) => {
+          if (error) {
+            console.log(error);
+            throw new Error("Hiba történt az képfeltöltés közben");
           }
-        );
-        if (!updatedUser) {
-          return res.status(404).json({ error: "A felhasználó nem létezik!" });
+          const updatedUser = await User.findOneAndUpdate(
+            { felhasznalonev },
+            {
+              rolam,
+              email,
+              profilkep: result.secure_url,
+            }
+          );
+          if (!updatedUser) {
+            return res
+              .status(404)
+              .json({ error: "A felhasználó nem létezik!" });
+          }
+          res.status(200).json(updatedUser);
         }
-        res.status(200).json(updatedUser);
-      });
+      );
     }
   } catch (error) {
     console.error(error);
@@ -191,24 +220,28 @@ app.post("/addstory", async (req, res) => {
       throw Error("Már létezik egy történet ezzel a címmel");
     }
 
-    cloudinary.uploader.upload(boritokep, async (error, result) => {
-      if (error) {
-        console.log(error);
-        throw new Error("Hiba történt az képfeltöltés közben");
-      }
+    cloudinary.uploader.upload(
+      boritokep,
+      coverOptions,
+      async (error, result) => {
+        if (error) {
+          console.log(error);
+          throw new Error("Hiba történt az képfeltöltés közben");
+        }
 
-      const newStory = new Story({
-        cim: cim,
-        szerzo: szerzo,
-        boritokep: result.secure_url,
-        story: story,
-        karakterek: karakterek,
-        nyelv: nyelv,
-        kategoria: kategoria,
-      });
-      await newStory.save();
-      res.status(200).json({ msg: "Sikeres történet létrehozás!" });
-    });
+        const newStory = new Story({
+          cim: cim,
+          szerzo: szerzo,
+          boritokep: result.secure_url,
+          story: story,
+          karakterek: karakterek,
+          nyelv: nyelv,
+          kategoria: kategoria,
+        });
+        await newStory.save();
+        res.status(200).json({ msg: "Sikeres történet létrehozás!" });
+      }
+    );
   } catch (error) {
     res.status(500).json({ msg: error.message });
   }
