@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { useParams } from "react-router-dom";
 
@@ -16,6 +17,8 @@ const User = () => {
   const [viewRolam, setViewRolam] = useState("");
   const [viewIsAdmin, setViewIsAdmin] = useState("");
   const url = "http://localhost:3500";
+
+  //const navigate = useNavigate();
 
   //GETTING USER DATA FEOM TOKEN
   useEffect(() => {
@@ -98,7 +101,7 @@ const User = () => {
         setError(response.error);
       }
     } catch (error) {
-      setError("Valami hiba történt a mentés során. Próbáld meg később!");
+      setError("Valami hiba történt a mentés során!" + error.message);
     }
   };
 
@@ -106,18 +109,37 @@ const User = () => {
     userinfo();
   }, [user, felhasznalonev, felhasznalonevKuld]);
 
+  function displayImage(e) {
+    const fileInput = e.target;
+
+    if (fileInput.files && fileInput.files[0]) {
+      const reader = new FileReader();
+
+      reader.onload = function (e) {
+        setSendProfilkep(e.target.result);
+      };
+
+      reader.readAsDataURL(fileInput.files[0]);
+    }
+  }
+
   return (
     <div className="profilom">
       <div className="profilomHatter">
         <div className="profilomInfo_Tarto">
           <div className="profilomInfo_container">
             {viewFelhasznalonev == felhasznalonev && (
-              <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => setSendProfilkep(e.target.value)}
-                className="profile-input"
-              />
+              <div className="kepInput">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => displayImage(e)}
+                  className="profile-input"
+                />
+                {sendProfilkep && (
+                  <img src={sendProfilkep} alt="Uploaded Image" />
+                )}
+              </div>
             )}
             {viewProfilkep && (
               <img

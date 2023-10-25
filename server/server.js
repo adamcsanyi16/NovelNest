@@ -59,7 +59,7 @@ app.post("/regisztral", async (req, res) => {
     }
 
     const profilkep =
-      "https://res.cloudinary.com/dfklaexjp/image/upload/v1698141392/user_fmootu.jpg";
+      "https://res.cloudinary.com/dfklaexjp/image/upload/v1698234703/user_wx5ex5.jpg";
 
     const newUser = new User({
       felhasznalonev,
@@ -218,7 +218,10 @@ app.get("/getInfos", async (req, res) => {
   try {
     const isAdmin = res.locals.isAdmin;
     const felhasznalonev = res.locals.felhasznalonev;
-    res.status(200).json({ isAdmin, felhasznalonev });
+
+    const user = await User.findOne({ felhasznalonev });
+    const profilkep = user.profilkep;
+    res.status(200).json({ isAdmin, felhasznalonev, profilkep });
   } catch (error) {
     res.status(500).json({ msg: "Valami hiba történt: " + error.message });
   }

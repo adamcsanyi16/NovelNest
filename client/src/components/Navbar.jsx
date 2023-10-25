@@ -5,6 +5,7 @@ import { useAuthContext } from "../hooks/useAuthContext";
 
 const Navbar = () => {
   const [felhasznalonev, setFelhasznalonev] = useState("");
+  const [profilkep, setProfilkep] = useState("");
   const { user } = useAuthContext();
   const { logout } = useLogout();
   const url = "http://localhost:3500";
@@ -24,6 +25,7 @@ const Navbar = () => {
           const data = await response.json();
           const isAdmin = data.isAdmin;
           const felhasznalonev = data.felhasznalonev;
+          setProfilkep(data.profilkep);
           setFelhasznalonev(felhasznalonev);
         }
       } catch (error) {
@@ -57,7 +59,7 @@ const Navbar = () => {
           {user.profilkep && (
             <Link to={`/profil/${felhasznalonev}`}>
               <img
-                src={`${user.profilkep}`}
+                src={`${profilkep}`}
                 alt="Profilkép"
                 className="profile-image"
               />
