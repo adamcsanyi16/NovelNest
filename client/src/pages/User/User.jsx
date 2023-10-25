@@ -79,6 +79,10 @@ const User = () => {
   };
 
   const valtoztatas = async () => {
+    setIsLoading(true);
+    setSuccess(null);
+    setError(null);
+
     try {
       const response = await fetch(url + `/userupdate`, {
         method: "POST",
@@ -94,9 +98,11 @@ const User = () => {
         }),
       });
       if (response.ok) {
+        setIsLoading(false)
         setSuccess("Profil sikeresen mentve!");
-        console.log("mentve");
+        window.location.reload()
       } else {
+        setIsLoading(false)
         const response = await response.json();
         setError(response.error);
       }
@@ -111,12 +117,13 @@ const User = () => {
 
   function displayImage(e) {
     const fileInput = e.target;
-
+    
     if (fileInput.files && fileInput.files[0]) {
       const reader = new FileReader();
-
+      
       reader.onload = function (e) {
         setSendProfilkep(e.target.result);
+        setViewProfilkep(e.target.result)
       };
 
       reader.readAsDataURL(fileInput.files[0]);
@@ -128,7 +135,7 @@ const User = () => {
       <div className="profilomHatter">
         <div className="profilomInfo_Tarto">
           <div className="profilomInfo_container">
-            {viewFelhasznalonev == felhasznalonev && (
+            {viewFelhasznalonev == felhasznalonev ? (
               <div className="kepInput">
                 <input
                   type="file"
@@ -136,18 +143,19 @@ const User = () => {
                   onChange={(e) => displayImage(e)}
                   className="profile-input"
                 />
-                {sendProfilkep && (
-                  <img src={sendProfilkep} alt="Uploaded Image" />
-                )}
+                <img
+                  src={`${viewProfilkep}`}
+                  alt={`${viewFelhasznalonev} profilképe`}
+                  className="profilomProfil"
+                />
               </div>
-            )}
-            {viewProfilkep && (
-              <img
-                src={`${viewProfilkep}`}
-                alt="Profilkép"
-                className="profilomProfil"
-              />
-            )}
+            ) :
+            <img
+            src={`${viewProfilkep}`}
+            alt={`${viewFelhasznalonev} profilképe`}
+            className="profilomProfil"
+          />
+            }
             <div className="profilomFelhasznalonev">
               <h2>{viewFelhasznalonev}</h2>
               {viewFelhasznalonev == felhasznalonev && (
@@ -155,6 +163,7 @@ const User = () => {
                   type="text"
                   value={viewEmail}
                   onChange={(e) => setViewEmail(e.target.value)}
+                  id="changeEmail"
                 ></input>
               )}
               <h4>Követők: 34</h4>
