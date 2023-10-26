@@ -303,7 +303,7 @@ form {
 /* PROFILOM OLDAL */
 
 .profilomHatter {
-  background-image: url(https://www.dropz.com.au/cdn/shop/products/backdrop-bookshelves-library-room-1_1340x.jpg?v=1612742972);
+  background-image: linear-gradient(#3F4E4F, #3F4E4F);
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -369,10 +369,19 @@ form {
   background: transparent;
   color: white;
   margin: auto;
-  border-radius: 1px;
-  height: 98%;
+  border-radius: 10px;
+  height: 100%;
   width: 100%;
   resize: none;
+  padding: 3px;
+}
+
+.editIcon {
+  position: absolute;
+  height: 60px;
+  top: 60px;
+  left: 76px;
+  z-index: 1;
 }
 
 @media only screen and (max-width: 650px) {

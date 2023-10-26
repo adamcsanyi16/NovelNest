@@ -33,7 +33,7 @@ const profileOptions = {
   ],
 };
 
-const coverOptions = {
+const StoryCoverOptions = {
   transformation: [
     {
       height: 400,
@@ -222,7 +222,7 @@ app.post("/addstory", async (req, res) => {
 
     cloudinary.uploader.upload(
       boritokep,
-      coverOptions,
+      StoryCoverOptions,
       async (error, result) => {
         if (error) {
           console.log(error);
