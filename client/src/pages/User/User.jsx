@@ -135,44 +135,53 @@ const User = () => {
     <div className="profilom">
       <div className="profilomHatter">
         <div className="profilomInfo_Tarto">
-          <div className="profilomInfo_container">
-            {viewFelhasznalonev == felhasznalonev && isEditing === true ? (
-              <div className="kepInput">
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => displayImage(e)}
-                  className="profile-input"
-                />
-                <img
-                  src={`${viewProfilkep}`}
-                  alt={`${viewFelhasznalonev} profilképe`}
-                  style={{opacity: 0.6}}
-                  className="profilomProfil"
-                />
-              </div>
-            ) :
-            <img
-            src={`${viewProfilkep}`}
-            alt={`${viewFelhasznalonev} profilképe`}
-            className="profilomProfil"
-          />
-            }
-            <div className="profilomFelhasznalonev">
-              <h2>{viewFelhasznalonev}</h2>
+          <div>
+            <div className="profilomInfo_container">
               {viewFelhasznalonev == felhasznalonev && isEditing === true ? (
-                <input
-                  type="text"
-                  value={viewEmail}
-                  onChange={(e) => setViewEmail(e.target.value)}
-                  id="changeEmail"
-                ></input>
-              ) : (
-                <h5 id="changeEmail">{viewEmail}</h5>
-              )  
-            }
-              <h4>Követők: 34</h4>
-              {viewIsAdmin && <h5>Admin😎</h5>}
+                <div className="kepInput">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => displayImage(e)}
+                    className="profile-input"
+                  />
+                  <img
+                    src={`${viewProfilkep}`}
+                    alt={`${viewFelhasznalonev} profilképe`}
+                    style={{opacity: 0.6}}
+                    className="profilomProfil"
+                  />
+                </div>
+              ) :
+              <img
+              src={`${viewProfilkep}`}
+              alt={`${viewFelhasznalonev} profilképe`}
+              className="profilomProfil"
+            />
+              }
+              <div className="profilomFelhasznalonev">
+                <h2>{viewFelhasznalonev}</h2>
+                {viewFelhasznalonev == felhasznalonev && isEditing === true ? (
+                  <input
+                    type="text"
+                    value={viewEmail}
+                    onChange={(e) => setViewEmail(e.target.value)}
+                    id="changeEmail"
+                    ></input>
+                    ) : (
+                      <h5 id="changeEmail">{viewEmail}</h5>
+                      )  
+                    }
+                
+                {viewIsAdmin && <h5>Admin😎</h5>}
+                
+              </div>
+            </div>
+            <div className="profilomInfo_container">
+                <h4>Követők: 34</h4> 
+                <h4>Követés: 18</h4>
+                {felhasznalonev != viewFelhasznalonev && (<button>Követés</button>)}
+                
             </div>
           </div>
           <div className="profilomBio_container">
