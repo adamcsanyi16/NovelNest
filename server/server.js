@@ -192,6 +192,7 @@ app.post("/userupdate", async (req, res) => {
               rolam,
               email,
               profilkep: result.secure_url,
+              profilkepNev: result.public_id,
             }
           );
           if (!updatedUser) {
