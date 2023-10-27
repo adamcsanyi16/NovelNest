@@ -25,14 +25,17 @@ const userSchema = new mongoose.Schema(
       default: false,
     },
     profilkep: {
-      type:String,
+      type: String,
+    },
+    profilkepNev: {
+      type: String,
     },
     koveteseim: {
       type: Array,
     },
     kovetoim: {
       type: Array,
-    }
+    },
   },
   { timestamps: true }
 );
