@@ -17,6 +17,9 @@ const User = () => {
   const [viewRolam, setViewRolam] = useState("");
   const [viewIsAdmin, setViewIsAdmin] = useState("");
   const [isEditing, setIsEditing] = useState(false);
+  const [viewKovetoim, setViewKovetoim] = useState("");
+  const [viewKoveteseim, setViewKoveteseim] = useState("");
+  const [kovetem, setKovetem] = useState("");
   const url = "http://localhost:3500";
 
   //const navigate = useNavigate();
@@ -61,21 +64,43 @@ const User = () => {
       });
 
       if (adat.ok) {
-        const response = await adat.json();
+        const response = await adat.json(); 
         setViewFelhasznalonev(response.viewFelhasznalonev);
         setViewEmail(response.viewEmail);
         setViewProfilkep(response.viewProfilkep);
         setViewRolam(response.viewRolam);
         setViewIsAdmin(response.viewIsAdmin);
-
-        console.log(response);
+        setViewKovetoim(response.viewKovetoim)
+        setViewKoveteseim(response.viewKoveteseim)
       } else {
         const response = await adat.json();
         setError(response.msg);
       }
     } catch (error) {
       setIsLoading(false);
-      setError("An error occurred while fetching data.");
+      setError("Hiba történt fetchelés közben.");
+    }
+
+    try { 
+      const adat = await fetch(url + `/userinfo/${felhasznalonevKuld}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+        body: JSON.stringify({
+          felhasznalonev: felhasznalonev,
+        }),
+      });
+      if(adat.ok) {
+        const response = await adat.json();
+        setKovetem(response.kovetem)
+        console.log(response.kovetem);
+      }
+      
+    } catch (error) {
+      setIsLoading(false);
+      setError("Hiba történt fetchelés közben.");
     }
   };
 
@@ -111,6 +136,71 @@ const User = () => {
       setError("Valami hiba történt a mentés során!" + error.message);
     }
   };
+
+  const bekovetes = async () => {
+    setIsLoading(true);
+    setSuccess(null);
+    setError(null);
+    setKovetem(true)
+    setViewKovetoim(viewKovetoim+1)
+    try {
+      const response = await fetch(`${url}/bekovet`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+        body: JSON.stringify({
+          felhasznalonev: felhasznalonev,
+          viewFelhasznalonev: viewFelhasznalonev,
+        })
+      });
+      if (response.ok) {
+        setIsLoading(false);
+        setSuccess("Profil sikeresen bekövetve!");
+
+      } else {
+        setIsLoading(false);
+        const data = await response.json();
+        setError(data.msg);
+      }
+    } catch (error) {
+      setError("Valami hiba történt a mentés során!" + error.message);
+    }
+  };
+
+  const kikovetes = async () => {
+    setIsLoading(true);
+    setSuccess(null);
+    setError(null);
+    setKovetem(false)
+    setViewKovetoim(viewKovetoim-1)
+    try {
+      const response = await fetch(`${url}/kikovet`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+        body: JSON.stringify({
+          felhasznalonev: felhasznalonev,
+          viewFelhasznalonev: viewFelhasznalonev,
+        })
+      });
+      if (response.ok) {
+        setIsLoading(false);
+        setSuccess("Profil sikeresen kikövetve!");
+
+      } else {
+        setIsLoading(false);
+        const data = await response.json();
+        setError(data.msg);
+      }
+    } catch (error) {
+      setError("Valami hiba történt a mentés során!" + error.message);
+    }
+  };
+  
 
   useEffect(() => {
     userinfo();
@@ -177,11 +267,15 @@ const User = () => {
                 
               </div>
             </div>
-            <div className="profilomInfo_container">
-                <h4>Követők: 34</h4> 
-                <h4>Követés: 18</h4>
-                {felhasznalonev != viewFelhasznalonev && (<button>Követés</button>)}
-                
+            <div id="profilomInfo_container">
+              <div className="kovetok">
+                <h4>Követők: {viewKovetoim}</h4> 
+                <h4>Követés: {viewKoveteseim}</h4>
+                </div>
+              <div className="kovetoGomb">
+                {felhasznalonev != viewFelhasznalonev ? (kovetem === false ? (<button onClick={bekovetes}>Követés</button>)
+                : (<button onClick={kikovetes}>Kikövetés</button>)) : ("")}
+            </div>
             </div>
           </div>
           <div className="profilomBio_container">

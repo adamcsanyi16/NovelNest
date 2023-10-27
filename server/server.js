@@ -13,6 +13,7 @@ const fs = require("fs");
 const path = require("path");
 const { promisify } = require("util");
 const requireAuth = require("./middlewares/requireAuth");
+const { count, log } = require("console");
 
 //CLOUDINARY SETUP
 cloudinary.config({
@@ -144,7 +145,7 @@ app.get(`/userinfo/:felhasznalonevKuld`, async (req, res) => {
   try {
     const felhasznalonev = req.params.felhasznalonevKuld;
     const user = await User.findOne({ felhasznalonev });
-
+    
     if (user) {
       res.status(200).send({
         viewFelhasznalonev: user.felhasznalonev,
@@ -152,6 +153,8 @@ app.get(`/userinfo/:felhasznalonevKuld`, async (req, res) => {
         viewProfilkep: user.profilkep,
         viewRolam: user.rolam,
         viewIsAdmin: user.isAdmin,
+        viewKovetoim: (user.kovetoim).length,
+        viewKoveteseim: (user.koveteseim).length
       });
     } else {
       res.status(404).json({ msg: "A  felhasználó nem található" });
@@ -160,6 +163,26 @@ app.get(`/userinfo/:felhasznalonevKuld`, async (req, res) => {
     res.status(500).json({ msg: error.message });
   }
 });
+
+app.post(`/userinfo/:felhasznalonevKuld`, async (req, res) => {
+  const viewFelhasznalonev = req.params.felhasznalonevKuld;
+  const felhasznalonev = req.body;
+  try {
+    const user = await User.findOne({ felhasznalonev: felhasznalonev.felhasznalonev });
+      if (user.koveteseim.includes(viewFelhasznalonev)) {
+        res.status(200).send({
+          kovetem: true,
+        })
+      }
+      else {
+        res.status(200).send({
+          kovetem: false,
+        })
+      }
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+})
 
 app.post("/userupdate", async (req, res) => {
   try {
@@ -209,6 +232,45 @@ app.post("/userupdate", async (req, res) => {
     res.status(500).json({ msg: error.message });
   }
 });
+
+app.post("/bekovet", async (req, res) => {
+try {
+  const { felhasznalonev, viewFelhasznalonev } = req.body
+  const bekovetettuser = await User.findOneAndUpdate({ felhasznalonev: viewFelhasznalonev }, 
+    {
+      $push: { "kovetoim": felhasznalonev }
+    },
+    )
+  const bekovetouser = await User.findOneAndUpdate({ felhasznalonev }, 
+    {
+      $push: { "koveteseim": viewFelhasznalonev }
+    },
+    )
+
+} catch (error) {
+  console.error(error);
+  res.status(500).json({ msg: error.message });
+}})
+
+app.post("/kikovet", async (req, res) => {
+  try {
+    const { felhasznalonev, viewFelhasznalonev } = req.body
+    const bekovetettuser = await User.findOneAndUpdate({ felhasznalonev: viewFelhasznalonev }, 
+      {
+        $pull: { "kovetoim": felhasznalonev }
+      },
+      )
+    const bekovetouser = await User.findOneAndUpdate({ felhasznalonev }, 
+      {
+        $pull: { "koveteseim": viewFelhasznalonev }
+      },
+      )
+  
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ msg: error.message });
+  }})
+
 
 //STORY
 app.post("/addstory", async (req, res) => {

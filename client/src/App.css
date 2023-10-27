@@ -376,6 +376,26 @@ form {
   padding: 3px;
 }
 
+#profilomInfo_container {
+  padding-top: 50px;
+  position: relative;
+  text-align: center;
+  margin-top: 20px;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(128, 128, 128, 0.485);
+  height: 180px;
+  width: 455px;
+  max-width: 100%;
+  border-radius: 10px;
+}
+
+.kovetok {
+ display: grid;
+ grid-template-columns: 50% 50%;
+}
+
+
 @media only screen and (max-width: 650px) {
   .profilomInfo_container {
     margin-top: 0px;
