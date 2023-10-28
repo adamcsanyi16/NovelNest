@@ -53,6 +53,7 @@ const User = () => {
   const userinfo = async () => {
     setIsLoading(true);
     setError(null);
+    setIsEditing(false);
 
     try {
       const adat = await fetch(url + `/userinfo/${felhasznalonevKuld}`, {
@@ -299,7 +300,7 @@ const User = () => {
             <button onClick={() => setIsEditing(true)}>Szerkesztés</button>
           ) : (
             <div className="editButtons">
-              <button onClick={() => setIsEditing(false)}>Vissza</button>
+              <button onClick={userinfo}>Vissza</button>
               <button onClick={valtoztatas}>Mentés</button>
             </div>
           ))}
