@@ -64,14 +64,14 @@ const User = () => {
       });
 
       if (adat.ok) {
-        const response = await adat.json(); 
+        const response = await adat.json();
         setViewFelhasznalonev(response.viewFelhasznalonev);
         setViewEmail(response.viewEmail);
         setViewProfilkep(response.viewProfilkep);
         setViewRolam(response.viewRolam);
         setViewIsAdmin(response.viewIsAdmin);
-        setViewKovetoim(response.viewKovetoim)
-        setViewKoveteseim(response.viewKoveteseim)
+        setViewKovetoim(response.viewKovetoim);
+        setViewKoveteseim(response.viewKoveteseim);
       } else {
         const response = await adat.json();
         setError(response.msg);
@@ -81,7 +81,7 @@ const User = () => {
       setError("Hiba történt fetchelés közben.");
     }
 
-    try { 
+    try {
       const adat = await fetch(url + `/userinfo/${felhasznalonevKuld}`, {
         method: "POST",
         headers: {
@@ -92,12 +92,11 @@ const User = () => {
           felhasznalonev: felhasznalonev,
         }),
       });
-      if(adat.ok) {
+      if (adat.ok) {
         const response = await adat.json();
-        setKovetem(response.kovetem)
+        setKovetem(response.kovetem);
         console.log(response.kovetem);
       }
-      
     } catch (error) {
       setIsLoading(false);
       setError("Hiba történt fetchelés közben.");
@@ -124,11 +123,11 @@ const User = () => {
         }),
       });
       if (response.ok) {
-        setIsLoading(false)
+        setIsLoading(false);
         setSuccess("Profil sikeresen mentve!");
-        window.location.reload()
+        window.location.reload();
       } else {
-        setIsLoading(false)
+        setIsLoading(false);
         const response = await response.json();
         setError(response.error);
       }
@@ -141,8 +140,8 @@ const User = () => {
     setIsLoading(true);
     setSuccess(null);
     setError(null);
-    setKovetem(true)
-    setViewKovetoim(viewKovetoim+1)
+    setKovetem(true);
+    setViewKovetoim(viewKovetoim + 1);
     try {
       const response = await fetch(`${url}/bekovet`, {
         method: "POST",
@@ -153,12 +152,11 @@ const User = () => {
         body: JSON.stringify({
           felhasznalonev: felhasznalonev,
           viewFelhasznalonev: viewFelhasznalonev,
-        })
+        }),
       });
       if (response.ok) {
         setIsLoading(false);
         setSuccess("Profil sikeresen bekövetve!");
-
       } else {
         setIsLoading(false);
         const data = await response.json();
@@ -173,8 +171,8 @@ const User = () => {
     setIsLoading(true);
     setSuccess(null);
     setError(null);
-    setKovetem(false)
-    setViewKovetoim(viewKovetoim-1)
+    setKovetem(false);
+    setViewKovetoim(viewKovetoim - 1);
     try {
       const response = await fetch(`${url}/kikovet`, {
         method: "POST",
@@ -185,12 +183,11 @@ const User = () => {
         body: JSON.stringify({
           felhasznalonev: felhasznalonev,
           viewFelhasznalonev: viewFelhasznalonev,
-        })
+        }),
       });
       if (response.ok) {
         setIsLoading(false);
         setSuccess("Profil sikeresen kikövetve!");
-
       } else {
         setIsLoading(false);
         const data = await response.json();
@@ -200,7 +197,6 @@ const User = () => {
       setError("Valami hiba történt a mentés során!" + error.message);
     }
   };
-  
 
   useEffect(() => {
     userinfo();
@@ -208,13 +204,13 @@ const User = () => {
 
   function displayImage(e) {
     const fileInput = e.target;
-    
+
     if (fileInput.files && fileInput.files[0]) {
       const reader = new FileReader();
-      
+
       reader.onload = function (e) {
         setSendProfilkep(e.target.result);
-        setViewProfilkep(e.target.result)
+        setViewProfilkep(e.target.result);
       };
 
       reader.readAsDataURL(fileInput.files[0]);
@@ -238,17 +234,17 @@ const User = () => {
                   <img
                     src={`${viewProfilkep}`}
                     alt={`${viewFelhasznalonev} profilképe`}
-                    style={{opacity: 0.6}}
+                    style={{ opacity: 0.6 }}
                     className="profilomProfil"
                   />
                 </div>
-              ) :
-              <img
-              src={`${viewProfilkep}`}
-              alt={`${viewFelhasznalonev} profilképe`}
-              className="profilomProfil"
-            />
-              }
+              ) : (
+                <img
+                  src={`${viewProfilkep}`}
+                  alt={`${viewFelhasznalonev} profilképe`}
+                  className="profilomProfil"
+                />
+              )}
               <div className="profilomFelhasznalonev">
                 <h2>{viewFelhasznalonev}</h2>
                 {viewFelhasznalonev == felhasznalonev && isEditing === true ? (
@@ -257,25 +253,30 @@ const User = () => {
                     value={viewEmail}
                     onChange={(e) => setViewEmail(e.target.value)}
                     id="changeEmail"
-                    ></input>
-                    ) : (
-                      <h5 id="changeEmail">{viewEmail}</h5>
-                      )  
-                    }
-                
+                  ></input>
+                ) : (
+                  <h5 id="changeEmail">{viewEmail}</h5>
+                )}
+
                 {viewIsAdmin && <h5>Admin😎</h5>}
-                
               </div>
             </div>
             <div id="profilomInfo_container">
               <div className="kovetok">
-                <h4>Követők: {viewKovetoim}</h4> 
+                <h4>Követők: {viewKovetoim}</h4>
                 <h4>Követés: {viewKoveteseim}</h4>
-                </div>
+              </div>
               <div className="kovetoGomb">
-                {felhasznalonev != viewFelhasznalonev ? (kovetem === false ? (<button onClick={bekovetes}>Követés</button>)
-                : (<button onClick={kikovetes}>Kikövetés</button>)) : ("")}
-            </div>
+                {felhasznalonev != viewFelhasznalonev ? (
+                  kovetem === false ? (
+                    <button onClick={bekovetes}>Követés</button>
+                  ) : (
+                    <button onClick={kikovetes}>Kikövetés</button>
+                  )
+                ) : (
+                  ""
+                )}
+              </div>
             </div>
           </div>
           <div className="profilomBio_container">
@@ -284,7 +285,7 @@ const User = () => {
                 type="text"
                 onChange={(e) => setViewRolam(e.target.value)}
                 defaultValue={viewRolam}
-                style={{backgroundColor: "rgba(162, 123, 92, 0.8)"}}
+                style={{ backgroundColor: "rgba(162, 123, 92, 0.8)" }}
               />
             ) : (
               <textarea defaultValue={viewRolam} readOnly />
@@ -293,16 +294,15 @@ const User = () => {
             {success && <div className="success">{success}</div>}
           </div>
         </div>
-          {viewFelhasznalonev === felhasznalonev && (
-            isEditing === false ? (
-              <button onClick={() => setIsEditing(true)}>Szerkesztés</button>
-            ) : (
-              <div className="editButtons">
-                <button onClick={() => setIsEditing(false)}>Vissza</button>
-                <button onClick={valtoztatas}>Mentés</button>
-              </div>
-            )
-          )}
+        {viewFelhasznalonev === felhasznalonev &&
+          (isEditing === false ? (
+            <button onClick={() => setIsEditing(true)}>Szerkesztés</button>
+          ) : (
+            <div className="editButtons">
+              <button onClick={() => setIsEditing(false)}>Vissza</button>
+              <button onClick={valtoztatas}>Mentés</button>
+            </div>
+          ))}
       </div>
     </div>
   );
