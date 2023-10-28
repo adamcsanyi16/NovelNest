@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useAuthContext } from "../../hooks/useAuthContext";
+import Select from "react-select";
 
 const Addstory = () => {
   const { user } = useAuthContext();
@@ -14,6 +15,7 @@ const Addstory = () => {
   const [karakterek, setKarakterek] = useState("");
   const [nyelv, setNyelv] = useState("");
   const [kategoria, setKategoria] = useState("");
+  const [dropdownKategoria, setDropDownKategoria] = useState("");
   const url = "http://localhost:3500";
 
   useEffect(() => {
@@ -41,6 +43,40 @@ const Addstory = () => {
 
     fetchData();
   }, [user, felhasznalonev]);
+
+  useEffect(() => {
+    const fetchDropdownCategory = async () => {
+      try {
+        const adat = await fetch(url + "/kategoria", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        });
+
+        if (adat.ok) {
+          const response = await adat.json();
+          const CategoryOptions = response.category.map((option) => ({
+            label: option.category,
+            value: option.category,
+          }));
+          setDropDownKategoria(CategoryOptions);
+        } else {
+          const response = await adat.json();
+          setError(response.msg);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchDropdownCategory();
+  }, [user]);
+
+  const handleDropdownCategory = (selectedOption) => {
+    setKategoria(selectedOption.value);
+  };
 
   const feldolgoz = (event) => {
     event.preventDefault();
@@ -162,11 +198,11 @@ const Addstory = () => {
           />
         </div>
         <div className="form-row">
-          <input
-            type="text"
+          <Select
+            className="custom-select"
             placeholder="Kategória"
-            className="input"
-            onChange={(e) => setKategoria(e.target.value)}
+            options={dropdownKategoria}
+            onChange={handleDropdownCategory}
           />
         </div>
         <div className="form-row">

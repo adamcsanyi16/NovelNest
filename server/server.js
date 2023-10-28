@@ -5,8 +5,6 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const multer = require("multer");
 const jwt = require("jsonwebtoken");
-const User = require("./models/User");
-const Story = require("./models/Story");
 const validator = require("validator");
 const cloudinary = require("cloudinary").v2;
 const fs = require("fs");
@@ -14,6 +12,11 @@ const path = require("path");
 const { promisify } = require("util");
 const requireAuth = require("./middlewares/requireAuth");
 const { count, log, error } = require("console");
+
+//MODELS
+const User = require("./models/User");
+const Story = require("./models/Story");
+const Category = require("./models/Category");
 
 //CLOUDINARY SETUP
 cloudinary.config({
@@ -66,6 +69,7 @@ app.get("/", (req, res) => {
   res.send("Hello World");
 });
 
+//REGISTRATION
 app.post("/regisztral", async (req, res) => {
   try {
     const { felhasznalonev, email, jelszo } = req.body;
@@ -107,6 +111,7 @@ app.post("/regisztral", async (req, res) => {
   }
 });
 
+//LOGIN
 app.post("/belepesJelszo", async (req, res) => {
   try {
     const { felhasznalonev } = req.body;
@@ -139,8 +144,10 @@ app.post("/belepes", async (req, res) => {
   }
 });
 
+//AUTHENTICATED ROUTES
 app.use(requireAuth);
 
+//PROFILES
 app.get(`/userinfo/:felhasznalonevKuld`, async (req, res) => {
   try {
     const felhasznalonev = req.params.felhasznalonevKuld;
@@ -185,6 +192,7 @@ app.post(`/userinfo/:felhasznalonevKuld`, async (req, res) => {
   }
 });
 
+//CUSTOMIZING USER PROFILES
 app.post("/userupdate", async (req, res) => {
   try {
     const { felhasznalonev, rolam, email, profilkep } = req.body;
@@ -247,6 +255,7 @@ app.post("/userupdate", async (req, res) => {
   }
 });
 
+//FOLLOWING SYSTEM
 app.post("/bekovet", async (req, res) => {
   try {
     const { felhasznalonev, viewFelhasznalonev } = req.body;
@@ -289,7 +298,7 @@ app.post("/kikovet", async (req, res) => {
   }
 });
 
-//STORY
+//STORY ADDING
 app.post("/addstory", async (req, res) => {
   try {
     const { cim, szerzo, boritokep, story, karakterek, nyelv, kategoria } =
@@ -324,6 +333,16 @@ app.post("/addstory", async (req, res) => {
     );
   } catch (error) {
     res.status(500).json({ msg: error.message });
+  }
+});
+
+//GETTING DROPDOWNS DATA
+app.get("/kategoria", async (req, res) => {
+  try {
+    const category = await Category.find({});
+    res.status(200).json({ category });
+  } catch (error) {
+    res.status(500).json({ msg: "Valami hiba történt: " + error.message });
   }
 });
 

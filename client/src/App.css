@@ -317,6 +317,7 @@ form {
   display: grid;
   grid-template-columns: 33% 33% 33%;
   height: 100%;
+  padding: 10px;
 }
 
 .profilomInfo_container {
@@ -384,6 +385,7 @@ form {
   align-items: center;
   justify-content: center;
   background-color: rgba(128, 128, 128, 0.485);
+  color: white;
   height: 180px;
   width: 455px;
   max-width: 100%;
