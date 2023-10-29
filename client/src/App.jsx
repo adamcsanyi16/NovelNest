@@ -12,8 +12,11 @@ import Login from "./pages/Login/Login";
 import Registration from "./pages/Registration/Registration";
 import Addstory from "./pages/Story/Addstory";
 import User from "./pages/User/User";
+import Addcategory from "./pages/Adddropdowns/Addcategory";
+import { useAuthContext } from "./hooks/useAuthContext";
 
 function App() {
+  const { user } = useAuthContext;
   return (
     <div className="App">
       <Router>
@@ -21,9 +24,18 @@ function App() {
         <Routes>
           <Route path="*" element={<Notfound />} />
           <Route path="/" element={<Home />} />
-          <Route path="/belepes" element={<Login />} />
-          <Route path="/regisztracio" element={<Registration />} />
+          <Route
+            path="/belepes"
+            element={!user ? <Login /> : <Navigate to="/storyfelvetel" />}
+          />
+          <Route
+            path="/regisztracio"
+            element={
+              !user ? <Registration /> : <Navigate to="/storyfelvetel" />
+            }
+          />
           <Route path="/storyfelvetel" element={<Addstory />} />
+          <Route path="/kategoriafelvetel" element={<Addcategory />} />
           <Route path="/profil/:felhasznalonevKuld" element={<User />} />
         </Routes>
       </Router>

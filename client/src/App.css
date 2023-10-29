@@ -143,6 +143,11 @@ form {
   margin: 30px;
 }
 
+#select-row {
+  gap: 150px;
+  margin-left: -100px;
+}
+
 /*INPUT*/
 .input {
   line-height: 28px;
@@ -393,10 +398,9 @@ form {
 }
 
 .kovetok {
- display: grid;
- grid-template-columns: 50% 50%;
+  display: grid;
+  grid-template-columns: 50% 50%;
 }
-
 
 @media only screen and (max-width: 650px) {
   .profilomInfo_container {

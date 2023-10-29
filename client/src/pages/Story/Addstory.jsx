@@ -57,9 +57,9 @@ const Addstory = () => {
 
         if (adat.ok) {
           const response = await adat.json();
-          const CategoryOptions = response.category.map((option) => ({
-            label: option.category,
-            value: option.category,
+          const CategoryOptions = response.kategoria.map((option) => ({
+            label: option.kategoria,
+            value: option.kategoria,
           }));
           setDropDownKategoria(CategoryOptions);
         } else {
@@ -76,6 +76,44 @@ const Addstory = () => {
 
   const handleDropdownCategory = (selectedOption) => {
     setKategoria(selectedOption.value);
+  };
+
+  const selectStyles = {
+    control: (provided, state) => ({
+      ...provided,
+      lineHeight: "28px",
+      border: state.isFocused ? "3px solid #dcd7c9" : "3px solid transparent",
+      borderBottomColor: "#dcd7c9",
+      borderRadius: state.isFocused ? "1rem" : "0",
+      outline: state.isFocused && "none",
+      width: "200%",
+      backgroundColor: "transparent",
+      borderColor: state.isFocused ? "#dcd7c9" : "transparent",
+      color: "#2c3639",
+      transition:
+        "border-color 0.3s cubic-bezier(0.645, 0.045, 0.355, 1), padding 0.3s cubic-bezier(0.645, 0.045, 0.355, 1)",
+      transform: "scale(1)",
+      "&:hover": {
+        borderColor: "#dcd7c9",
+        borderRadius: "1rem",
+      },
+      fontFamily: '"Martian Mono", monospace',
+      fontSize: "9px",
+    }),
+    singleValue: (provided) => ({
+      ...provided,
+      color: "#2c3639",
+      fontFamily: '"Martian Mono", monospace',
+      fontSize: "9px",
+    }),
+    placeholder: (provided, state) => ({
+      ...provided,
+      opacity: state.isFocused ? 0 : 1,
+      transition: "opacity 0.3s cubic-bezier(0.645, 0.045, 0.355, 1)",
+      color: "#2c3639",
+      fontFamily: '"Martian Mono", monospace',
+      fontSize: "11px",
+    }),
   };
 
   const feldolgoz = (event) => {
@@ -197,10 +235,18 @@ const Addstory = () => {
             onChange={(e) => setSzerzo(e.target.value)}
           />
         </div>
-        <div className="form-row">
+        <div className="form-row" id="select-row">
           <Select
             className="custom-select"
             placeholder="Kategória"
+            styles={selectStyles}
+            options={dropdownKategoria}
+            onChange={handleDropdownCategory}
+          />
+          <Select
+            className="custom-select"
+            placeholder="Kategória"
+            styles={selectStyles}
             options={dropdownKategoria}
             onChange={handleDropdownCategory}
           />
