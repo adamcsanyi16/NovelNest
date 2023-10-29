@@ -5,6 +5,7 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
+import { useAuthContext } from "./hooks/useAuthContext";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home/Home";
 import Notfound from "./pages/Notfound/Notfound";
@@ -12,8 +13,8 @@ import Login from "./pages/Login/Login";
 import Registration from "./pages/Registration/Registration";
 import Addstory from "./pages/Story/Addstory";
 import User from "./pages/User/User";
-import Addcategory from "./pages/Adddropdowns/Addcategory";
-import { useAuthContext } from "./hooks/useAuthContext";
+import Adddropdowns from "./pages/Adddropdowns/Adddropdowns";
+
 
 function App() {
   const { user } = useAuthContext;
@@ -35,7 +36,7 @@ function App() {
             }
           />
           <Route path="/storyfelvetel" element={<Addstory />} />
-          <Route path="/kategoriafelvetel" element={<Addcategory />} />
+          <Route path="/dropdownfelvetel" element={<Adddropdowns/>} />
           <Route path="/profil/:felhasznalonevKuld" element={<User />} />
         </Routes>
       </Router>

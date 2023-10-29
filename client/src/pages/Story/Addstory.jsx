@@ -16,6 +16,7 @@ const Addstory = () => {
   const [nyelv, setNyelv] = useState("");
   const [kategoria, setKategoria] = useState("");
   const [dropdownKategoria, setDropDownKategoria] = useState("");
+  const [dropdownNyelv, setDropDownNyelv] = useState("");
   const url = "http://localhost:3500";
 
   useEffect(() => {
@@ -74,8 +75,42 @@ const Addstory = () => {
     fetchDropdownCategory();
   }, [user]);
 
+  useEffect(() => {
+    const fetchDropdownLanguage = async () => {
+      try {
+        const adat = await fetch(url + "/nyelv", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        });
+
+        if (adat.ok) {
+          const response = await adat.json();
+          const LanguageOptions = response.nyelv.map((option) => ({
+            label: option.nyelv,
+            value: option.nyelv,
+          }));
+          setDropDownNyelv(LanguageOptions);
+        } else {
+          const response = await adat.json();
+          setError(response.msg);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchDropdownLanguage();
+  }, [user]);
+
   const handleDropdownCategory = (selectedOption) => {
     setKategoria(selectedOption.value);
+  };
+
+  const handleDropdownLanguage = (selectedOption) => {
+    setNyelv(selectedOption.value);
   };
 
   const selectStyles = {
@@ -245,10 +280,10 @@ const Addstory = () => {
           />
           <Select
             className="custom-select"
-            placeholder="Kategória"
+            placeholder="Nyelv"
             styles={selectStyles}
-            options={dropdownKategoria}
-            onChange={handleDropdownCategory}
+            options={dropdownNyelv}
+            onChange={handleDropdownLanguage}
           />
         </div>
         <div className="form-row">
@@ -257,14 +292,6 @@ const Addstory = () => {
             placeholder="Karakterek"
             className="input"
             onChange={(e) => setKarakterek(e.target.value)}
-          />
-        </div>
-        <div className="form-row">
-          <input
-            type="text"
-            placeholder="Nyelv"
-            className="input"
-            onChange={(e) => setNyelv(e.target.value)}
           />
         </div>
         <div className="form-row">

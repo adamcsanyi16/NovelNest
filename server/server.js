@@ -17,6 +17,7 @@ const { count, log, error } = require("console");
 const User = require("./models/User");
 const Story = require("./models/Story");
 const Category = require("./models/Category");
+const Language = require("./models/Language");
 
 //CLOUDINARY SETUP
 cloudinary.config({
@@ -219,7 +220,6 @@ app.post("/userupdate", async (req, res) => {
         async (error, result) => {
           if (error) {
             console.log(error);
-            throw new Error("Hiba történt az képfeltöltés közben");
           }
 
           if (profilkepNev !== "user_wx5ex5") {
@@ -315,7 +315,6 @@ app.post("/addstory", async (req, res) => {
       async (error, result) => {
         if (error) {
           console.log(error);
-          throw new Error("Hiba történt az képfeltöltés közben");
         }
 
         const newStory = new Story({
@@ -353,7 +352,29 @@ app.post("/kategoria", async (req, res) => {
       kategoria,
     });
     await newCategory.save();
-    res.status(200).json({ msg: "Sikeres kategória létrehozás!" });
+    res.status(200).json({ msg: "Sikeres feltöltés!" });
+  } catch (error) {
+    res.status(500).json({ msg: "Valami hiba történt" + error.message });
+  }
+});
+
+app.get("/nyelv", async (req, res) => {
+  try {
+    const nyelv = await Language.find({});
+    res.status(200).json({ nyelv });
+  } catch (error) {
+    res.status(500).json({ msg: "Valami hiba történt: " + error.message });
+  }
+});
+
+app.post("/nyelv", async (req, res) => {
+  try {
+    const { nyelv } = req.body;
+    const newLanguage = new Language({
+      nyelv,
+    });
+    await newLanguage.save();
+    res.status(200).json({ msg: "Sikeres feltöltés!" });
   } catch (error) {
     res.status(500).json({ msg: "Valami hiba történt" + error.message });
   }

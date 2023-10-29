@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useAuthContext } from "../../hooks/useAuthContext";
 
-const Addcategory = () => {
+const Adddropdowns = () => {
   const [kategoria, setKategoria] = useState("");
+  const [nyelv, setNyelv] = useState("");
   const [success, setSuccess] = useState(null);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -17,30 +18,45 @@ const Addcategory = () => {
       return;
     }
 
-    const adatok = {
-      kategoria,
-    };
-
     const elkuld = async () => {
       setIsLoading(true);
       setError(null);
       setSuccess(null);
 
-      const adat = await fetch(url + "/kategoria", {
+      const kategoriaAdat = await fetch(url + "/kategoria", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${user.token}`,
         },
-        body: JSON.stringify(adatok),
+        body: JSON.stringify({ kategoria }),
       });
 
-      if (adat.ok) {
-        const response = await adat.json();
+      if (kategoriaAdat.ok) {
+        const response = await kategoriaAdat.json();
         setIsLoading(false);
         setSuccess(response.msg);
       } else {
-        const response = await adat.json();
+        const response = await kategoriaAdat.json();
+        setIsLoading(false);
+        setError(response.msg);
+      }
+
+      const nyelvAdat = await fetch(url + "/nyelv", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+        body: JSON.stringify({ nyelv }),
+      });
+
+      if (nyelvAdat.ok) {
+        const response = await nyelvAdat.json();
+        setIsLoading(false);
+        setSuccess(response.msg);
+      } else {
+        const response = await nyelvAdat.json();
         setIsLoading(false);
         setError(response.msg);
       }
@@ -52,6 +68,7 @@ const Addcategory = () => {
   const torles = async (e) => {
     e.preventDefault();
     setKategoria("");
+    setNyelv("");
     setError(null);
     setSuccess(null);
   };
@@ -63,10 +80,20 @@ const Addcategory = () => {
         <div className="form-row">
           <input
             type="text"
-            placeholder="Kategória neve"
+            placeholder="Kategória"
             value={kategoria}
             className="input"
             onChange={(e) => setKategoria(e.target.value)}
+          />
+        </div>
+        <h2>Vedd fel a nyelvet!</h2>
+        <div className="form-row">
+          <input
+            type="text"
+            placeholder="Nyelv"
+            value={nyelv}
+            className="input"
+            onChange={(e) => setNyelv(e.target.value)}
           />
         </div>
         <div className="button-row">
@@ -84,4 +111,4 @@ const Addcategory = () => {
   );
 };
 
-export default Addcategory;
+export default Adddropdowns;
