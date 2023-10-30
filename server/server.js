@@ -348,10 +348,12 @@ app.get("/kategoria", async (req, res) => {
 app.post("/kategoria", async (req, res) => {
   try {
     const { kategoria } = req.body;
-    const newCategory = new Category({
-      kategoria,
-    });
-    await newCategory.save();
+    if (kategoria != "") {
+      const newCategory = new Category({
+        kategoria,
+      });
+      await newCategory.save();
+    }
     res.status(200).json({ msg: "Sikeres feltöltés!" });
   } catch (error) {
     res.status(500).json({ msg: "Valami hiba történt" + error.message });
@@ -370,10 +372,12 @@ app.get("/nyelv", async (req, res) => {
 app.post("/nyelv", async (req, res) => {
   try {
     const { nyelv } = req.body;
-    const newLanguage = new Language({
-      nyelv,
-    });
-    await newLanguage.save();
+    if (nyelv != "") {
+      const newLanguage = new Language({
+        nyelv,
+      });
+      await newLanguage.save();
+    }
     res.status(200).json({ msg: "Sikeres feltöltés!" });
   } catch (error) {
     res.status(500).json({ msg: "Valami hiba történt" + error.message });

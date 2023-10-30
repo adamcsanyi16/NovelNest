@@ -23,6 +23,12 @@ const Adddropdowns = () => {
       setError(null);
       setSuccess(null);
 
+      if (kategoria.trim() === "" && nyelv.trim() === "") {
+        setError("Nem maradhat üres cella!");
+        setIsLoading(false);
+        return;
+      }
+
       const kategoriaAdat = await fetch(url + "/kategoria", {
         method: "POST",
         headers: {
