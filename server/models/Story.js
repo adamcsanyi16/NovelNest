@@ -15,9 +15,16 @@ const storySchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    story: {
+    boritokepNev: {
+      type: String,
+    },
+    leiras: {
       type: String,
       required: true,
+    },
+    story: {
+      type: String,
+      default: "",
     },
     karakterek: {
       type: String,

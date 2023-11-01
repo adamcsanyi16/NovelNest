@@ -11,7 +11,7 @@ const Addstory = () => {
   const [cim, setCim] = useState("");
   const [szerzo, setSzerzo] = useState("");
   const [boritokep, setBoritokep] = useState("");
-  const [story, setStory] = useState("");
+  const [leiras, setLeiras] = useState("");
   const [karakterek, setKarakterek] = useState("");
   const [nyelv, setNyelv] = useState("");
   const [kategoria, setKategoria] = useState("");
@@ -163,7 +163,7 @@ const Addstory = () => {
       cim,
       szerzo,
       boritokep,
-      story,
+      leiras,
       karakterek,
       nyelv,
       kategoria,
@@ -297,15 +297,15 @@ const Addstory = () => {
         <div className="form-row">
           <textarea
             type="text"
-            placeholder="Kezd el a történetedet!"
+            placeholder="Írd le röviden miről fog szólni a történeted!"
             className="input"
             id="storyText"
-            onChange={(e) => setStory(e.target.value)}
+            onChange={(e) => setLeiras(e.target.value)}
           />
         </div>
         <div className="button-row">
           <button disabled={isLoading} type="submit">
-            Felvesz
+            Tovább
           </button>
         </div>
         {error && <div className="error">{error}</div>}

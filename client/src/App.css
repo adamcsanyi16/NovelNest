@@ -155,7 +155,7 @@ form {
   border-bottom-color: #dcd7c9;
   padding: 0.2rem 0;
   outline: none;
-  width: 70%;
+  width: 60%;
   background-color: transparent;
   color: #2c3639;
   transition: 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
@@ -230,9 +230,10 @@ form {
 
 /*TEXTAREA*/
 #storyText {
-  width: 80%;
-  height: 300px;
+  width: 70%;
+  height: 200px;
   margin: 70px 70px;
+  resize: none;
 }
 
 /*STORY*/

@@ -20,6 +20,8 @@ const User = () => {
   const [viewKovetoim, setViewKovetoim] = useState("");
   const [viewKoveteseim, setViewKoveteseim] = useState("");
   const [kovetem, setKovetem] = useState("");
+  const [story, setStory] = useState("");
+  const [isPublished, setIsPublished] = useState("");
   const url = "http://localhost:3500";
 
   //const navigate = useNavigate();
@@ -41,6 +43,30 @@ const User = () => {
           const isAdmin = data.isAdmin;
           const felhasznalonev = data.felhasznalonev;
           setFelhasznalonev(felhasznalonev);
+        }
+      } catch (error) {
+        console.log("Fetch error:", error);
+      }
+    };
+    fetchData();
+  }, [user, felhasznalonev, felhasznalonevKuld]);
+
+  //LOADING STORIES UPLOADED BY THE LOGGED IN USER
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(url + "/story", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setStory(data.story);
+          setIsPublished(data.isPublished);
         }
       } catch (error) {
         console.log("Fetch error:", error);

@@ -199,7 +199,6 @@ app.post("/userupdate", async (req, res) => {
     const { felhasznalonev, rolam, email, profilkep } = req.body;
     const user = await User.findOne({ felhasznalonev });
     const profilkepNev = user.profilkepNev;
-    console.log(profilkepNev);
 
     if (profilkep == "") {
       const updatedUser = await User.findOneAndUpdate(
@@ -298,10 +297,10 @@ app.post("/kikovet", async (req, res) => {
   }
 });
 
-//STORY ADDING
+//STORY ROUTES
 app.post("/addstory", async (req, res) => {
   try {
-    const { cim, szerzo, boritokep, story, karakterek, nyelv, kategoria } =
+    const { cim, szerzo, boritokep, leiras, karakterek, nyelv, kategoria } =
       req.body;
 
     const storyLetezik = await Story.findOne({ cim });
@@ -321,7 +320,7 @@ app.post("/addstory", async (req, res) => {
           cim: cim,
           szerzo: szerzo,
           boritokep: result.secure_url,
-          story: story,
+          leiras: leiras,
           karakterek: karakterek,
           nyelv: nyelv,
           kategoria: kategoria,
@@ -332,6 +331,15 @@ app.post("/addstory", async (req, res) => {
     );
   } catch (error) {
     res.status(500).json({ msg: error.message });
+  }
+});
+
+app.get("/story", async (req, res) => {
+  try {
+    const story = await Story.find({});
+    res.status(200).json({ story });
+  } catch (error) {
+    res.status(500).json({ msg: "Valami hiba történt: " + error.message });
   }
 });
 
