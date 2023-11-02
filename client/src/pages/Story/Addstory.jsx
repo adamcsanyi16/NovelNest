@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import Select from "react-select";
 
@@ -18,6 +19,8 @@ const Addstory = () => {
   const [dropdownKategoria, setDropDownKategoria] = useState("");
   const [dropdownNyelv, setDropDownNyelv] = useState("");
   const url = "http://localhost:3500";
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -187,6 +190,7 @@ const Addstory = () => {
         const response = await adat.json();
         setIsLoading(false);
         setSuccess(response.msg);
+        navigate("/storyiras")
       } else {
         const response = await adat.json();
         setIsLoading(false);

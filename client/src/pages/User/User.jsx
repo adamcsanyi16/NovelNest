@@ -21,7 +21,6 @@ const User = () => {
   const [viewKoveteseim, setViewKoveteseim] = useState("");
   const [kovetem, setKovetem] = useState("");
   const [story, setStory] = useState("");
-  const [isPublished, setIsPublished] = useState("");
   const url = "http://localhost:3500";
 
   //const navigate = useNavigate();
@@ -66,7 +65,7 @@ const User = () => {
         if (response.ok) {
           const data = await response.json();
           setStory(data.story);
-          setIsPublished(data.isPublished);
+          console.log(story);
         }
       } catch (error) {
         console.log("Fetch error:", error);
