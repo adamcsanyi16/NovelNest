@@ -4,6 +4,7 @@ import { useAuthContext } from "../../hooks/useAuthContext";
 import { useParams } from "react-router-dom";
 
 const User = () => {
+  const url = "http://localhost:3500";
   const { user } = useAuthContext();
   const [felhasznalonev, setFelhasznalonev] = useState("");
   const { felhasznalonevKuld } = useParams();
@@ -20,8 +21,7 @@ const User = () => {
   const [viewKovetoim, setViewKovetoim] = useState("");
   const [viewKoveteseim, setViewKoveteseim] = useState("");
   const [kovetem, setKovetem] = useState("");
-  const [story, setStory] = useState("");
-  const url = "http://localhost:3500";
+  const [story, setStory] = useState([]);
 
   //const navigate = useNavigate();
 
@@ -42,30 +42,6 @@ const User = () => {
           const isAdmin = data.isAdmin;
           const felhasznalonev = data.felhasznalonev;
           setFelhasznalonev(felhasznalonev);
-        }
-      } catch (error) {
-        console.log("Fetch error:", error);
-      }
-    };
-    fetchData();
-  }, [user, felhasznalonev, felhasznalonevKuld]);
-
-  //LOADING STORIES UPLOADED BY THE LOGGED IN USER
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(url + "/story", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${user.token}`,
-          },
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          setStory(data.story);
-          console.log(story);
         }
       } catch (error) {
         console.log("Fetch error:", error);
@@ -98,6 +74,8 @@ const User = () => {
         setViewIsAdmin(response.viewIsAdmin);
         setViewKovetoim(response.viewKovetoim);
         setViewKoveteseim(response.viewKoveteseim);
+        setStory(response.story);
+        console.log(story);
       } else {
         const response = await adat.json();
         setError(response.msg);
@@ -121,7 +99,6 @@ const User = () => {
       if (adat.ok) {
         const response = await adat.json();
         setKovetem(response.kovetem);
-        console.log(response.kovetem);
       }
     } catch (error) {
       setIsLoading(false);
@@ -162,6 +139,11 @@ const User = () => {
     }
   };
 
+  useEffect(() => {
+    userinfo();
+  }, [user, felhasznalonev, felhasznalonevKuld]);
+
+  //(UN)FOLLOWING SYSTEM
   const bekovetes = async () => {
     setIsLoading(true);
     setSuccess(null);
@@ -223,10 +205,6 @@ const User = () => {
       setError("Valami hiba történt a mentés során!" + error.message);
     }
   };
-
-  useEffect(() => {
-    userinfo();
-  }, [user, felhasznalonev, felhasznalonevKuld]);
 
   function displayImage(e) {
     const fileInput = e.target;
@@ -322,13 +300,32 @@ const User = () => {
         </div>
         {viewFelhasznalonev === felhasznalonev &&
           (isEditing === false ? (
-            <button onClick={() => setIsEditing(true)}>Szerkesztés</button>
+            <div className="editButtons">
+              <button onClick={() => setIsEditing(true)}>Szerkesztés</button>
+            </div>
           ) : (
             <div className="editButtons">
               <button onClick={userinfo}>Vissza</button>
               <button onClick={valtoztatas}>Mentés</button>
             </div>
           ))}
+        <div className="storyContainer">
+          {story.map((story) => (
+            <div class="book-container">
+              <div class="book">
+                <div class="front-content">
+                  <img src={story.boritokep} alt="" />
+                </div>
+                <div class="content">
+                  <p class="heading">{story.cim}</p>
+                  <p>
+                    {story.leiras}
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

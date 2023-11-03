@@ -153,6 +153,7 @@ app.get(`/userinfo/:felhasznalonevKuld`, async (req, res) => {
   try {
     const felhasznalonev = req.params.felhasznalonevKuld;
     const user = await User.findOne({ felhasznalonev });
+    const story = await Story.find({ szerzo: felhasznalonev });
 
     if (user) {
       res.status(200).send({
@@ -163,6 +164,7 @@ app.get(`/userinfo/:felhasznalonevKuld`, async (req, res) => {
         viewIsAdmin: user.isAdmin,
         viewKovetoim: user.kovetoim.length,
         viewKoveteseim: user.koveteseim.length,
+        story: story,
       });
     } else {
       res.status(404).json({ msg: "A  felhasználó nem található" });
