@@ -67,7 +67,7 @@ const createToken = (_id, isAdmin, felhasznalonev) => {
 
 //MIDDLEWARES
 app.use(cors());
-app.use(express.json({ limit: '50mb' }));
+app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: false }));
 
 //ROUTES
@@ -336,6 +336,31 @@ app.post("/addstory", async (req, res) => {
         res.status(200).json({ msg: "Sikeres történet létrehozás!" });
       }
     );
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+});
+
+app.post("/updatestory", async (req, res) => {
+  try {
+    const { cim } = req.params;
+    const story = req.body;
+    console.log(cim);
+    /*const storyLetezik = await Story.findOneAndUpdate({ cim });
+    if (storyLetezik) {
+      throw Error("Már létezik egy történet ezzel a címmel");
+    }
+    const newStory = new Story({
+      cim: cim,
+      szerzo: szerzo,
+      boritokep: result.secure_url,
+      leiras: leiras,
+      karakterek: karakterek,
+      nyelv: nyelv,
+      kategoria: kategoria,
+    });
+    await newStory.save();*/
+    res.status(200).json({ msg: "Sikeres történet létrehozás!" });
   } catch (error) {
     res.status(500).json({ msg: error.message });
   }

@@ -36,7 +36,7 @@ function App() {
             }
           />
           <Route path="/storyfelvetel" element={<Addstory />} />
-          <Route path="/storyiras" element={<Writestory />} />
+          <Route path="/storyiras/:cim" element={<Writestory />} />
           <Route path="/dropdownfelvetel" element={<Adddropdowns />} />
           <Route path="/profil/:felhasznalonevKuld" element={<User />} />
         </Routes>
