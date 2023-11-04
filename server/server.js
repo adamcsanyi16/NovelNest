@@ -51,7 +51,12 @@ const StoryCoverOptions = {
 
 //MULTER SETUP
 const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 1024 * 1024 * 10, // 10MB (adjust this value as needed)
+  },
+});
 
 //TOKEN CREATION
 const createToken = (_id, isAdmin, felhasznalonev) => {
@@ -62,7 +67,7 @@ const createToken = (_id, isAdmin, felhasznalonev) => {
 
 //MIDDLEWARES
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: false }));
 
 //ROUTES
