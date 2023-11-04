@@ -341,26 +341,18 @@ app.post("/addstory", async (req, res) => {
   }
 });
 
-app.post("/updatestory", async (req, res) => {
+app.post("/writestory/:cim", async (req, res) => {
   try {
-    const { cim } = req.params;
+    const { cim } = req.params.cim;
     const story = req.body;
     console.log(cim);
-    /*const storyLetezik = await Story.findOneAndUpdate({ cim });
-    if (storyLetezik) {
-      throw Error("Már létezik egy történet ezzel a címmel");
-    }
-    const newStory = new Story({
-      cim: cim,
-      szerzo: szerzo,
-      boritokep: result.secure_url,
-      leiras: leiras,
-      karakterek: karakterek,
-      nyelv: nyelv,
-      kategoria: kategoria,
-    });
-    await newStory.save();*/
-    res.status(200).json({ msg: "Sikeres történet létrehozás!" });
+    const writeStory = await Story.findOneAndUpdate(
+      { cim },
+      {
+        story: story,
+      }
+    );
+    res.status(200).json({ writeStory, msg: "Sikeres történet mentés!" });
   } catch (error) {
     res.status(500).json({ msg: error.message });
   }

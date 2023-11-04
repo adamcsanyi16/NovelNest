@@ -303,7 +303,7 @@ const Addstory = () => {
             type="text"
             placeholder="Írd le röviden miről fog szólni a történeted!"
             className="input"
-            id="storyText"
+            id="leirasText"
             onChange={(e) => setLeiras(e.target.value)}
           />
         </div>

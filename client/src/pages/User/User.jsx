@@ -310,21 +310,35 @@ const User = () => {
             </div>
           ))}
         <div className="storyContainer">
-          {story.map((story) => (
-            <div class="book-container">
-              <div class="book">
-                <div class="front-content">
-                  <img src={story.boritokep} alt="" />
-                </div>
-                <div class="content">
-                  <p class="heading">{story.cim}</p>
-                  <p>
-                    {story.leiras}
-                  </p>
+          {story.map((story) =>
+            viewFelhasznalonev === felhasznalonev ? (
+              <div class="book-container">
+                <div class="book">
+                  <div class="front-content">
+                    <img src={story.boritokep} alt="" />
+                  </div>
+                  <div class="content">
+                    <p class="heading">{story.cim}</p>
+                    <p>{story.leiras}</p>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ) : (
+              story.isPublished === true && (
+                <div class="book-container">
+                  <div class="book">
+                    <div class="front-content">
+                      <img src={story.boritokep} alt="" />
+                    </div>
+                    <div class="content">
+                      <p class="heading">{story.cim}</p>
+                      <p>{story.leiras}</p>
+                    </div>
+                  </div>
+                </div>
+              )
+            )
+          )}
         </div>
       </div>
     </div>
