@@ -422,7 +422,7 @@ form {
   border-radius: 10px;
   height: 450px;
   width: 100%;
-  opacity: 90%;
+  opacity: 70%;
   margin-top: 10px;
 }
 
@@ -530,6 +530,60 @@ form {
   display: grid;
   grid-template-columns: 50% 50%;
 }
+
+#kovetoMutatoCim {
+  margin-top: 10px;
+}
+
+.kovetesModal {
+  background-color: #A27B5C;
+  width: 370px;
+  height: 400px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+}
+  
+  .kovetokMutato {
+  background-color: rgb(185, 150, 122);
+  margin: auto;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 400px;
+  width: 320px;
+  border-radius: 10px;
+}
+
+.kovetokMutato h4 {
+  padding-left: 15px;
+}
+
+.egyKoveto {
+  display: grid;
+  grid-template-columns: 20% 60%;
+  width: 280px;
+  height: 80px;
+  margin: auto;
+  margin-top: 10px;
+  background-color: #DCD7C9;
+  border-radius: 10px;
+}
+
+.egyKoveto img {
+  border-radius: 50%;
+  height: 60px;
+  margin-left: 10px;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.egyKoveto a {
+  margin-top: auto;
+  margin-bottom: auto;
+  text-align: left;
+  padding-left: 20px;
+  text-decoration: none;
+}
+
 
 @media only screen and (max-width: 650px) {
   .profilomInfo_container {

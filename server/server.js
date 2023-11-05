@@ -158,9 +158,27 @@ app.get(`/userinfo/:felhasznalonevKuld`, async (req, res) => {
   try {
     const felhasznalonev = req.params.felhasznalonevKuld;
     const user = await User.findOne({ felhasznalonev });
-    const story = await Story.find({ szerzo: felhasznalonev });
 
     if (user) {
+      const koveteseimProfilkepArray = [];
+      const kovetoimProfilkepArray = [];
+
+      for (const koveteseimEmber of user.koveteseim) {
+        const koveteseimUser = await User.findOne({ felhasznalonev: koveteseimEmber });
+        if (koveteseimUser) {
+          koveteseimProfilkepArray.push(koveteseimUser.profilkep);
+        }
+      }
+
+      for (const kovetoEmber of user.kovetoim) {
+        const kovetoUser = await User.findOne({ felhasznalonev: kovetoEmber });
+        if (kovetoUser) {
+          kovetoimProfilkepArray.push(kovetoUser.profilkep);
+        }
+      }
+
+      const story = await Story.find({ szerzo: felhasznalonev });
+
       res.status(200).send({
         viewFelhasznalonev: user.felhasznalonev,
         viewEmail: user.email,
@@ -168,17 +186,23 @@ app.get(`/userinfo/:felhasznalonevKuld`, async (req, res) => {
         viewBoritokep: user.boritokep,
         viewRolam: user.rolam,
         viewIsAdmin: user.isAdmin,
+        viewKovetoimList: user.kovetoim,
+        viewKovetoimListKep: kovetoimProfilkepArray,
+        viewKoveteseimList: user.koveteseim,
+        viewKoveteseimListKep: koveteseimProfilkepArray,
         viewKovetoim: user.kovetoim.length,
         viewKoveteseim: user.koveteseim.length,
         story: story,
       });
     } else {
-      res.status(404).json({ msg: "A  felhasználó nem található" });
+      res.status(404).json({ msg: "A felhasználó nem található" });
     }
   } catch (error) {
     res.status(500).json({ msg: error.message });
   }
 });
+
+
 
 app.post(`/userinfo/:felhasznalonevKuld`, async (req, res) => {
   const viewFelhasznalonev = req.params.felhasznalonevKuld;
