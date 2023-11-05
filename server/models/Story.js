@@ -20,7 +20,6 @@ const storySchema = new mongoose.Schema(
     },
     leiras: {
       type: String,
-      required: true,
     },
     story: {
       type: String,

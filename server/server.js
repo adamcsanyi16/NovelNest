@@ -49,6 +49,17 @@ const StoryCoverOptions = {
   ],
 };
 
+const CoverOptions = {
+  transformation: [
+    {
+      height: 450,
+      crop: "scale",
+      quality: "auto",
+      fetch_format: "auto",
+    },
+  ],
+};
+
 //MULTER SETUP
 const storage = multer.memoryStorage();
 const upload = multer({
@@ -204,58 +215,78 @@ app.post(`/userinfo/:felhasznalonevKuld`, async (req, res) => {
 //CUSTOMIZING USER PROFILES
 app.post("/userupdate", async (req, res) => {
   try {
-    const { felhasznalonev, rolam, email, profilkep } = req.body;
+    const { felhasznalonev, rolam, email, profilkep, boritokep } = req.body;
     const user = await User.findOne({ felhasznalonev });
     const profilkepNev = user.profilkepNev;
+    const boritokepNev = user.boritokepNev;
 
-    if (profilkep == "") {
-      const updatedUser = await User.findOneAndUpdate(
-        { felhasznalonev },
-        {
-          rolam,
-          email,
-        }
-      );
-      if (!updatedUser) {
-        return res.status(404).json({ error: "A felhasználó nem létezik!" });
-      }
-      res.status(200).json(updatedUser);
-    } else {
-      cloudinary.uploader.upload(
-        profilkep,
-        profileOptions,
-        async (error, result) => {
+    const updateProfilkep = async () => {
+      if (profilkep !== "") {
+        cloudinary.uploader.upload(profilkep, profileOptions, async (error, result) => {
           if (error) {
             console.log(error);
           }
-
           if (profilkepNev !== "user_wx5ex5") {
             cloudinary.api
               .delete_resources([profilkepNev], {
                 resource_type: "image",
                 invalidate: true,
               })
-              .then(() => console.log("Sikeres törlés"))
+              .then(() => console.log("Sikeres profilkép törlés"))
               .catch((error) => console.log(error));
           }
-          const updatedUser = await User.findOneAndUpdate(
+          await User.findOneAndUpdate(
             { felhasznalonev },
             {
-              rolam,
-              email,
               profilkep: result.secure_url,
               profilkepNev: result.public_id,
             }
           );
-          if (!updatedUser) {
-            return res
-              .status(404)
-              .json({ error: "A felhasználó nem létezik!" });
+        });
+      }
+    };
+
+    const updateBoritokep = async () => {
+      if (boritokep !== "") {
+        cloudinary.uploader.upload(boritokep, CoverOptions, async (error, result) => {
+          if (error) {
+            console.log(error);
           }
-          res.status(200).json(updatedUser);
-        }
-      );
+          if (boritokepNev !== "") {
+            cloudinary.api
+              .delete_resources([boritokepNev], {
+                resource_type: "image",
+                invalidate: true,
+              })
+              .then(() => console.log("Sikeres borítókép törlés"))
+              .catch((error) => console.log(error));
+          }
+          await User.findOneAndUpdate(
+            { felhasznalonev },
+            {
+              boritokep: result.secure_url,
+              boritokepNev: result.public_id,
+            }
+          );
+        });
+      }
+    };
+    await updateProfilkep();
+    await updateBoritokep();
+    
+    const updatedUser = await User.findOneAndUpdate(
+      { felhasznalonev },
+      {
+        rolam,
+        email,
+      }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ error: "A felhasználó nem létezik!" });
     }
+
+    res.status(200).json(updatedUser);
   } catch (error) {
     console.error(error);
     res.status(500).json({ msg: error.message });

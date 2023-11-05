@@ -132,7 +132,9 @@ const User = () => {
       if (response.ok) {
         setIsLoading(false);
         setSuccess("Profil sikeresen mentve!");
-        window.location.reload();
+        setInterval(() => {
+          window.location.reload();
+        }, 1500);
       } else {
         setIsLoading(false);
         const response = await response.json();
@@ -223,7 +225,6 @@ const User = () => {
 
       reader.readAsDataURL(fileInput.files[0]);
     }
-
   }
   function displayImage_borito(e) {
     const fileInput = e.target;
@@ -242,94 +243,110 @@ const User = () => {
 
   return (
     <div className="profilom">
-      <div className="profilomHatter" style={viewBoritokep ? { backgroundImage: `url('${viewBoritokep}')`,} : {  background: 'linear-gradient(#3f4e4f, #3f4e4f)',}}>
+      <div
+        className="profilomHatter"
+        style={
+          viewBoritokep
+            ? { backgroundImage: `url('${viewBoritokep}')` }
+            : { background: "linear-gradient(#3f4e4f, #3f4e4f)" }
+        }
+      >
         <div className="profilom_Tarto">
-        <div className="profilomInfo_Tarto">
-          <div>
-            <div className="profilomInfo_container">
-              {viewFelhasznalonev == felhasznalonev && isEditing === true ? (
-                <div className="kepInput">
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => displayImage_profil(e)}
-                    className="profile-input"
-                  />
+          <div className="profilomInfo_Tarto">
+            <div>
+              <div className="profilomInfo_container">
+                {viewFelhasznalonev == felhasznalonev && isEditing === true ? (
+                  <div className="kepInput">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => displayImage_profil(e)}
+                      className="profile-input"
+                    />
+                    <img
+                      src={`${viewProfilkep}`}
+                      alt={`${viewFelhasznalonev} profilképe`}
+                      style={{ opacity: 0.6 }}
+                      className="profilomProfil"
+                    />
+                  </div>
+                ) : (
                   <img
                     src={`${viewProfilkep}`}
                     alt={`${viewFelhasznalonev} profilképe`}
-                    style={{ opacity: 0.6 }}
                     className="profilomProfil"
                   />
-                </div>
-              ) : (
-                <img
-                  src={`${viewProfilkep}`}
-                  alt={`${viewFelhasznalonev} profilképe`}
-                  className="profilomProfil"
-                />
-              )}
-              <div className="profilomFelhasznalonev">
-                <h2>{viewFelhasznalonev}</h2>
-                {viewFelhasznalonev == felhasznalonev && isEditing === true ? (
-                  <input
-                    type="text"
-                    value={viewEmail}
-                    onChange={(e) => setViewEmail(e.target.value)}
-                    id="changeEmail"
-                  ></input>
-                ) : (
-                  <h5 id="changeEmail">{viewEmail}</h5>
                 )}
-
-                {viewIsAdmin && <h5>Admin😎</h5>}
-              </div>
-            </div>
-            <div id="profilomInfo_container">
-              <div className="kovetok">
-                <h4>Követők: {viewKovetoim}</h4>
-                <h4>Követés: {viewKoveteseim}</h4>
-              </div>
-              <div className="kovetoGomb">
-                {felhasznalonev != viewFelhasznalonev ? (
-                  kovetem === false ? (
-                    <button onClick={bekovetes}>Követés</button>
+                <div className="profilomFelhasznalonev">
+                  <h2>{viewFelhasznalonev}</h2>
+                  {viewFelhasznalonev == felhasznalonev &&
+                  isEditing === true ? (
+                    <input
+                      type="text"
+                      value={viewEmail}
+                      onChange={(e) => setViewEmail(e.target.value)}
+                      id="changeEmail"
+                    ></input>
                   ) : (
-                    <button onClick={kikovetes}>Kikövetés</button>
-                  )
-                ) : (
-                  ""
-                )}
+                    <h5 id="changeEmail">{viewEmail}</h5>
+                  )}
+
+                  {viewIsAdmin && <h5>Admin😎</h5>}
+                </div>
+              </div>
+              <div id="profilomInfo_container">
+                <div className="kovetok">
+                  <h4>Követők: {viewKovetoim}</h4>
+                  <h4>Követés: {viewKoveteseim}</h4>
+                </div>
+                <div className="kovetoGomb">
+                  {felhasznalonev != viewFelhasznalonev ? (
+                    kovetem === false ? (
+                      <button onClick={bekovetes}>Követés</button>
+                    ) : (
+                      <button onClick={kikovetes}>Kikövetés</button>
+                    )
+                  ) : (
+                    ""
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-          <div className="profilomBio_container">
-            {viewFelhasznalonev == felhasznalonev && isEditing === true ? (
-              <textarea
-                type="text"
-                onChange={(e) => setViewRolam(e.target.value)}
-                defaultValue={viewRolam}
-                style={{ backgroundColor: "rgba(162, 123, 92, 0.8)" }}
-              />
-            ) : (
-              <textarea defaultValue={viewRolam} readOnly />
-            )}
-            {error && <div className="error">{error}</div>}
-            {success && <div className="success">{success}</div>}
-          </div>
-          <div className="profilomBio_container">Harmadik div</div>
-        </div>
-        
-        <div className="boritokepFeltoltes">
-        {isEditing && (
-          <div>
-            <input type="file" accept="image/*" onChange={(e) => displayImage_borito(e)} className="cover-input" />
-            <img className="boritokepFeltoltesImg" src="/images/boritoupload.png" alt="Borító feltőltése" />
+            <div className="profilomBio_container">
+              {viewFelhasznalonev == felhasznalonev && isEditing === true ? (
+                <textarea
+                  type="text"
+                  onChange={(e) => setViewRolam(e.target.value)}
+                  defaultValue={viewRolam}
+                  style={{ backgroundColor: "rgba(162, 123, 92, 0.8)" }}
+                />
+              ) : (
+                <textarea defaultValue={viewRolam} readOnly />
+              )}
+              {error && <div className="error">{error}</div>}
+              {success && <div className="success">{success}</div>}
             </div>
-            )}
+            <div className="profilomBio_container">Harmadik div</div>
           </div>
 
+          <div className="boritokepFeltoltes">
+            {isEditing && (
+              <div>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => displayImage_borito(e)}
+                  className="cover-input"
+                />
+                <img
+                  className="boritokepFeltoltesImg"
+                  src="/images/boritoupload.png"
+                  alt="Borító feltőltése"
+                />
+              </div>
+            )}
           </div>
+        </div>
         {viewFelhasznalonev === felhasznalonev &&
           (isEditing === false ? (
             <div className="editButtons">
