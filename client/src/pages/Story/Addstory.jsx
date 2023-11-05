@@ -190,7 +190,7 @@ const Addstory = () => {
         const response = await adat.json();
         setIsLoading(false);
         setSuccess(response.msg);
-        navigate(`/storyiras/${cim}`)
+        navigate(`/storyiras/${cim}`);
       } else {
         const response = await adat.json();
         setIsLoading(false);

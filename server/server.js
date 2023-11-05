@@ -175,7 +175,9 @@ app.get(`/userinfo/:felhasznalonevKuld`, async (req, res) => {
       const kovetoimProfilkepArray = [];
 
       for (const koveteseimEmber of user.koveteseim) {
-        const koveteseimUser = await User.findOne({ felhasznalonev: koveteseimEmber });
+        const koveteseimUser = await User.findOne({
+          felhasznalonev: koveteseimEmber,
+        });
         if (koveteseimUser) {
           koveteseimProfilkepArray.push(koveteseimUser.profilkep);
         }
@@ -213,8 +215,6 @@ app.get(`/userinfo/:felhasznalonevKuld`, async (req, res) => {
   }
 });
 
-
-
 app.post(`/userinfo/:felhasznalonevKuld`, async (req, res) => {
   const viewFelhasznalonev = req.params.felhasznalonevKuld;
   const felhasznalonev = req.body;
@@ -246,58 +246,66 @@ app.post("/userupdate", async (req, res) => {
 
     const updateProfilkep = async () => {
       if (profilkep !== "") {
-        cloudinary.uploader.upload(profilkep, profileOptions, async (error, result) => {
-          if (error) {
-            console.log(error);
-          }
-          if (profilkepNev !== "user_wx5ex5") {
-            cloudinary.api
-              .delete_resources([profilkepNev], {
-                resource_type: "image",
-                invalidate: true,
-              })
-              .then(() => console.log("Sikeres profilkép törlés"))
-              .catch((error) => console.log(error));
-          }
-          await User.findOneAndUpdate(
-            { felhasznalonev },
-            {
-              profilkep: result.secure_url,
-              profilkepNev: result.public_id,
+        cloudinary.uploader.upload(
+          profilkep,
+          profileOptions,
+          async (error, result) => {
+            if (error) {
+              console.log(error);
             }
-          );
-        });
+            if (profilkepNev !== "user_wx5ex5") {
+              cloudinary.api
+                .delete_resources([profilkepNev], {
+                  resource_type: "image",
+                  invalidate: true,
+                })
+                .then(() => console.log("Sikeres profilkép törlés"))
+                .catch((error) => console.log(error));
+            }
+            await User.findOneAndUpdate(
+              { felhasznalonev },
+              {
+                profilkep: result.secure_url,
+                profilkepNev: result.public_id,
+              }
+            );
+          }
+        );
       }
     };
 
     const updateBoritokep = async () => {
       if (boritokep !== "") {
-        cloudinary.uploader.upload(boritokep, CoverOptions, async (error, result) => {
-          if (error) {
-            console.log(error);
-          }
-          if (boritokepNev !== "") {
-            cloudinary.api
-              .delete_resources([boritokepNev], {
-                resource_type: "image",
-                invalidate: true,
-              })
-              .then(() => console.log("Sikeres borítókép törlés"))
-              .catch((error) => console.log(error));
-          }
-          await User.findOneAndUpdate(
-            { felhasznalonev },
-            {
-              boritokep: result.secure_url,
-              boritokepNev: result.public_id,
+        cloudinary.uploader.upload(
+          boritokep,
+          CoverOptions,
+          async (error, result) => {
+            if (error) {
+              console.log(error);
             }
-          );
-        });
+            if (boritokepNev !== "") {
+              cloudinary.api
+                .delete_resources([boritokepNev], {
+                  resource_type: "image",
+                  invalidate: true,
+                })
+                .then(() => console.log("Sikeres borítókép törlés"))
+                .catch((error) => console.log(error));
+            }
+            await User.findOneAndUpdate(
+              { felhasznalonev },
+              {
+                boritokep: result.secure_url,
+                boritokepNev: result.public_id,
+              }
+            );
+          }
+        );
       }
     };
     await updateProfilkep();
     await updateBoritokep();
-    
+
     const updatedUser = await User.findOneAndUpdate(
       { felhasznalonev },
       {
@@ -371,27 +379,29 @@ app.post("/addstory", async (req, res) => {
       throw Error("Már létezik egy történet ezzel a címmel");
     }
 
-    cloudinary.uploader.upload(
-      boritokep,
-      StoryCoverOptions,
-      async (error, result) => {
-        if (error) {
-          console.log(error);
-        }
+    if (boritokep) {
+      cloudinary.uploader.upload(
+        boritokep,
+        StoryCoverOptions,
+        async (error, result) => {
+          if (error) {
+            console.log(error);
+          }
 
-        const newStory = new Story({
-          cim: cim,
-          szerzo: szerzo,
-          boritokep: result.secure_url,
-          leiras: leiras,
-          karakterek: karakterek,
-          nyelv: nyelv,
-          kategoria: kategoria,
-        });
-        await newStory.save();
-        res.status(200).json({ msg: "Sikeres történet létrehozás!" });
-      }
-    );
+          const newStory = new Story({
+            cim: cim,
+            szerzo: szerzo,
+            boritokep: result.secure_url,
+            leiras: leiras,
+            karakterek: karakterek,
+            nyelv: nyelv,
+            kategoria: kategoria,
+          });
+          await newStory.save();
+          res.status(200).json({ msg: "Sikeres történet létrehozás!" });
+        }
+      );
+    }
   } catch (error) {
     res.status(500).json({ msg: error.message });
   }
