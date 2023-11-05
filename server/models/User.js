@@ -30,6 +30,12 @@ const userSchema = new mongoose.Schema(
     profilkepNev: {
       type: String,
     },
+    boritokep: {
+      type: String,
+    },
+    boritokepNev: {
+      type: String,
+    },
     koveteseim: {
       type: Array,
     },

@@ -15,6 +15,8 @@ const User = () => {
   const [viewEmail, setViewEmail] = useState("");
   const [viewProfilkep, setViewProfilkep] = useState("");
   const [sendProfilkep, setSendProfilkep] = useState("");
+  const [viewBoritokep, setViewBoritokep] = useState("");
+  const [sendBoritokep, setSendBoritokep] = useState("");
   const [viewRolam, setViewRolam] = useState("");
   const [viewIsAdmin, setViewIsAdmin] = useState("");
   const [isEditing, setIsEditing] = useState(false);
@@ -70,6 +72,7 @@ const User = () => {
         setViewFelhasznalonev(response.viewFelhasznalonev);
         setViewEmail(response.viewEmail);
         setViewProfilkep(response.viewProfilkep);
+        setViewBoritokep(response.boritokep);
         setViewRolam(response.viewRolam);
         setViewIsAdmin(response.viewIsAdmin);
         setViewKovetoim(response.viewKovetoim);
@@ -123,6 +126,7 @@ const User = () => {
           email: viewEmail,
           rolam: viewRolam,
           profilkep: sendProfilkep,
+          boritokep: sendBoritokep,
         }),
       });
       if (response.ok) {
@@ -206,7 +210,7 @@ const User = () => {
     }
   };
 
-  function displayImage(e) {
+  function displayImage_profil(e) {
     const fileInput = e.target;
 
     if (fileInput.files && fileInput.files[0]) {
@@ -219,11 +223,27 @@ const User = () => {
 
       reader.readAsDataURL(fileInput.files[0]);
     }
+
+  }
+  function displayImage_borito(e) {
+    const fileInput = e.target;
+
+    if (fileInput.files && fileInput.files[0]) {
+      const reader = new FileReader();
+
+      reader.onload = function (e) {
+        setSendBoritokep(e.target.result);
+        setViewBoritokep(e.target.result);
+      };
+
+      reader.readAsDataURL(fileInput.files[0]);
+    }
   }
 
   return (
     <div className="profilom">
-      <div className="profilomHatter">
+      <div className="profilomHatter" style={viewBoritokep ? { backgroundImage: `url(${viewBoritokep})` } : { background: 'linear-gradient(#3f4e4f, #3f4e4f)' }}>
+        <div className="profilom_Tarto">
         <div className="profilomInfo_Tarto">
           <div>
             <div className="profilomInfo_container">
@@ -232,7 +252,7 @@ const User = () => {
                   <input
                     type="file"
                     accept="image/*"
-                    onChange={(e) => displayImage(e)}
+                    onChange={(e) => displayImage_profil(e)}
                     className="profile-input"
                   />
                   <img
@@ -297,7 +317,19 @@ const User = () => {
             {error && <div className="error">{error}</div>}
             {success && <div className="success">{success}</div>}
           </div>
+          <div className="profilomBio_container">Harmadik div</div>
         </div>
+        
+        <div className="boritokepFeltoltes">
+        {isEditing && (
+          <div>
+            <input type="file" accept="image/*" onChange={(e) => displayImage_borito(e)} className="cover-input" />
+            <img className="boritokepFeltoltesImg" src="/images/boritoupload.png" alt="Borító feltőltése" />
+            </div>
+            )}
+          </div>
+
+          </div>
         {viewFelhasznalonev === felhasznalonev &&
           (isEditing === false ? (
             <div className="editButtons">
