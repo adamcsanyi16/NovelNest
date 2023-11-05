@@ -26,6 +26,8 @@ const User = () => {
   const [viewKoveteseimList, setViewKoveteseimList] = useState("");
   const [viewKovetoimListKep, setViewKovetoimListKep] = useState("");
   const [viewKoveteseimListKep, setViewKoveteseimListKep] = useState("");
+  const [toggleKovetoim, setToggleKovetoim] = useState(false);
+  const [toggleKoveteseim, SetToggleKoveteseim] = useState(false)
   const [kovetem, setKovetem] = useState("");
   const [story, setStory] = useState([]);
 
@@ -196,6 +198,7 @@ const User = () => {
     setError(null);
     setKovetem(false);
     setViewKovetoim(viewKovetoim - 1);
+
     try {
       const response = await fetch(`${url}/kikovet`, {
         method: "POST",
@@ -250,9 +253,26 @@ const User = () => {
     }
   }
 
+  const modalKovetoim = () => {
+    setToggleKovetoim(!toggleKovetoim)
+    SetToggleKoveteseim(false)
+  }
+
+  const modalKoveteseim = () => {
+    SetToggleKoveteseim(!toggleKoveteseim)
+    setToggleKovetoim(false)
+  }
+
+  if (toggleKovetoim || toggleKoveteseim) {
+    document.body.classList.add("active-modal")
+  }
+  else {
+    document.body.classList.remove("active-modal")
+  }
+
   return (
-    <div className="profilom">
-      <div
+    <div  className="profilom">
+      <div 
         className="profilomHatter"
         style={
           viewBoritokep
@@ -305,8 +325,8 @@ const User = () => {
               </div>
               <div id="profilomInfo_container">
                 <div className="kovetok">
-                  <h4>Követők: {viewKovetoim}</h4>
-                  <h4>Követés: {viewKoveteseim}</h4>
+                  <h4 style={{cursor: "pointer",}} onClick={modalKovetoim}>Követők: {viewKovetoim}</h4>
+                  <h4 style={{cursor: "pointer",}} onClick={modalKoveteseim}>Követés: {viewKoveteseim}</h4>
                 </div>
                 <div className="kovetoGomb">
                   {felhasznalonev != viewFelhasznalonev ? (
@@ -368,8 +388,13 @@ const User = () => {
             </div>
           ))}
 
-        <div className="kovetesModal">
-        <div className="kovetokMutato kovetokLista">
+        {toggleKovetoim && 
+        (
+        <div className="kovetesModal kovetokLista">
+        <div className="kovetolistak-btnContainer">
+        <button className="kovetolistak-btn" onClick={modalKovetoim}>X</button>
+        </div>
+        <div className="kovetokMutato">
           <h4 id="kovetoMutatoCim">{viewFelhasznalonev} követői({viewKovetoim})</h4>
           {viewKovetoimListKep && viewKovetoimListKep.map((item, index) => (
             <div className="egyKoveto" key={index}>
@@ -379,20 +404,23 @@ const User = () => {
            ))}
           </div>
           </div>
-
-          <div className="kovetesModal">
-          <div className="kovetokMutato kovetesekLista">
-          <h4 id="kovetoMutatoCim">{viewFelhasznalonev} követi({viewKoveteseim})</h4>
-          {viewKoveteseimListKep && viewKoveteseimListKep.map((item, index) => (
-            <div className="egyKoveto" key={index}>
-              <img src={item} alt="" />
-              <a href={"/profil/" + viewKoveteseimList[index]}><h4>{viewKoveteseimList[index]}</h4></a>
+          )}
+        
+          {toggleKoveteseim && (
+            <div className="kovetesModal kovetesekLista">
+              <button className="kovetolistak-btn" onClick={modalKoveteseim}>X</button>
+            <div className="kovetokMutato">
+            <h4 id="kovetoMutatoCim">{viewFelhasznalonev} követi({viewKoveteseim})</h4>
+            {viewKoveteseimListKep && viewKoveteseimListKep.map((item, index) => (
+              <div className="egyKoveto" key={index}>
+                <img src={item} alt="" />
+                <a href={"/profil/" + viewKoveteseimList[index]}><h4>{viewKoveteseimList[index]}</h4></a>
+              </div>
+             ))}
             </div>
-           ))}
-          </div>
-          </div>
-
-
+            </div>
+          )}
+          
         <div className="storyContainer">
           {story.map((story) =>
             viewFelhasznalonev === felhasznalonev ? (
