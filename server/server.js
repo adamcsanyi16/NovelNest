@@ -165,6 +165,7 @@ app.get(`/userinfo/:felhasznalonevKuld`, async (req, res) => {
         viewFelhasznalonev: user.felhasznalonev,
         viewEmail: user.email,
         viewProfilkep: user.profilkep,
+        viewBoritokep: user.boritokep,
         viewRolam: user.rolam,
         viewIsAdmin: user.isAdmin,
         viewKovetoim: user.kovetoim.length,

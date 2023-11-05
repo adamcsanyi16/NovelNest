@@ -72,7 +72,7 @@ const User = () => {
         setViewFelhasznalonev(response.viewFelhasznalonev);
         setViewEmail(response.viewEmail);
         setViewProfilkep(response.viewProfilkep);
-        setViewBoritokep(response.boritokep);
+        setViewBoritokep(response.viewBoritokep);
         setViewRolam(response.viewRolam);
         setViewIsAdmin(response.viewIsAdmin);
         setViewKovetoim(response.viewKovetoim);
@@ -242,7 +242,7 @@ const User = () => {
 
   return (
     <div className="profilom">
-      <div className="profilomHatter" style={viewBoritokep ? { backgroundImage: `url(${viewBoritokep})` } : { background: 'linear-gradient(#3f4e4f, #3f4e4f)' }}>
+      <div className="profilomHatter" style={viewBoritokep ? { backgroundImage: `url('${viewBoritokep}')`,} : {  background: 'linear-gradient(#3f4e4f, #3f4e4f)',}}>
         <div className="profilom_Tarto">
         <div className="profilomInfo_Tarto">
           <div>
