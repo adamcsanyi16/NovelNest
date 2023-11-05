@@ -22,6 +22,10 @@ const User = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [viewKovetoim, setViewKovetoim] = useState("");
   const [viewKoveteseim, setViewKoveteseim] = useState("");
+  const [viewKovetoimList, setViewKovetoimList] = useState("");
+  const [viewKoveteseimList, setViewKoveteseimList] = useState("");
+  const [viewKovetoimListKep, setViewKovetoimListKep] = useState("");
+  const [viewKoveteseimListKep, setViewKoveteseimListKep] = useState("");
   const [kovetem, setKovetem] = useState("");
   const [story, setStory] = useState([]);
 
@@ -69,6 +73,7 @@ const User = () => {
 
       if (adat.ok) {
         const response = await adat.json();
+        console.log(response);
         setViewFelhasznalonev(response.viewFelhasznalonev);
         setViewEmail(response.viewEmail);
         setViewProfilkep(response.viewProfilkep);
@@ -77,6 +82,10 @@ const User = () => {
         setViewIsAdmin(response.viewIsAdmin);
         setViewKovetoim(response.viewKovetoim);
         setViewKoveteseim(response.viewKoveteseim);
+        setViewKovetoimList(response.viewKovetoimList)
+        setViewKovetoimListKep(response.viewKovetoimListKep)
+        setViewKoveteseimList(response.viewKoveteseimList)
+        setViewKoveteseimListKep(response.viewKoveteseimListKep)
         setStory(response.story);
         console.log(story);
       } else {
@@ -358,6 +367,32 @@ const User = () => {
               <button onClick={valtoztatas}>Mentés</button>
             </div>
           ))}
+
+        <div className="kovetesModal">
+        <div className="kovetokMutato kovetokLista">
+          <h4 id="kovetoMutatoCim">{viewFelhasznalonev} követői({viewKovetoim})</h4>
+          {viewKovetoimListKep && viewKovetoimListKep.map((item, index) => (
+            <div className="egyKoveto" key={index}>
+              <img src={item} alt="" />
+              <a href={"/profil/" + viewKovetoimList[index]}><h4>{viewKovetoimList[index]}</h4></a>
+            </div>
+           ))}
+          </div>
+          </div>
+
+          <div className="kovetesModal">
+          <div className="kovetokMutato kovetesekLista">
+          <h4 id="kovetoMutatoCim">{viewFelhasznalonev} követi({viewKoveteseim})</h4>
+          {viewKoveteseimListKep && viewKoveteseimListKep.map((item, index) => (
+            <div className="egyKoveto" key={index}>
+              <img src={item} alt="" />
+              <a href={"/profil/" + viewKoveteseimList[index]}><h4>{viewKoveteseimList[index]}</h4></a>
+            </div>
+           ))}
+          </div>
+          </div>
+
+
         <div className="storyContainer">
           {story.map((story) =>
             viewFelhasznalonev === felhasznalonev ? (
