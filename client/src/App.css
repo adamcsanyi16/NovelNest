@@ -425,7 +425,7 @@ form {
   border-radius: 10px;
   height: 450px;
   width: 100%;
-  opacity: 70%;
+  opacity: 100%;
   margin-top: 10px;
 }
 
@@ -535,6 +535,46 @@ form {
 
 #kovetoMutatoCim {
   margin-top: 10px;
+}
+
+body.active-modal {
+  overflow-y: hidden;
+}
+
+
+.kovetolistak-btn {
+  scale: 0.5;
+  position: absolute;
+  top: -40px;
+  left: 320px;
+  padding: 15px;
+  padding-left: 25px;
+  padding-right: 25px;
+}
+
+
+.kovetokLista {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: fixed;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 170px;
+    box-shadow: 10px 10px 57px 0px rgba(0,0,0,0.75);
+}
+
+.kovetesekLista {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  position: fixed;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 170px;
+  box-shadow: 10px 10px 57px 0px rgba(0,0,0,0.75);
 }
 
 .kovetesModal {
