@@ -1,6 +1,13 @@
 @import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Martian+Mono:wght@100;200;300;400;500;600;700;800&display=swap");
 
+$sotetkek: #363062;
+$vilagoskek: #5756ae;
+$narancs: #f99417;
+$feher: #f5f5f5;
+$mainfont: "Martian Mono", monospace;
+$secondaryfont: 'Dancing Script', cursive;
+
 * {
   box-sizing: border-box;
   margin: 0px;
@@ -8,9 +15,9 @@
 }
 
 body {
-  font-family: "Martian Mono", monospace;
+  font-family: $mainfont;
+  background-color: $feher;
 }
-/*font-family: 'Dancing Script', cursive;*/
 
 /*NAVBAR*/
 .navbar {
@@ -31,7 +38,7 @@ body {
 
 .main a {
   text-decoration: none;
-  color: #2c3639;
+  color: $sotetkek;
 }
 
 .main a:hover {
@@ -49,7 +56,7 @@ body {
 }
 
 .userinfo span {
-  color: #2c3639;
+  color: $sotetkek;
   font-size: 11px;
   margin-right: 10px;
 }
@@ -60,13 +67,13 @@ body {
 }
 
 .links a {
-  color: #2c3639;
+  color: $sotetkek;
   font-size: 10px;
   text-decoration: none;
 }
 
 .links a:hover {
-  border-bottom: thin solid #2c3639;
+  border-bottom: thin solid $sotetkek;
 }
 
 .profile-image {
@@ -82,8 +89,8 @@ button {
   padding: 17px 40px;
   border-radius: 14px;
   border: 0;
-  background-color: #dcd7c9;
-  color: #2c3639;
+  background-color: $vilagoskek;
+  color: $feher;
   box-shadow: rgb(0 0 0 / 5%) 0 0 8px;
   letter-spacing: 1.5px;
   font-size: 18px;
@@ -93,13 +100,13 @@ button {
 
 button:hover {
   letter-spacing: 3px;
-  background-color: #3f4e4f;
+  background-color: $sotetkek;
   color: hsl(0, 0%, 100%);
 }
 
 button:active {
   letter-spacing: 3px;
-  background-color: #3f4e4f;
+  background-color: $sotetkek;
   color: hsl(0, 0%, 100%);
   transform: translateY(10px);
   transition: 100ms;
@@ -119,7 +126,7 @@ button:active {
 
 .editButtons {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
 }
 
 /*FORMS*/
@@ -136,7 +143,7 @@ form {
 }
 
 .forms-container h2 {
-  color: #3f4e4f;
+  color: $sotetkek;
   padding-bottom: 30px;
   text-align: center;
 }
@@ -157,15 +164,15 @@ form {
 .input {
   line-height: 28px;
   border: 2px solid transparent;
-  border-bottom-color: #dcd7c9;
+  border-bottom-color: $narancs;
   padding: 0.2rem 0;
   outline: none;
   width: 60%;
   background-color: transparent;
-  color: #2c3639;
+  color: $sotetkek;
   transition: 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
   scale: 1.4;
-  font-family: "Martian Mono", monospace;
+  font-family: $mainfont;
   font-size: 9px;
 }
 
@@ -174,13 +181,13 @@ form {
   outline: none;
   padding: 0.2rem 1rem;
   border-radius: 1rem;
-  border-color: #dcd7c9;
+  border-color: $narancs;
   scale: 1.4;
 }
 
 .input::placeholder {
-  color: #2c3639;
-  font-family: "Martian Mono", monospace;
+  color: $sotetkek;
+  font-family: $mainfont;
   font-size: 9px;
 }
 
@@ -204,7 +211,7 @@ form {
   border-radius: 20px;
   padding: 5px;
   box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
-  background-image: linear-gradient(144deg, #2c3639, #a27b5c 50%, #3f4e4f);
+  background-color: $narancs;
   text-align: center;
 }
 
@@ -213,12 +220,12 @@ form {
 }
 
 .card__content {
-  background: #dcd7c9;
+  background: $feher;
   width: 100%;
   height: 100%;
   position: relative;
   border-radius: 20px;
-  border: 2px solid #3f4e4f;
+  border: 2px solid $vilagoskek;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -227,7 +234,7 @@ form {
 }
 
 .icon {
-  color: #3f4e4f;
+  color: $vilagoskek;
   font-size: 100px;
   cursor: pointer;
   animation: iconflicker 2s linear infinite;
@@ -276,7 +283,7 @@ form {
   font-size: 32px;
   font-weight: 700;
   opacity: 1;
-  background: linear-gradient(-45deg, #a27b5c 0%, #3f4e4f 100%);
+  background: linear-gradient(-45deg, $vilagoskek 0%, $sotetkek 100%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -295,8 +302,8 @@ form {
   justify-content: center;
   text-align: center;
   gap: 10px;
-  background: linear-gradient(-45deg, #a27b5c 0%, #3f4e4f 100%);
-  color: #e8e8e8;
+  background: linear-gradient(-45deg, $vilagoskek 0%, $sotetkek 100%);
+  color: $feher;
   padding: 20px;
   line-height: 1.5;
   border-radius: 5px;
@@ -417,7 +424,6 @@ form {
 }
 
 /* PROFILOM OLDAL */
-
 .profilomHatter {
   background-position: center;
   background-repeat: no-repeat;
@@ -463,6 +469,7 @@ form {
   align-items: center;
   justify-content: center;
   background-color: rgba(128, 128, 128, 0.485);
+  backdrop-filter: blur(5px);
   height: 180px;
   width: 455px;
   max-width: 100%;
@@ -475,7 +482,14 @@ form {
 }
 
 #changeEmail {
-  width: 90%;
+  width: 100%;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  background: transparent;
+  color: $feher;
 }
 
 .profile-input {
@@ -489,13 +503,14 @@ form {
 
 .profilomFelhasznalonev {
   text-align: left;
-  color: white;
+  color: $feher;
   height: 30%;
   margin-left: 10px;
 }
 
 .profilomBio_container {
-  background-color: rgba(128, 128, 128, 0.646);
+  background-color: rgba(128, 128, 128, 0.485);
+  backdrop-filter: blur(5px);
   border-radius: 10px;
   margin-top: 20px;
   height: 95%;
@@ -504,7 +519,7 @@ form {
 
 .profilomBio_container textarea {
   background: transparent;
-  color: white;
+  color: $feher;
   margin: auto;
   border-radius: 10px;
   height: 100%;
@@ -521,13 +536,15 @@ form {
   align-items: center;
   justify-content: center;
   background-color: rgba(128, 128, 128, 0.485);
-  color: white;
+  backdrop-filter: blur(5px);
+  color: $feher;
   height: 180px;
   width: 455px;
   max-width: 100%;
   border-radius: 10px;
 }
 
+//FOLLOWERS
 .kovetok {
   display: grid;
   grid-template-columns: 50% 50%;
@@ -535,12 +552,12 @@ form {
 
 #kovetoMutatoCim {
   margin-top: 10px;
+  color: $feher;
 }
 
 body.active-modal {
   overflow-y: hidden;
 }
-
 
 .kovetolistak-btn {
   scale: 0.5;
@@ -552,17 +569,16 @@ body.active-modal {
   padding-right: 25px;
 }
 
-
 .kovetokLista {
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    position: fixed;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 170px;
-    box-shadow: 10px 10px 57px 0px rgba(0,0,0,0.75);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  position: fixed;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 170px;
+  box-shadow: 10px 10px 57px 0px rgba(0, 0, 0, 0.75);
 }
 
 .kovetesekLista {
@@ -574,25 +590,50 @@ body.active-modal {
   margin-left: auto;
   margin-right: auto;
   margin-top: 170px;
-  box-shadow: 10px 10px 57px 0px rgba(0,0,0,0.75);
+  box-shadow: 10px 10px 57px 0px rgba(0, 0, 0, 0.75);
 }
 
 .kovetesModal {
-  background-color: #A27B5C;
+  background-color: $sotetkek;
   width: 370px;
   height: 400px;
   margin-bottom: 20px;
   border-radius: 10px;
 }
-  
-  .kovetokMutato {
-  background-color: rgb(185, 150, 122);
+
+.kovetokMutato {
+  background-color: $vilagoskek;
   margin: auto;
   overflow-y: scroll;
   overflow-x: hidden;
   height: 400px;
   width: 320px;
   border-radius: 10px;
+}
+
+.kovetokMutato::-webkit-scrollbar {
+  background: $feher;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  width: 10px;
+  box-shadow: inset 0 0 5px grey;
+}
+
+.kovetokMutato::-webkit-scrollbar-thumb {
+  background-color: $vilagoskek;
+  border: 1px solid $feher;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+}
+
+.kovetokMutato::-webkit-scrollbar-thumb:hover {
+  background-color: $sotetkek;
 }
 
 .kovetokMutato h4 {
@@ -606,7 +647,7 @@ body.active-modal {
   height: 80px;
   margin: auto;
   margin-top: 10px;
-  background-color: #DCD7C9;
+  background-color: $feher;
   border-radius: 10px;
 }
 
@@ -624,8 +665,12 @@ body.active-modal {
   text-align: left;
   padding-left: 20px;
   text-decoration: none;
+  color: $vilagoskek;
 }
 
+.egyKoveto a:hover {
+  color: $sotetkek;
+}
 
 @media only screen and (max-width: 650px) {
   .profilomInfo_container {
