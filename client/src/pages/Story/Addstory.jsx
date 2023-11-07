@@ -341,6 +341,7 @@ const Addstory = () => {
           <p>Kategória: {kategoria}</p>
           <p>Nyelv: {nyelv}</p>
           <p>Karakterek: {karakterek}</p>
+          <p>Leírás: {leiras}</p>
           <img style={{height: 400, width: 300, objectFit: "cover",}} src={boritokep} alt="" />
           <textarea type="text" onChange={(e) => SetStory(e.target.value)} />
         <button onClick={tovabb}>Vissza</button>
