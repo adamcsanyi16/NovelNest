@@ -371,7 +371,7 @@ app.post("/kikovet", async (req, res) => {
 //STORY ROUTES
 app.post("/addstory", async (req, res) => {
   try {
-    const { cim, szerzo, boritokep, leiras, karakterek, nyelv, kategoria } =
+    const { cim, szerzo, boritokep, leiras, karakterek, nyelv, kategoria, story } =
       req.body;
 
     const storyLetezik = await Story.findOne({ cim });
@@ -396,6 +396,7 @@ app.post("/addstory", async (req, res) => {
             karakterek: karakterek,
             nyelv: nyelv,
             kategoria: kategoria,
+            story: story,
           });
           await newStory.save();
           res.status(200).json({ msg: "Sikeres történet létrehozás!" });
