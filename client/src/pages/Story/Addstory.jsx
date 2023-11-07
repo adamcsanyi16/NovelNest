@@ -5,10 +5,12 @@ import Select from "react-select";
 
 const Addstory = () => {
   const { user } = useAuthContext();
-  const [felhasznalonev, setFelhasznalonev] = useState("");
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [toggleForm, setToggleForm] = useState(false);
+
+  const [felhasznalonev, setFelhasznalonev] = useState("");
   const [cim, setCim] = useState("");
   const [szerzo, setSzerzo] = useState("");
   const [boritokep, setBoritokep] = useState("");
@@ -16,6 +18,7 @@ const Addstory = () => {
   const [karakterek, setKarakterek] = useState("");
   const [nyelv, setNyelv] = useState("");
   const [kategoria, setKategoria] = useState("");
+
   const [dropdownKategoria, setDropDownKategoria] = useState("");
   const [dropdownNyelv, setDropDownNyelv] = useState("");
   const url = "http://localhost:3500";
@@ -190,7 +193,6 @@ const Addstory = () => {
         const response = await adat.json();
         setIsLoading(false);
         setSuccess(response.msg);
-        navigate(`/storyiras/${cim}`);
       } else {
         const response = await adat.json();
         setIsLoading(false);

@@ -407,23 +407,6 @@ app.post("/addstory", async (req, res) => {
   }
 });
 
-app.post("/writestory/:cim", async (req, res) => {
-  try {
-    const { cim } = req.params.cim;
-    const story = req.body;
-    console.log(cim);
-    const writeStory = await Story.findOneAndUpdate(
-      { cim },
-      {
-        story: story,
-      }
-    );
-    res.status(200).json({ writeStory, msg: "Sikeres történet mentés!" });
-  } catch (error) {
-    res.status(500).json({ msg: error.message });
-  }
-});
-
 app.get("/story", async (req, res) => {
   try {
     const story = await Story.find({});
