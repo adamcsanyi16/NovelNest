@@ -6,7 +6,7 @@ $vilagoskek: #5756ae;
 $narancs: #f99417;
 $feher: #f5f5f5;
 $mainfont: "Martian Mono", monospace;
-$secondaryfont: 'Dancing Script', cursive;
+$secondaryfont: "Dancing Script", cursive;
 
 * {
   box-sizing: border-box;
@@ -17,6 +17,7 @@ $secondaryfont: 'Dancing Script', cursive;
 body {
   font-family: $mainfont;
   background-color: $feher;
+  user-select: none;
 }
 
 /*NAVBAR*/
