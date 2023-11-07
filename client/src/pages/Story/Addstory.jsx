@@ -120,19 +120,19 @@ const Addstory = () => {
     control: (provided, state) => ({
       ...provided,
       lineHeight: "28px",
-      border: state.isFocused ? "3px solid #dcd7c9" : "3px solid transparent",
-      borderBottomColor: "#dcd7c9",
+      border: state.isFocused ? "3px solid #f99417" : "3px solid transparent",
+      borderBottomColor: "#f99417",
       borderRadius: state.isFocused ? "1rem" : "0",
       outline: state.isFocused && "none",
       width: "200%",
       backgroundColor: "transparent",
-      borderColor: state.isFocused ? "#dcd7c9" : "transparent",
-      color: "#2c3639",
+      borderColor: state.isFocused ? "#f99417" : "transparent",
+      color: "#363062",
       transition:
         "border-color 0.3s cubic-bezier(0.645, 0.045, 0.355, 1), padding 0.3s cubic-bezier(0.645, 0.045, 0.355, 1)",
       transform: "scale(1)",
       "&:hover": {
-        borderColor: "#dcd7c9",
+        borderColor: "#f99417",
         borderRadius: "1rem",
       },
       fontFamily: '"Martian Mono", monospace',
@@ -140,7 +140,7 @@ const Addstory = () => {
     }),
     singleValue: (provided) => ({
       ...provided,
-      color: "#2c3639",
+      color: "#363062",
       fontFamily: '"Martian Mono", monospace',
       fontSize: "9px",
     }),
