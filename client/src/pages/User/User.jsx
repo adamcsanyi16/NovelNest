@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../hooks/useAuthContext";
-import { useParams } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 
 const User = () => {
   const url = "http://localhost:3500";
@@ -390,7 +389,6 @@ const User = () => {
               <button onClick={valtoztatas}>Mentés</button>
             </div>
           ))}
-
         {toggleKovetoim && (
           <div className="kovetesModal kovetokLista">
             <div className="kovetolistak-btnContainer">
@@ -440,6 +438,7 @@ const User = () => {
         <div className="storyContainer">
           {story.map((story) =>
             viewFelhasznalonev === felhasznalonev ? (
+              <div className="bookTarto">
               <div class="book-container">
                 <div class="book">
                   <div class="front-content">
@@ -448,8 +447,21 @@ const User = () => {
                   <div class="content">
                     <p class="heading">{story.cim}</p>
                     <p>{story.leiras}</p>
+                    <div className="storyIconsTarto">
+                    <div id="storyIconEdit" className="storyIcons">
+                      <Link to="/">
+                      <img id="story_edit" src="/images/story_edit.png" alt="" />
+                      </Link>
+                    </div>
+                    <div id="storyIconDelete" className="storyIcons">
+                      <Link to="/">
+                      <img id="story_delete" src="/images/story_delete.png" alt="" />
+                      </Link>
+                    </div>
+                    </div>
                   </div>
                 </div>
+              </div>
               </div>
             ) : (
               story.isPublished === true && (
