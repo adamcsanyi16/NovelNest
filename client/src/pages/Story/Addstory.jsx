@@ -343,7 +343,7 @@ const Addstory = () => {
           <p>Karakterek: {karakterek}</p>
           <p>Leírás: {leiras}</p>
           <img style={{height: 400, width: 300, objectFit: "cover",}} src={boritokep} alt="" />
-          <textarea type="text" onChange={(e) => SetStory(e.target.value)} />
+          <textarea type="text" onChange={(e) => SetStory(e.target.value)} id="storyText"/>
         <button onClick={tovabb}>Vissza</button>
         <button onClick={feldolgoz}>Mentés</button>
           {error && <div className="error">{error}</div>}

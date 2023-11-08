@@ -75,7 +75,6 @@ const User = () => {
 
       if (adat.ok) {
         const response = await adat.json();
-        console.log(response);
         setViewFelhasznalonev(response.viewFelhasznalonev);
         setViewEmail(response.viewEmail);
         setViewProfilkep(response.viewProfilkep);
@@ -89,7 +88,6 @@ const User = () => {
         setViewKoveteseimList(response.viewKoveteseimList);
         setViewKoveteseimListKep(response.viewKoveteseimListKep);
         setStory(response.story);
-        console.log(story);
       } else {
         const response = await adat.json();
         setError(response.msg);
@@ -145,7 +143,7 @@ const User = () => {
         setSuccess("Profil sikeresen mentve!");
         setInterval(() => {
           window.location.reload();
-        }, 1500);
+        }, 2000);
       } else {
         setIsLoading(false);
         const response = await response.json();
@@ -440,26 +438,26 @@ const User = () => {
         <div className="storyContainer">
           {story.map((story) =>
             viewFelhasznalonev === felhasznalonev ? (
-              <div class="book-container">
-                <div class="book">
-                  <div class="front-content">
+              <div className="book-container">
+                <div className="book">
+                  <div className="front-content">
                     <img src={story.boritokep} alt="" />
                   </div>
-                  <div class="content">
-                    <p class="heading">{story.cim}</p>
+                  <div className="content">
+                    <p className="heading">{story.cim}</p>
                     <p>{story.leiras}</p>
                   </div>
                 </div>
               </div>
             ) : (
               story.isPublished === true && (
-                <div class="book-container">
-                  <div class="book">
-                    <div class="front-content">
+                <div className="book-container">
+                  <div className="book">
+                    <div className="front-content">
                       <img src={story.boritokep} alt="" />
                     </div>
-                    <div class="content">
-                      <p class="heading">{story.cim}</p>
+                    <div className="content">
+                      <p className="heading">{story.cim}</p>
                       <p>{story.leiras}</p>
                     </div>
                   </div>

@@ -51,6 +51,7 @@ const Navbar = () => {
       ) : (
         <div className="main">
           <Link to="/storyfelvetel">Írj sztorit!</Link>
+          <Link to="/story">Történetek</Link>
         </div>
       )}
       {user && (

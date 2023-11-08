@@ -371,8 +371,16 @@ app.post("/kikovet", async (req, res) => {
 //STORY ROUTES
 app.post("/addstory", async (req, res) => {
   try {
-    const { cim, szerzo, boritokep, leiras, karakterek, nyelv, kategoria, story } =
-      req.body;
+    const {
+      cim,
+      szerzo,
+      boritokep,
+      leiras,
+      karakterek,
+      nyelv,
+      kategoria,
+      story,
+    } = req.body;
 
     const storyLetezik = await Story.findOne({ cim });
     if (storyLetezik) {
@@ -410,8 +418,18 @@ app.post("/addstory", async (req, res) => {
 
 app.get("/story", async (req, res) => {
   try {
-    const story = await Story.find({});
+    const story = await Story.find({ isPublished: true });
     res.status(200).json({ story });
+  } catch (error) {
+    res.status(500).json({ msg: "Valami hiba történt: " + error.message });
+  }
+});
+
+app.post("/onestory", async (req, res) => {
+  try {
+    const id = req.body.id;
+    const onestory = await Story.find({ _id: id });
+    res.status(200).json({ onestory });
   } catch (error) {
     res.status(500).json({ msg: "Valami hiba történt: " + error.message });
   }

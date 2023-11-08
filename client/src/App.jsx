@@ -14,6 +14,8 @@ import Registration from "./pages/Registration/Registration";
 import Addstory from "./pages/Story/Addstory";
 import User from "./pages/User/User";
 import Adddropdowns from "./pages/Adddropdowns/Adddropdowns";
+import Story from "./pages/Story/Story";
+import Onestory from "./pages/Story/Onestory";
 
 function App() {
   const { user } = useAuthContext;
@@ -35,6 +37,8 @@ function App() {
             }
           />
           <Route path="/storyfelvetel" element={<Addstory />} />
+          <Route path="/story" element={<Story />} />
+          <Route path="/story/:id" element={<Onestory />} />
           <Route path="/dropdownfelvetel" element={<Adddropdowns />} />
           <Route path="/profil/:felhasznalonevKuld" element={<User />} />
         </Routes>
