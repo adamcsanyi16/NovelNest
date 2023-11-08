@@ -75,8 +75,17 @@ const Onestory = () => {
   }, [user, id]);
   return (
     <div className="oneStory-container">
-      <h1>{cim}</h1>
-      <p>{szerzo}</p>
+      <div className="info">
+        <div className="boritokep">
+          <img src={boritokep} alt="" />
+        </div>
+        <h3>{szerzo}</h3>
+        <p>{karakterek}</p>
+      </div>
+      <div className="onlystory">
+        <h1>{cim}</h1>
+        <p>{story}</p>
+      </div>
     </div>
   );
 };

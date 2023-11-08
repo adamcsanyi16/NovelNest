@@ -38,6 +38,7 @@ const StoryCoverOptions = {
   transformation: [
     {
       height: 400,
+      width: 300,
       crop: "scale",
       quality: "auto",
       fetch_format: "auto",

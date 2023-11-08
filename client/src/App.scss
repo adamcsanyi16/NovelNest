@@ -416,6 +416,46 @@ form {
   justify-content: center;
 }
 
+/*ONESTORY*/
+.oneStory-container {
+  display: grid;
+  grid-template-columns: 40% 60%;
+  padding: 30px;
+}
+
+.info {
+  color: $sotetkek;
+  text-align: center;
+  margin: 10px;
+}
+
+.boritokep {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.boritokep img {
+  border: 3px solid $narancs;
+  width: 65%;
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+}
+
+.onlystory {
+  text-align: center;
+  color: $sotetkek;
+}
+
+.onlystory p {
+  padding: 30px;
+ line-height: 2;
+ text-align: justify;
+}
+
 /*ERROR AND SUCCESS*/
 .error {
   display: flex;
