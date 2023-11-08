@@ -7,11 +7,7 @@ const multer = require("multer");
 const jwt = require("jsonwebtoken");
 const validator = require("validator");
 const cloudinary = require("cloudinary").v2;
-const fs = require("fs");
-const path = require("path");
-const { promisify } = require("util");
 const requireAuth = require("./middlewares/requireAuth");
-const { count, log, error } = require("console");
 
 //MODELS
 const User = require("./models/User");
@@ -372,7 +368,7 @@ app.post("/kikovet", async (req, res) => {
       }
     );
   } catch (error) {
-    console.error(error);
+    console.log(error);
     res.status(500).json({ msg: error.message });
   }
 });
