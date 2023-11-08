@@ -75,6 +75,7 @@ const User = () => {
 
       if (adat.ok) {
         const response = await adat.json();
+        console.log(response);
         setViewFelhasznalonev(response.viewFelhasznalonev);
         setViewEmail(response.viewEmail);
         setViewProfilkep(response.viewProfilkep);
@@ -88,6 +89,7 @@ const User = () => {
         setViewKoveteseimList(response.viewKoveteseimList);
         setViewKoveteseimListKep(response.viewKoveteseimListKep);
         setStory(response.story);
+        setLegujabbStory(response.legujabbStory);
         console.log(story);
       } else {
         const response = await adat.json();
@@ -144,7 +146,7 @@ const User = () => {
         setSuccess("Profil sikeresen mentve!");
         setInterval(() => {
           window.location.reload();
-        }, 2000);
+        }, 1500);
       } else {
         setIsLoading(false);
         const response = await response.json();
@@ -357,8 +359,62 @@ const User = () => {
               {error && <div className="error">{error}</div>}
               {success && <div className="success">{success}</div>}
             </div>
-            <div className="profilomBio_container">
-              harmadik div
+            <div id="legujabbStoryTarto">
+              {viewFelhasznalonev === felhasznalonev && legujabbStory ? (
+                <div className="legujabbStory">
+                  <div id="legujabbStoryMutato" className="bookTarto">
+                    <div class="book-container">
+                      <div class="book">
+                        <div class="front-content">
+                          <img src={legujabbStory.boritokep} alt="" />
+                        </div>
+                        <div class="content">
+                          <p class="heading">{legujabbStory.cim}</p>
+                          <p>{legujabbStory.leiras}</p>
+                          <div className="storyIconsTarto">
+                            <div id="storyIconEdit" className="storyIcons">
+                              <Link to="/">
+                                <img
+                                  id="story_edit"
+                                  src="/images/story_edit.png"
+                                  alt=""
+                                />
+                              </Link>
+                            </div>
+                            <div id="storyIconDelete" className="storyIcons">
+                              <Link to="/">
+                                <img
+                                  id="story_delete"
+                                  src="/images/story_delete.png"
+                                  alt=""
+                                />
+                              </Link>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <h2>Legújabb sztorim</h2>
+                  </div>
+                </div>
+              ) : (
+                legujabbStory && (
+                  <div id="legujabbStoryMutato" className="legujabbStory">
+                    <div class="book-container">
+                      <div class="book">
+                        <div class="front-content">
+                          <img src={legujabbStory.boritokep} alt="" />
+                        </div>
+                        <div class="content">
+                          <p class="heading">{legujabbStory.cim}</p>
+                          <p>{legujabbStory.leiras}</p>
+                        </div>
+                      </div>
+                    </div>
+                    <h2>Legújabb sztorim</h2>
+                  </div>
+                )
+              )}
             </div>
           </div>
 
@@ -440,39 +496,48 @@ const User = () => {
         <div className="storyContainer">
           {story.map((story) =>
             viewFelhasznalonev === felhasznalonev ? (
-              <div class="book-container">
-                <div class="book">
-                  <div class="front-content">
-                    <img src={story.boritokep} alt="" />
-                  </div>
-                  <div className="content">
-                    <p className="heading">{story.cim}</p>
-                    <p>{story.leiras}</p>
-                    <div className="storyIconsTarto">
-                    <div id="storyIconEdit" className="storyIcons">
-                      <Link to="/">
-                      <img id="story_edit" src="/images/story_edit.png" alt="" />
-                      </Link>
+              <div className="bookTarto">
+                <div class="book-container">
+                  <div class="book">
+                    <div class="front-content">
+                      <img src={story.boritokep} alt="" />
                     </div>
-                    <div id="storyIconDelete" className="storyIcons">
-                      <Link to="/">
-                      <img id="story_delete" src="/images/story_delete.png" alt="" />
-                      </Link>
-                    </div>
+                    <div class="content">
+                      <p class="heading">{story.cim}</p>
+                      <p>{story.leiras}</p>
+                      <div className="storyIconsTarto">
+                        <div id="storyIconEdit" className="storyIcons">
+                          <Link to="/">
+                            <img
+                              id="story_edit"
+                              src="/images/story_edit.png"
+                              alt=""
+                            />
+                          </Link>
+                        </div>
+                        <div id="storyIconDelete" className="storyIcons">
+                          <Link to="/">
+                            <img
+                              id="story_delete"
+                              src="/images/story_delete.png"
+                              alt=""
+                            />
+                          </Link>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-              </div>
             ) : (
               story.isPublished === true && (
-                <div className="book-container">
-                  <div className="book">
-                    <div className="front-content">
+                <div class="book-container">
+                  <div class="book">
+                    <div class="front-content">
                       <img src={story.boritokep} alt="" />
                     </div>
-                    <div className="content">
-                      <p className="heading">{story.cim}</p>
+                    <div class="content">
+                      <p class="heading">{story.cim}</p>
                       <p>{story.leiras}</p>
                     </div>
                   </div>

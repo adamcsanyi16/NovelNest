@@ -257,6 +257,11 @@ form {
   border-radius: 10px;
 }
 
+#StoryBoritokepFeltolt {
+  object-fit: fill;
+  height: 400px;
+}
+
 .book-container {
   width: 300px;
   height: 400px;
@@ -333,17 +338,13 @@ form {
   opacity: 0;
 }
 
-#author {
-  margin-top: 30px;
-}
-
 #story_delete {
   height: 30px;
   width: 30px;
   border-radius: 0px;
 }
 
-#story_edit{
+#story_edit {
   height: 30px;
   width: 30px;
   border-radius: 0px;
@@ -562,6 +563,27 @@ form {
   width: 455px;
 }
 
+#legujabbStoryTarto {
+  margin-top: 130px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 180px;
+}
+
+#legujabbStoryMutato {
+  scale: 0.9;
+  text-align: center;
+}
+
+#legujabbStoryMutato h2 {
+  color: $feher;
+  margin-top: 10px;
+  background-color: $narancs;
+  border-width: 10px;
+  border-radius: 10px;
+}
+
 .profilomBio_container textarea {
   background: transparent;
   color: $feher;
@@ -595,7 +617,6 @@ form {
   grid-template-columns: 50% 50%;
 }
 
-
 #kovetoMutatoCim {
   margin-top: 10px;
   color: $feher;
@@ -625,6 +646,7 @@ body.active-modal {
   margin-right: auto;
   margin-top: 170px;
   box-shadow: 10px 10px 57px 0px rgba(0, 0, 0, 0.75);
+  z-index: 1;
 }
 
 .kovetesekLista {
@@ -637,6 +659,7 @@ body.active-modal {
   margin-right: auto;
   margin-top: 170px;
   box-shadow: 10px 10px 57px 0px rgba(0, 0, 0, 0.75);
+  z-index: 1;
 }
 
 .kovetesModal {
@@ -645,6 +668,7 @@ body.active-modal {
   height: 400px;
   margin-bottom: 20px;
   border-radius: 10px;
+  z-index: 1;
 }
 
 .kovetokMutato {
@@ -655,6 +679,7 @@ body.active-modal {
   height: 400px;
   width: 320px;
   border-radius: 10px;
+  z-index: 1;
 }
 
 .kovetokMutato::-webkit-scrollbar {

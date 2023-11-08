@@ -192,9 +192,13 @@ app.get(`/userinfo/:felhasznalonevKuld`, async (req, res) => {
 
       const story = await Story.find({ szerzo: felhasznalonev });
 
-      story.sort((a, b) => b.createdAt - a.createdAt);
-
-      const legujabbStory = story[0];
+      // legújabb sztori elküldése
+      const publicStory = await Story.find({
+        szerzo: felhasznalonev,
+        isPublished: true,
+      });
+      publicStory.sort((a, b) => b.createdAt - a.createdAt);
+      const legujabbStory = publicStory[0];
 
       res.status(200).send({
         viewFelhasznalonev: user.felhasznalonev,
