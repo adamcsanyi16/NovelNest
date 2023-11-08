@@ -29,6 +29,7 @@ const User = () => {
   const [toggleKoveteseim, SetToggleKoveteseim] = useState(false);
   const [kovetem, setKovetem] = useState("");
   const [story, setStory] = useState([]);
+  const [legujabbStory, setLegujabbStory] = useState("");
 
   //const navigate = useNavigate();
 
@@ -88,6 +89,7 @@ const User = () => {
         setViewKoveteseimList(response.viewKoveteseimList);
         setViewKoveteseimListKep(response.viewKoveteseimListKep);
         setStory(response.story);
+        setLegujabbStory(response.legujabbStory);
         console.log(story);
       } else {
         const response = await adat.json();
@@ -357,7 +359,9 @@ const User = () => {
               {error && <div className="error">{error}</div>}
               {success && <div className="success">{success}</div>}
             </div>
-            <div className="profilomBio_container">Harmadik div</div>
+            <div className="profilomBio_container">
+              harmadik div
+            </div>
           </div>
 
           <div className="boritokepFeltoltes">
