@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Martian+Mono:wght@100;200;300;400;500;600;700;800&display=swap");
 
-$sotetkek: #363062;
+$sotetkek: #363061;
 $vilagoskek: #5756ae;
 $narancs: #f99417;
 $feher: #f5f5f5;
@@ -312,7 +312,6 @@ form {
   padding: 20px;
   line-height: 1.5;
   border-radius: 5px;
-  pointer-events: none;
   transform: translateY(96%);
   transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
 }
@@ -336,6 +335,43 @@ form {
 
 #author {
   margin-top: 30px;
+}
+
+#story_delete {
+  height: 30px;
+  width: 30px;
+  border-radius: 0px;
+}
+
+#story_edit{
+  height: 30px;
+  width: 30px;
+  border-radius: 0px;
+}
+
+.storyIconsTarto {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.storyIcons {
+  width: 45px;
+  height: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 7px;
+  border-radius: 50%;
+}
+
+#storyIconDelete {
+  background-color: $feher;
+}
+
+#storyIconEdit {
+  background-color: $feher;
 }
 
 /*TEXTAREA*/
@@ -558,6 +594,7 @@ form {
   display: grid;
   grid-template-columns: 50% 50%;
 }
+
 
 #kovetoMutatoCim {
   margin-top: 10px;

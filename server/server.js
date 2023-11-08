@@ -192,6 +192,10 @@ app.get(`/userinfo/:felhasznalonevKuld`, async (req, res) => {
 
       const story = await Story.find({ szerzo: felhasznalonev });
 
+      story.sort((a, b) => b.createdAt - a.createdAt);
+
+      const legujabbStory = story[0];
+
       res.status(200).send({
         viewFelhasznalonev: user.felhasznalonev,
         viewEmail: user.email,
@@ -206,6 +210,7 @@ app.get(`/userinfo/:felhasznalonevKuld`, async (req, res) => {
         viewKovetoim: user.kovetoim.length,
         viewKoveteseim: user.koveteseim.length,
         story: story,
+        legujabbStory: legujabbStory,
       });
     } else {
       res.status(404).json({ msg: "A felhasználó nem található" });
