@@ -159,10 +159,9 @@ const Addstory = () => {
     }),
   };
 
-
   const tovabb = () => {
-    setToggleForm(!toggleForm)
-  }
+    setToggleForm(!toggleForm);
+  };
 
   const feldolgoz = (event) => {
     event.preventDefault();
@@ -212,7 +211,6 @@ const Addstory = () => {
     }
   };
 
-
   function displayImage(e) {
     const fileInput = e.target;
 
@@ -235,122 +233,121 @@ const Addstory = () => {
     <div className="storyfelv">
       {!toggleForm ? (
         <div className="form-container">
-        <form onSubmit={feldolgoz} className="storyform" id="file-storyform">
-          <div class="card">
-            <div class="card__content">
-              <input
-                value={""}
-                type="file"
-                accept="image/*"
-                className="file-input"
-                onChange={(e) => displayImage(e)}
-              />
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="1em"
-                height="1em"
-                stroke-linejoin="round"
-                stroke-linecap="round"
-                viewBox="0 0 24 24"
-                stroke-width="2"
-                fill="none"
-                stroke="currentColor"
-                className="icon"
-              >
-                <polyline points="16 16 12 12 8 16"></polyline>
-                <line y2="21" x2="12" y1="12" x1="12"></line>
-                <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"></path>
-                <polyline points="16 16 12 12 8 16"></polyline>
-              </svg>
-              {boritokep && <img src={boritokep} alt="Uploaded Image" />}
+          <form onSubmit={feldolgoz} className="storyform" id="file-storyform">
+            <div class="card">
+              <div class="card__content">
+                <input
+                  value={""}
+                  type="file"
+                  accept="image/*"
+                  className="file-input"
+                  onChange={(e) => displayImage(e)}
+                />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="1em"
+                  height="1em"
+                  stroke-linejoin="round"
+                  stroke-linecap="round"
+                  viewBox="0 0 24 24"
+                  stroke-width="2"
+                  fill="none"
+                  stroke="currentColor"
+                  className="icon"
+                >
+                  <polyline points="16 16 12 12 8 16"></polyline>
+                  <line y2="21" x2="12" y1="12" x1="12"></line>
+                  <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"></path>
+                  <polyline points="16 16 12 12 8 16"></polyline>
+                </svg>
+                {boritokep && <img src={boritokep} alt="Uploaded Image" />}
+              </div>
+              <span>Ajánlott képméret 300x400px</span>
+              <button id="reset" onClick={resetPic}>
+                Töröl
+              </button>
             </div>
-            <span>Ajánlott képméret 300x400px</span>
-            <button id="reset" onClick={resetPic}>
-              Töröl
-            </button>
-          </div>
-        </form>
-        <form onSubmit={feldolgoz} className="storyform">
-          <div className="form-row">
-            <input
-              value={cim}
-              type="text"
-              placeholder="Történet címe"
-              className="input"
-              onChange={(e) => setCim(e.target.value)}
-            />
-          </div>
-          <div className="form-row">
-            <input
-              type="text"
-              placeholder="Szerző"
-              value={szerzo}
-              className="input"
-              readOnly
-              onChange={(e) => setSzerzo(e.target.value)}
-            />
-          </div>
-          <div className="form-row" id="select-row">
-            <Select
-              defaultInputValue={kategoria}
-              className="custom-select"
-              placeholder="Kategória"
-              styles={selectStyles}
-              options={dropdownKategoria}
-              onChange={handleDropdownCategory}
-            />
-            <Select
-              defaultInputValue={nyelv}
-              className="custom-select"
-              placeholder="Nyelv"
-              styles={selectStyles}
-              options={dropdownNyelv}
-              onChange={handleDropdownLanguage}
-            />
-          </div>
-          <div className="form-row">
-            <input
-              value={karakterek}
-              type="text"
-              placeholder="Karakterek"
-              className="input"
-              onChange={(e) => setKarakterek(e.target.value)}
-            />
-          </div>
-          <div className="form-row">
-            <textarea
-              value={leiras}
-              type="text"
-              placeholder="Írd le röviden miről fog szólni a történeted!"
-              className="input"
-              id="leirasText"
-              onChange={(e) => setLeiras(e.target.value)}
-            />
-          </div>
-          <div className="button-row">
-            <button disabled={isLoading} onClick={tovabb}>
-              Tovább
-            </button>
-          </div>
-        </form>
-      </div>
+          </form>
+          <form onSubmit={feldolgoz} className="storyform">
+            <div className="form-row">
+              <input
+                value={cim}
+                type="text"
+                placeholder="Történet címe"
+                className="input"
+                onChange={(e) => setCim(e.target.value)}
+              />
+            </div>
+            <div className="form-row">
+              <input
+                type="text"
+                placeholder="Szerző"
+                value={szerzo}
+                className="input"
+                readOnly
+                onChange={(e) => setSzerzo(e.target.value)}
+              />
+            </div>
+            <div className="form-row" id="select-row">
+              <Select
+                defaultInputValue={kategoria}
+                className="custom-select"
+                placeholder="Kategória"
+                styles={selectStyles}
+                options={dropdownKategoria}
+                onChange={handleDropdownCategory}
+              />
+              <Select
+                defaultInputValue={nyelv}
+                className="custom-select"
+                placeholder="Nyelv"
+                styles={selectStyles}
+                options={dropdownNyelv}
+                onChange={handleDropdownLanguage}
+              />
+            </div>
+            <div className="form-row">
+              <input
+                value={karakterek}
+                type="text"
+                placeholder="Karakterek"
+                className="input"
+                onChange={(e) => setKarakterek(e.target.value)}
+              />
+            </div>
+            <div className="form-row">
+              <textarea
+                value={leiras}
+                type="text"
+                placeholder="Írd le röviden miről fog szólni a történeted!"
+                className="input"
+                id="leirasText"
+                onChange={(e) => setLeiras(e.target.value)}
+              />
+            </div>
+            <div className="button-row">
+              <button disabled={isLoading} onClick={tovabb}>
+                Tovább
+              </button>
+            </div>
+          </form>
+        </div>
       ) : (
-        <div>
-          <p>Cím: {cim}</p>
-          <p>Szerző: {szerzo}</p>
-          <p>Kategória: {kategoria}</p>
-          <p>Nyelv: {nyelv}</p>
-          <p>Karakterek: {karakterek}</p>
-          <p>Leírás: {leiras}</p>
-          <img style={{height: 400, width: 300, objectFit: "cover",}} src={boritokep} alt="" />
-          <textarea type="text" onChange={(e) => SetStory(e.target.value)} id="storyText"/>
-        <button onClick={tovabb}>Vissza</button>
-        <button onClick={feldolgoz}>Mentés</button>
+        <div className="addstory-container">         
+          <textarea
+            type="text"
+            onChange={(e) => SetStory(e.target.value)}
+            className="input"
+            id="storyText"
+          />
+          <div className="buttons">
+            <button onClick={tovabb}>Vissza</button>
+            <button onClick={feldolgoz}>Mentés</button>
+          </div>
           {error && <div className="error">{error}</div>}
           {success && <div className="success">{success}</div>}
         </div>
-      ) }
-    
+      )}
     </div>
   );
 };

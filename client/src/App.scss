@@ -209,6 +209,11 @@ form {
   cursor: pointer !important;
 }
 
+/*SELECT*/
+.custom-select path {
+  color: $vilagoskek;
+}
+
 /*CARDS*/
 .card {
   width: 300px;
@@ -384,9 +389,8 @@ form {
 }
 
 #storyText {
-  width: 100%;
-  height: 100%;
-  resize: none;
+  width: 50%;
+  height: 400px;
 }
 
 /*STORY*/
