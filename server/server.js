@@ -9,6 +9,13 @@ const validator = require("validator");
 const cloudinary = require("cloudinary").v2;
 const requireAuth = require("./middlewares/requireAuth");
 
+//SOCKET.IO
+const { createServer } = require("http");
+const { Server } = require("socket.io");
+const http = require("http");
+const server = createServer(app);
+const io = new Server(server);
+
 //MODELS
 const User = require("./models/User");
 const Story = require("./models/Story");
@@ -81,6 +88,25 @@ app.use(express.urlencoded({ extended: false }));
 //ROUTES
 app.get("/", (req, res) => {
   res.send("Hello World");
+});
+
+//SOCKET.IO COMMENTS
+io.on("connection", (socket) => {
+  socket.emit("hozzaszolasError", "sajt");
+  socket.on("ujhozzaszolas", async (id, hozzaszolas, felhasznalonev) => {
+    console.log(id, hozzaszolas, felhasznalonev);
+    try {
+      const ujkomment = `${felhasznalonev}, ${hozzaszolas}`;
+      const story = await Story.findOneAndUpdate(
+        { id },
+        {
+          $push: { comments: ujkomment },
+        }
+      );
+    } catch (error) {
+      socket.emit("hozzaszolasError", { msg: error.message });
+    }
+  });
 });
 
 //REGISTRATION
