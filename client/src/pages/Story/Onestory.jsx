@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useAuthContext } from "../../hooks/useAuthContext";
 
 const Onestory = () => {
@@ -79,7 +79,9 @@ const Onestory = () => {
         <div className="boritokep">
           <img src={boritokep} alt="" />
         </div>
-        <h3>{szerzo}</h3>
+        <Link to={`/profil/${szerzo}`}>
+          <h3>{szerzo}</h3>
+        </Link>
         <p>{karakterek}</p>
       </div>
       <div className="onlystory">

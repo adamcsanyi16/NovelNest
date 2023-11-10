@@ -427,6 +427,11 @@ form {
   padding: 30px;
 }
 
+.oneStory-container a {
+  text-decoration: none;
+  color: $sotetkek;
+}
+
 .info {
   color: $sotetkek;
   text-align: center;
@@ -456,8 +461,8 @@ form {
 
 .onlystory p {
   padding: 30px;
- line-height: 2;
- text-align: justify;
+  line-height: 2;
+  text-align: justify;
 }
 
 /*ERROR AND SUCCESS*/
@@ -569,6 +574,7 @@ form {
 .profilomProfil {
   border-radius: 50%;
   height: 120px;
+  width: 120px;
 }
 
 #changeEmail {
