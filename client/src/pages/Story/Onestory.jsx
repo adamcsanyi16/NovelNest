@@ -5,11 +5,20 @@ import { io } from "socket.io-client";
 
 const Onestory = () => {
   const url = "http://localhost:3500";
-  const socket = io();
   const { user } = useAuthContext();
   const { id } = useParams();
   const [felhasznalonev, setFelhasznalonev] = useState("");
 
+  const userLocalStorage = JSON.parse(localStorage.getItem("user"));
+  const token = userLocalStorage.token;
+  console.log(token);
+  const socket = io.connect("http://localhost:3500", {
+    query: { token: token },
+  });
+
+  socket.on("connect_error", (error) => {
+    console.error("Socket.io connection error:", error);
+  });
   const [cim, setCim] = useState("");
   const [szerzo, setSzerzo] = useState("");
   const [boritokep, setBoritokep] = useState("");
