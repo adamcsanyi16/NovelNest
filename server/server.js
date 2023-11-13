@@ -78,6 +78,39 @@ app.use(cors());
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: false }));
 
+//SOCKET.IO
+const http = require("http");
+const { Server } = require("socket.io");
+const server = http.createServer(app);
+
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
+  },
+  transports: ["websocket", "polling"],
+});
+
+const isValidToken = (token) => {
+  try {
+    const decoded = jwt.verify(token, process.env.SECRET);
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
+
+io.use((socket, next) => {
+  const token = socket.handshake.auth.token;
+
+  // Perform token validation logic using the isValidToken function
+  if (token && isValidToken(token)) {
+    return next();
+  } else {
+    return next(new Error("Authentication error: Invalid token"));
+  }
+});
+
 //ROUTES
 app.get("/", (req, res) => {
   res.send("Hello World");

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useAuthContext } from "../../hooks/useAuthContext";
+import { io } from "socket.io-client";
 
 const Onestory = () => {
   const url = "http://localhost:3500";
@@ -8,6 +9,16 @@ const Onestory = () => {
   const { id } = useParams();
   const [felhasznalonev, setFelhasznalonev] = useState("");
 
+  const userLocalStorage = JSON.parse(localStorage.getItem("user"));
+  const token = userLocalStorage.token;
+  console.log(token);
+  const socket = io.connect("http://localhost:3500", {
+    query: { token: token },
+  });
+
+  socket.on("connect_error", (error) => {
+    console.error("Socket.io connection error:", error);
+  });
   const [cim, setCim] = useState("");
   const [szerzo, setSzerzo] = useState("");
   const [boritokep, setBoritokep] = useState("");
@@ -16,6 +27,7 @@ const Onestory = () => {
   const [nyelv, setNyelv] = useState("");
   const [kategoria, setKategoria] = useState("");
   const [story, SetStory] = useState("");
+  const [hozzaszolas, SetHozzaszolas] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -73,6 +85,17 @@ const Onestory = () => {
 
     fetchData();
   }, [user, id]);
+
+  const hozzaszolasKuld = () => {
+    console.log(hozzaszolas);
+    socket.emit("ujhozzaszolas", id, hozzaszolas, felhasznalonev);
+  };
+
+  socket.on("hozzaszolasError", (error) => {
+    console.log("Error during hozzaszolas:", sajt);
+    // Handle the error on the client side
+  });
+
   return (
     <div className="oneStory-container">
       <div className="info">
@@ -87,6 +110,17 @@ const Onestory = () => {
       <div className="onlystory">
         <h1>{cim}</h1>
         <p>{story}</p>
+        <div className="comments">
+          <h3>Hozzászólások</h3>
+          <input
+            className="input"
+            id="commentInput"
+            type="text"
+            placeholder="Hozzászólás írása"
+            onChange={(e) => SetHozzaszolas(e.target.value)}
+          />
+          <button onClick={hozzaszolasKuld}>Yaay</button>
+        </div>
       </div>
     </div>
   );

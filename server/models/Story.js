@@ -41,6 +41,9 @@ const storySchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    comments: {
+      type: Array,
+    },
   },
   { timestamps: true }
 );
