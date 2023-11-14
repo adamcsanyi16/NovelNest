@@ -1,17 +1,19 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import Select from "react-select";
 
-const Addstory = () => {
+const Updatestory = () => {
+  const url = "http://localhost:3500";
   const { user } = useAuthContext();
+  const { id } = useParams();
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [toggleForm, setToggleForm] = useState(false);
   const [published, setPublished] = useState(false);
-
   const [felhasznalonev, setFelhasznalonev] = useState("");
+
   const [cim, setCim] = useState("");
   const [szerzo, setSzerzo] = useState("");
   const [boritokep, setBoritokep] = useState("");
@@ -23,9 +25,6 @@ const Addstory = () => {
 
   const [dropdownKategoria, setDropDownKategoria] = useState("");
   const [dropdownNyelv, setDropDownNyelv] = useState("");
-  const url = "http://localhost:3500";
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,7 +41,6 @@ const Addstory = () => {
           const data = await response.json();
           const isAdmin = data.isAdmin;
           const felhasznalonev = data.felhasznalonev;
-          setSzerzo(felhasznalonev);
           setFelhasznalonev(felhasznalonev);
         }
       } catch (error) {
@@ -52,6 +50,48 @@ const Addstory = () => {
 
     fetchData();
   }, [user, felhasznalonev]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(url + "/onestory", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+          body: JSON.stringify({ id }),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          const onestory = data.onestory[0];
+          setCim(onestory.cim);
+          setSzerzo(onestory.szerzo);
+          setBoritokep(onestory.boritokep);
+          setKarakterek(onestory.karakterek);
+          //setKategoria(onestory.kategoria);
+          //setNyelv(onestory.nyelv);
+          setLeiras(onestory.leiras);
+          SetStory(onestory.story);
+
+          if (dropdownKategoria.length > 0 && dropdownNyelv.length > 0) {
+            setKategoria(onestory.kategoria);
+            setNyelv(onestory.nyelv);
+          }
+
+          setSuccess(data.msg);
+        } else {
+          const data = await response.json();
+          setError(data.msg);
+        }
+      } catch (error) {
+        console.log("Fetch error:", error);
+      }
+    };
+
+    fetchData();
+  }, [user, id, dropdownKategoria, dropdownNyelv]);
 
   useEffect(() => {
     const fetchDropdownCategory = async () => {
@@ -163,7 +203,7 @@ const Addstory = () => {
     setToggleForm(!toggleForm);
   };
 
-  const feldolgoz = (event) => {
+  const modosit = (event) => {
     event.preventDefault();
 
     if (!user) {
@@ -214,7 +254,7 @@ const Addstory = () => {
 
   const publikalas = (e) => {
     setPublished(true);
-    feldolgoz(e);
+    modosit(e);
   };
 
   function displayImage(e) {
@@ -236,10 +276,10 @@ const Addstory = () => {
   }
 
   return (
-    <div className="storyfelv">
+    <div className="updateStory-container">
       {!toggleForm ? (
         <div className="form-container">
-          <form onSubmit={feldolgoz} className="storyform" id="file-storyform">
+          <form onSubmit={modosit} className="storyform" id="file-storyform">
             <div class="card">
               <div class="card__content">
                 <input
@@ -274,7 +314,7 @@ const Addstory = () => {
               </button>
             </div>
           </form>
-          <form onSubmit={feldolgoz} className="storyform">
+          <form onSubmit={modosit} className="storyform">
             <div className="form-row">
               <input
                 value={cim}
@@ -343,6 +383,7 @@ const Addstory = () => {
           <div className="textarea">
             <textarea
               type="text"
+              value={story}
               onChange={(e) => SetStory(e.target.value)}
               className="input"
               id="storyText"
@@ -350,8 +391,8 @@ const Addstory = () => {
           </div>
           <div className="buttons">
             <button onClick={tovabb}>Vissza</button>
-            <button onClick={feldolgoz}>Mentés</button>
-            <button onClick={publikalas}>Mentés és publikálás</button>
+            <button onClick={modosit}>Mentés</button>
+            <button onClick={"publikalas"}>Mentés és publikálás</button>
           </div>
           {error && <div className="error">{error}</div>}
           {success && <div className="success">{success}</div>}
@@ -361,4 +402,4 @@ const Addstory = () => {
   );
 };
 
-export default Addstory;
+export default Updatestory;

@@ -7,7 +7,19 @@ const Onestory = () => {
   const url = "http://localhost:3500";
   const { user } = useAuthContext();
   const { id } = useParams();
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
   const [felhasznalonev, setFelhasznalonev] = useState("");
+
+  const [cim, setCim] = useState("");
+  const [szerzo, setSzerzo] = useState("");
+  const [boritokep, setBoritokep] = useState("");
+  const [leiras, setLeiras] = useState("");
+  const [karakterek, setKarakterek] = useState("");
+  const [nyelv, setNyelv] = useState("");
+  const [kategoria, setKategoria] = useState("");
+  const [story, SetStory] = useState("");
+  const [hozzaszolas, SetHozzaszolas] = useState("");
 
   const userLocalStorage = JSON.parse(localStorage.getItem("user"));
   const token = userLocalStorage.token;
@@ -19,15 +31,6 @@ const Onestory = () => {
   socket.on("connect_error", (error) => {
     console.error("Socket.io connection error:", error);
   });
-  const [cim, setCim] = useState("");
-  const [szerzo, setSzerzo] = useState("");
-  const [boritokep, setBoritokep] = useState("");
-  const [leiras, setLeiras] = useState("");
-  const [karakterek, setKarakterek] = useState("");
-  const [nyelv, setNyelv] = useState("");
-  const [kategoria, setKategoria] = useState("");
-  const [story, SetStory] = useState("");
-  const [hozzaszolas, SetHozzaszolas] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {

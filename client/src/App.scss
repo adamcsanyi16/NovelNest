@@ -326,9 +326,13 @@ form {
   transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
+.content .leiras {
+  font-size: 15px;
+}
+
 .book .content .heading {
-  font-size: 32px;
-  font-weight: 700;
+  font-size: 20px;
+  font-weight: 1000;
 }
 
 .book:hover .content {
@@ -391,6 +395,31 @@ form {
 #storyText {
   width: 50%;
   height: 400px;
+}
+
+/*ADDSTORY*/
+.textarea {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.addstory-container .buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.addstory-container textarea {
+  scale: 1;
+  font-size: 12px;
+}
+
+.addstory-container .input:focus,
+.addstory-container .input:hover {
+  scale: 1;
 }
 
 /*STORY*/

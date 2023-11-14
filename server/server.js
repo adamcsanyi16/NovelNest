@@ -419,6 +419,7 @@ app.post("/addstory", async (req, res) => {
       nyelv,
       kategoria,
       story,
+      published,
     } = req.body;
 
     const storyLetezik = await Story.findOne({ cim });
@@ -435,17 +436,32 @@ app.post("/addstory", async (req, res) => {
             console.log(error);
           }
 
-          const newStory = new Story({
-            cim: cim,
-            szerzo: szerzo,
-            boritokep: result.secure_url,
-            leiras: leiras,
-            karakterek: karakterek,
-            nyelv: nyelv,
-            kategoria: kategoria,
-            story: story,
-          });
-          await newStory.save();
+          if (published) {
+            const newStory = new Story({
+              cim: cim,
+              szerzo: szerzo,
+              boritokep: result.secure_url,
+              leiras: leiras,
+              karakterek: karakterek,
+              nyelv: nyelv,
+              kategoria: kategoria,
+              story: story,
+              isPublished: published,
+            });
+            await newStory.save();
+          } else {
+            const newStory = new Story({
+              cim: cim,
+              szerzo: szerzo,
+              boritokep: result.secure_url,
+              leiras: leiras,
+              karakterek: karakterek,
+              nyelv: nyelv,
+              kategoria: kategoria,
+              story: story,
+            });
+            await newStory.save();
+          }
           res.status(200).json({ msg: "Sikeres történet létrehozás!" });
         }
       );
