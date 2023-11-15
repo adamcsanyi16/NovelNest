@@ -188,6 +188,21 @@ const Addstory = () => {
         setError(null);
         setSuccess(null);
 
+        if (
+          cim.trim() === "" ||
+          szerzo.trim() === "" ||
+          boritokep.trim() === "" ||
+          leiras.trim() === "" ||
+          karakterek.trim() === "" ||
+          nyelv.trim() === "" ||
+          kategoria.trim() === "" ||
+          story.trim() === ""
+        ) {
+          setError("Nem maradhat üres cella!");
+          setIsLoading(false);
+          return;
+        }
+
         const adat = await fetch(url + "/addstory", {
           method: "POST",
           headers: {
@@ -323,6 +338,7 @@ const Addstory = () => {
             </div>
             <div className="form-row">
               <textarea
+                maxLength="150"
                 value={leiras}
                 type="text"
                 placeholder="Írd le röviden miről fog szólni a történeted!"

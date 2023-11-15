@@ -60,25 +60,30 @@ const Story = () => {
   }, [user, felhasznalonev]);
 
   return (
-    <div className="storyContainer">
-      {osszesStory.map((story) => (
-        <Link to={`/story/${story._id}`}>
-          <div className="book-container" key={story._id}>
-            <div className="book">
-              <div className="front-content">
-                <img src={story.boritokep} alt="" />
-              </div>
-              <div className="content">
-                <p className="heading">{story.cim}</p>
-                <p>{story.leiras}</p>
-                <div id="author">
-                  <h3>{story.szerzo}</h3>
+    <div className="storyWrap">
+      <div className="sortingContainer"></div>
+      <div className="storyContainer">
+        {osszesStory.map((story) => (
+          <div className="storyLink">
+            <Link to={`/story/${story._id}`}>
+              <div className="book-container" key={story._id}>
+                <div className="book">
+                  <div className="front-content">
+                    <img src={story.boritokep} alt="" />
+                  </div>
+                  <div className="content">
+                    <p className="heading">{story.cim}</p>
+                    <p>{story.leiras}</p>
+                    <div id="author">
+                      <h3>{story.szerzo}</h3>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
+            </Link>
           </div>
-        </Link>
-      ))}
+        ))}
+      </div>
     </div>
   );
 };

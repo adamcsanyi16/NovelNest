@@ -487,11 +487,13 @@ app.post("/updatestory", async (req, res) => {
       story,
       published,
     } = req.body;
+    console.log(published);
 
     const updatedStory = await Story.findOne({ _id: paramId });
     const boritokepNev = updatedStory.boritokepNev;
+    const boritokepLink = updatedStory.boritokep;
 
-    if (boritokep) {
+    if (boritokep !== boritokepLink) {
       cloudinary.uploader.upload(
         boritokep,
         StoryCoverOptions,
@@ -509,6 +511,7 @@ app.post("/updatestory", async (req, res) => {
               .then(() => console.log("Sikeres borítókép törlés"))
               .catch((error) => console.log(error));
           }
+          console.log(published);
           if (published) {
             await Story.findOneAndUpdate(
               { _id: paramId },
@@ -544,6 +547,36 @@ app.post("/updatestory", async (req, res) => {
           res.status(200).json({ msg: "Sikeres történet módosítás!" });
         }
       );
+    } else {
+      if (published) {
+        await Story.findOneAndUpdate(
+          { _id: paramId },
+          {
+            cim: cim,
+            szerzo: szerzo,
+            leiras: leiras,
+            karakterek: karakterek,
+            nyelv: nyelv,
+            kategoria: kategoria,
+            story: story,
+            isPublished: published,
+          }
+        );
+      } else {
+        await Story.findOneAndUpdate(
+          { _id: paramId },
+          {
+            cim: cim,
+            szerzo: szerzo,
+            leiras: leiras,
+            karakterek: karakterek,
+            nyelv: nyelv,
+            kategoria: kategoria,
+            story: story,
+          }
+        );
+      }
+      res.status(200).json({ msg: "Sikeres történet módosítás!" });
     }
   } catch (error) {
     res.status(500).json({ msg: error.message });

@@ -24,6 +24,10 @@ img {
   -webkit-user-drag: none;
 }
 
+.App {
+  height: 100vh;
+}
+
 /*NAVBAR*/
 .navbar {
   margin-top: 10px;
@@ -254,6 +258,7 @@ form {
   padding: 30px;
   display: grid;
   grid-template-columns: 25% 25% 25% 25%;
+  overflow-y: auto;
 }
 
 .storyContainer img {
@@ -265,6 +270,28 @@ form {
 #StoryBoritokepFeltolt {
   object-fit: fill;
   height: 400px;
+}
+
+.storyLink {
+  margin: auto;
+}
+
+.storyWrap .storyLink {
+  scale: 0.9;
+}
+
+.storyWrap,
+.sortingContainer {
+  overflow-y: auto;
+}
+
+.storyWrap {
+  display: flex;
+  flex: 1;
+}
+
+.sortingContainer {
+  flex-basis: 250px;
 }
 
 .book-container {

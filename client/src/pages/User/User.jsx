@@ -500,8 +500,8 @@ const User = () => {
         <div className="storyContainer">
           {story.map((story) =>
             viewFelhasznalonev === felhasznalonev ? (
-              <Link to={`/story/${story._id}`}>
-                <div className="bookTarto">
+              <div className="storyLink">
+                <Link to={`/story/${story._id}`}>
                   <div className="book-container">
                     <div className="book">
                       <div className="front-content">
@@ -533,23 +533,25 @@ const User = () => {
                       </div>
                     </div>
                   </div>
-                </div>
-              </Link>
+                </Link>
+              </div>
             ) : (
               story.isPublished === true && (
-                <Link to={`/story/${story._id}`}>
-                  <div className="book-container">
-                    <div className="book">
-                      <div className="front-content">
-                        <img src={story.boritokep} alt="" />
-                      </div>
-                      <div className="content">
-                        <p className="heading">{story.cim}</p>
-                        <p className="leiras">{story.leiras}</p>
+                <div className="storyLink">
+                  <Link to={`/story/${story._id}`}>
+                    <div className="book-container">
+                      <div className="book">
+                        <div className="front-content">
+                          <img src={story.boritokep} alt="" />
+                        </div>
+                        <div className="content">
+                          <p className="heading">{story.cim}</p>
+                          <p className="leiras">{story.leiras}</p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </Link>
+                  </Link>
+                </div>
               )
             )
           )}

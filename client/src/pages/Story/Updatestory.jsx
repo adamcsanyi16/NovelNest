@@ -7,7 +7,7 @@ const Updatestory = () => {
   const url = "http://localhost:3500";
   const { user } = useAuthContext();
   const { id } = useParams();
-  const paramId = id
+  const paramId = id;
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -232,6 +232,21 @@ const Updatestory = () => {
         setError(null);
         setSuccess(null);
 
+        if (
+          cim.trim() === "" ||
+          szerzo.trim() === "" ||
+          boritokep.trim() === "" ||
+          leiras.trim() === "" ||
+          karakterek.trim() === "" ||
+          nyelv.trim() === "" ||
+          kategoria.trim() === "" ||
+          story.trim() === ""
+        ) {
+          setError("Nem maradhat üres cella!");
+          setIsLoading(false);
+          return;
+        }
+
         const adat = await fetch(url + "/updatestory", {
           method: "POST",
           headers: {
@@ -256,8 +271,15 @@ const Updatestory = () => {
     }
   };
 
-  const publikalas = (e) => {
-    setPublished(true);
+  const publikalas = async (e) => {
+    await setPublished(true);
+    console.log(published);
+    modosit(e);
+  };
+
+  const unPublikalas = (e) => {
+    setPublished(false);
+    console.log(published);
     modosit(e);
   };
 
@@ -397,6 +419,7 @@ const Updatestory = () => {
             <div className="buttons">
               <button onClick={tovabb}>Vissza</button>
               <button onClick={publikalas}>Mentés</button>
+              <button onClick={unPublikalas}>Publikálás megszüntetése</button>
             </div>
           ) : (
             <div className="buttons">
