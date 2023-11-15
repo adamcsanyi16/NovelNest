@@ -7,6 +7,7 @@ const Updatestory = () => {
   const url = "http://localhost:3500";
   const { user } = useAuthContext();
   const { id } = useParams();
+  const paramId = id
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -21,7 +22,8 @@ const Updatestory = () => {
   const [karakterek, setKarakterek] = useState("");
   const [nyelv, setNyelv] = useState("");
   const [kategoria, setKategoria] = useState("");
-  const [story, SetStory] = useState("");
+  const [story, setStory] = useState("");
+  const [IsPublished, setIsPublished] = useState(false);
 
   const [dropdownKategoria, setDropDownKategoria] = useState("");
   const [dropdownNyelv, setDropDownNyelv] = useState("");
@@ -73,7 +75,8 @@ const Updatestory = () => {
           //setKategoria(onestory.kategoria);
           //setNyelv(onestory.nyelv);
           setLeiras(onestory.leiras);
-          SetStory(onestory.story);
+          setStory(onestory.story);
+          setIsPublished(onestory.isPublished);
 
           if (dropdownKategoria.length > 0 && dropdownNyelv.length > 0) {
             setKategoria(onestory.kategoria);
@@ -212,6 +215,7 @@ const Updatestory = () => {
     }
 
     const adatok = {
+      paramId,
       cim,
       szerzo,
       boritokep,
@@ -228,7 +232,7 @@ const Updatestory = () => {
         setError(null);
         setSuccess(null);
 
-        const adat = await fetch(url + "/addstory", {
+        const adat = await fetch(url + "/updatestory", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -384,16 +388,23 @@ const Updatestory = () => {
             <textarea
               type="text"
               value={story}
-              onChange={(e) => SetStory(e.target.value)}
+              onChange={(e) => setStory(e.target.value)}
               className="input"
               id="storyText"
             />
           </div>
-          <div className="buttons">
-            <button onClick={tovabb}>Vissza</button>
-            <button onClick={modosit}>Mentés</button>
-            <button onClick={"publikalas"}>Mentés és publikálás</button>
-          </div>
+          {IsPublished ? (
+            <div className="buttons">
+              <button onClick={tovabb}>Vissza</button>
+              <button onClick={publikalas}>Mentés</button>
+            </div>
+          ) : (
+            <div className="buttons">
+              <button onClick={tovabb}>Vissza</button>
+              <button onClick={modosit}>Mentés</button>
+              <button onClick={publikalas}>Mentés és publikálás</button>
+            </div>
+          )}
           {error && <div className="error">{error}</div>}
           {success && <div className="success">{success}</div>}
         </div>

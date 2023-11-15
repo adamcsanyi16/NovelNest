@@ -441,6 +441,7 @@ app.post("/addstory", async (req, res) => {
               cim: cim,
               szerzo: szerzo,
               boritokep: result.secure_url,
+              boritokepNev: result.public_id,
               leiras: leiras,
               karakterek: karakterek,
               nyelv: nyelv,
@@ -454,6 +455,7 @@ app.post("/addstory", async (req, res) => {
               cim: cim,
               szerzo: szerzo,
               boritokep: result.secure_url,
+              boritokepNev: result.public_id,
               leiras: leiras,
               karakterek: karakterek,
               nyelv: nyelv,
@@ -463,6 +465,83 @@ app.post("/addstory", async (req, res) => {
             await newStory.save();
           }
           res.status(200).json({ msg: "Sikeres történet létrehozás!" });
+        }
+      );
+    }
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+});
+
+app.post("/updatestory", async (req, res) => {
+  try {
+    const {
+      paramId,
+      cim,
+      szerzo,
+      boritokep,
+      leiras,
+      karakterek,
+      nyelv,
+      kategoria,
+      story,
+      published,
+    } = req.body;
+
+    const updatedStory = await Story.findOne({ _id: paramId });
+    const boritokepNev = updatedStory.boritokepNev;
+
+    if (boritokep) {
+      cloudinary.uploader.upload(
+        boritokep,
+        StoryCoverOptions,
+        async (error, result) => {
+          if (error) {
+            console.log(error);
+          }
+
+          if (boritokepNev !== "") {
+            cloudinary.api
+              .delete_resources([boritokepNev], {
+                resource_type: "image",
+                invalidate: true,
+              })
+              .then(() => console.log("Sikeres borítókép törlés"))
+              .catch((error) => console.log(error));
+          }
+          if (published) {
+            await Story.findOneAndUpdate(
+              { _id: paramId },
+              {
+                cim: cim,
+                szerzo: szerzo,
+                boritokep: result.secure_url,
+                boritokepNev: result.public_id,
+                leiras: leiras,
+                karakterek: karakterek,
+                nyelv: nyelv,
+                kategoria: kategoria,
+                story: story,
+                isPublished: published,
+              }
+            );
+          } else {
+            await Story.findOneAndUpdate(
+              { _id: paramId },
+              {
+                cim: cim,
+                szerzo: szerzo,
+                boritokep: result.secure_url,
+                boritokepNev: result.public_id,
+                leiras: leiras,
+                karakterek: karakterek,
+                nyelv: nyelv,
+                kategoria: kategoria,
+                story: story,
+              }
+            );
+          }
+          res.status(200).json({ msg: "Sikeres történet módosítás!" });
         }
       );
     }
