@@ -216,6 +216,7 @@ const Addstory = () => {
           const response = await adat.json();
           setIsLoading(false);
           setSuccess(response.msg);
+          navigate(`/profil/${felhasznalonev}`);
         } else {
           const response = await adat.json();
           setIsLoading(false);

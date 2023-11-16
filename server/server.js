@@ -485,9 +485,9 @@ app.post("/updatestory", async (req, res) => {
       nyelv,
       kategoria,
       story,
-      published,
+      isPublished,
     } = req.body;
-    console.log(published);
+    console.log(isPublished);
 
     const updatedStory = await Story.findOne({ _id: paramId });
     const boritokepNev = updatedStory.boritokepNev;
@@ -511,8 +511,7 @@ app.post("/updatestory", async (req, res) => {
               .then(() => console.log("Sikeres borítókép törlés"))
               .catch((error) => console.log(error));
           }
-          console.log(published);
-          if (published) {
+          if (isPublished) {
             await Story.findOneAndUpdate(
               { _id: paramId },
               {
@@ -525,7 +524,7 @@ app.post("/updatestory", async (req, res) => {
                 nyelv: nyelv,
                 kategoria: kategoria,
                 story: story,
-                isPublished: published,
+                isPublished: isPublished,
               }
             );
           } else {
@@ -541,6 +540,7 @@ app.post("/updatestory", async (req, res) => {
                 nyelv: nyelv,
                 kategoria: kategoria,
                 story: story,
+                isPublished: isPublished,
               }
             );
           }
@@ -548,7 +548,7 @@ app.post("/updatestory", async (req, res) => {
         }
       );
     } else {
-      if (published) {
+      if (isPublished) {
         await Story.findOneAndUpdate(
           { _id: paramId },
           {
@@ -559,7 +559,7 @@ app.post("/updatestory", async (req, res) => {
             nyelv: nyelv,
             kategoria: kategoria,
             story: story,
-            isPublished: published,
+            isPublished: isPublished,
           }
         );
       } else {
@@ -573,6 +573,7 @@ app.post("/updatestory", async (req, res) => {
             nyelv: nyelv,
             kategoria: kategoria,
             story: story,
+            isPublished: isPublished,
           }
         );
       }

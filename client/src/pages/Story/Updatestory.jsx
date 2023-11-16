@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import Select from "react-select";
 
@@ -12,7 +12,6 @@ const Updatestory = () => {
   const [success, setSuccess] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [toggleForm, setToggleForm] = useState(false);
-  const [published, setPublished] = useState(false);
   const [felhasznalonev, setFelhasznalonev] = useState("");
 
   const [cim, setCim] = useState("");
@@ -23,10 +22,12 @@ const Updatestory = () => {
   const [nyelv, setNyelv] = useState("");
   const [kategoria, setKategoria] = useState("");
   const [story, setStory] = useState("");
-  const [IsPublished, setIsPublished] = useState(false);
+  const [isPublished, setIsPublished] = useState(false);
 
   const [dropdownKategoria, setDropDownKategoria] = useState("");
   const [dropdownNyelv, setDropDownNyelv] = useState("");
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -224,7 +225,7 @@ const Updatestory = () => {
       nyelv,
       kategoria,
       story,
-      published,
+      isPublished,
     };
     if (toggleForm == true) {
       const elkuld = async () => {
@@ -260,6 +261,7 @@ const Updatestory = () => {
           const response = await adat.json();
           setIsLoading(false);
           setSuccess(response.msg);
+          navigate(`/profil/${felhasznalonev}`);
         } else {
           const response = await adat.json();
           setIsLoading(false);
@@ -271,16 +273,12 @@ const Updatestory = () => {
     }
   };
 
-  const publikalas = async (e) => {
-    await setPublished(true);
-    console.log(published);
-    modosit(e);
-  };
-
-  const unPublikalas = (e) => {
-    setPublished(false);
-    console.log(published);
-    modosit(e);
+  const togglePublikalas = () => {
+    if (isPublished) {
+      setIsPublished(false);
+    } else {
+      setIsPublished(true);
+    }
   };
 
   function displayImage(e) {
@@ -389,6 +387,7 @@ const Updatestory = () => {
             </div>
             <div className="form-row">
               <textarea
+                maxLength="150"
                 value={leiras}
                 type="text"
                 placeholder="Írd le röviden miről fog szólni a történeted!"
@@ -415,19 +414,21 @@ const Updatestory = () => {
               id="storyText"
             />
           </div>
-          {IsPublished ? (
-            <div className="buttons">
-              <button onClick={tovabb}>Vissza</button>
-              <button onClick={publikalas}>Mentés</button>
-              <button onClick={unPublikalas}>Publikálás megszüntetése</button>
+          <div className="buttons">
+            <button onClick={tovabb}>Vissza</button>
+            <button onClick={modosit}>Mentés</button>
+            <div className="publishingButton">
+              <p>Publikálás</p>
+              <label class="switch">
+                <input
+                  type="checkbox"
+                  checked={isPublished}
+                  onChange={togglePublikalas}
+                />
+                <span class="slider"></span>
+              </label>
             </div>
-          ) : (
-            <div className="buttons">
-              <button onClick={tovabb}>Vissza</button>
-              <button onClick={modosit}>Mentés</button>
-              <button onClick={publikalas}>Mentés és publikálás</button>
-            </div>
-          )}
+          </div>
           {error && <div className="error">{error}</div>}
           {success && <div className="success">{success}</div>}
         </div>

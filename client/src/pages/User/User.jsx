@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { useParams, Link, useNavigate } from "react-router-dom";
+import Modal from "react-modal";
 
 const User = () => {
   const url = "http://localhost:3500";
@@ -10,6 +11,11 @@ const User = () => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+
+  const [showModal, setShowModal] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState(null);
+
   const [viewFelhasznalonev, setViewFelhasznalonev] = useState("");
   const [viewEmail, setViewEmail] = useState("");
   const [viewProfilkep, setViewProfilkep] = useState("");
@@ -18,16 +24,17 @@ const User = () => {
   const [sendBoritokep, setSendBoritokep] = useState("");
   const [viewRolam, setViewRolam] = useState("");
   const [viewIsAdmin, setViewIsAdmin] = useState("");
-  const [isEditing, setIsEditing] = useState(false);
   const [viewKovetoim, setViewKovetoim] = useState("");
   const [viewKoveteseim, setViewKoveteseim] = useState("");
   const [viewKovetoimList, setViewKovetoimList] = useState("");
   const [viewKoveteseimList, setViewKoveteseimList] = useState("");
   const [viewKovetoimListKep, setViewKovetoimListKep] = useState("");
   const [viewKoveteseimListKep, setViewKoveteseimListKep] = useState("");
+
   const [toggleKovetoim, setToggleKovetoim] = useState(false);
   const [toggleKoveteseim, SetToggleKoveteseim] = useState(false);
   const [kovetem, setKovetem] = useState("");
+
   const [story, setStory] = useState([]);
   const [legujabbStory, setLegujabbStory] = useState("");
 
@@ -383,13 +390,11 @@ const User = () => {
                                 </Link>
                               </div>
                               <div id="storyIconDelete" className="storyIcons">
-                                <Link to="/">
-                                  <img
-                                    id="story_delete"
-                                    src="/images/story_delete.png"
-                                    alt=""
-                                  />
-                                </Link>
+                                <img
+                                  id="story_delete"
+                                  src="/images/story_delete.png"
+                                  alt=""
+                                />
                               </div>
                             </div>
                           </div>
@@ -504,6 +509,9 @@ const User = () => {
                 <Link to={`/story/${story._id}`}>
                   <div className="book-container">
                     <div className="book">
+                      {story.isPublished === true && (
+                        <img src="/images/verify.png" id="publishedBagde" />
+                      )}
                       <div className="front-content">
                         <img src={story.boritokep} alt="" />
                       </div>
@@ -521,13 +529,11 @@ const User = () => {
                             </Link>
                           </div>
                           <div id="storyIconDelete" className="storyIcons">
-                            <Link to="/">
-                              <img
-                                id="story_delete"
-                                src="/images/story_delete.png"
-                                alt=""
-                              />
-                            </Link>
+                            <img
+                              id="story_delete"
+                              src="/images/story_delete.png"
+                              alt=""
+                            />
                           </div>
                         </div>
                       </div>
