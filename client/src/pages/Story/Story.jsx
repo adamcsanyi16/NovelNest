@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { Link } from "react-router-dom";
+import { useLogout } from "../../hooks/useLogout";
 
 const Story = () => {
   const { user } = useAuthContext();
+  const { logout } = useLogout();
 
   const [felhasznalonev, setFelhasznalonev] = useState("");
   const [osszesStory, SetOsszesStory] = useState([]);
@@ -50,6 +52,11 @@ const Story = () => {
           const data = await response.json();
           SetOsszesStory(data.story);
           console.log(osszesStory);
+        } else {
+          const data = await response.json();
+          if (data.msg.includes("Token expired")) {
+            logout();
+          }
         }
       } catch (error) {
         console.log("Fetch error:", error);

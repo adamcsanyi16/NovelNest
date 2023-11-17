@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { useParams, Link, useNavigate } from "react-router-dom";
+import { useLogout } from "../../hooks/useLogout";
 import Modal from "react-modal";
 
 const User = () => {
   const url = "http://localhost:3500";
   const { user } = useAuthContext();
+  const { logout } = useLogout();
+
   const [felhasznalonev, setFelhasznalonev] = useState("");
   const { felhasznalonevKuld } = useParams();
   const [error, setError] = useState(null);
@@ -38,7 +41,7 @@ const User = () => {
   const [story, setStory] = useState([]);
   const [legujabbStory, setLegujabbStory] = useState("");
 
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
 
   //GETTING USER DATA FEOM TOKEN
   useEffect(() => {
@@ -101,6 +104,9 @@ const User = () => {
       } else {
         const response = await adat.json();
         setError(response.msg);
+        if (response.msg.includes("Token expired")) {
+          logout();
+        }
       }
     } catch (error) {
       setIsLoading(false);
@@ -149,15 +155,15 @@ const User = () => {
         }),
       });
       if (response.ok) {
-        setIsLoading(false);
         setSuccess("Profil sikeresen mentve!");
         setInterval(() => {
           window.location.reload();
         }, 1500);
-      } else {
         setIsLoading(false);
+      } else {
         const response = await response.json();
         setError(response.error);
+        setIsLoading(false);
       }
     } catch (error) {
       setError("Valami hiba történt a mentés során!" + error.message);
@@ -188,12 +194,12 @@ const User = () => {
         }),
       });
       if (response.ok) {
-        setIsLoading(false);
         setSuccess("Profil sikeresen bekövetve!");
-      } else {
         setIsLoading(false);
+      } else {
         const data = await response.json();
         setError(data.msg);
+        setIsLoading(false);
       }
     } catch (error) {
       setError("Valami hiba történt a mentés során!" + error.message);
@@ -220,12 +226,12 @@ const User = () => {
         }),
       });
       if (response.ok) {
-        setIsLoading(false);
         setSuccess("Profil sikeresen kikövetve!");
-      } else {
         setIsLoading(false);
+      } else {
         const data = await response.json();
         setError(data.msg);
+        setIsLoading(false);
       }
     } catch (error) {
       setError("Valami hiba történt a mentés során!" + error.message);
@@ -276,6 +282,75 @@ const User = () => {
   } else {
     document.body.classList.remove("active-modal");
   }
+
+  //DELETING STORIES
+  const torol = (item) => {
+    const { _id: id } = item;
+    const adatTorol = async () => {
+      try {
+        const toroltAdat = await fetch(url + "/story", {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+          body: JSON.stringify({ id }),
+        });
+
+        if (toroltAdat.ok) {
+          const modositottAdat = story.filter((item) => item._id !== id);
+          setStory(modositottAdat);
+          const data = await toroltAdat.json();
+          setSuccess(data.msg);
+          setInterval(() => {
+            setSuccess(null);
+          }, 3000);
+        } else {
+          const data = await toroltAdat.json();
+          setError(data.msg);
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+
+    adatTorol();
+    closeModal();
+  };
+
+  const deleteId = (id) => {
+    const item = story.find((story) => story._id === id);
+    openModal(item);
+  };
+
+  const openModal = (item) => {
+    setShowModal(true);
+    setItemToDelete(item);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setItemToDelete(null);
+  };
+
+  const modalStyles = {
+    overlay: {
+      backgroundColor: "rgba(0, 0, 0, 0.5)",
+      zIndex: 9999,
+    },
+    content: {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+      maxWidth: "400px",
+      maxHeight: "400px",
+      margin: "auto",
+      padding: "20px",
+      backgroundColor: "fff",
+      borderRadius: "2rem",
+    },
+  };
 
   return (
     <div className="profilom">
@@ -363,8 +438,6 @@ const User = () => {
               ) : (
                 <textarea defaultValue={viewRolam} readOnly />
               )}
-              {error && <div className="error">{error}</div>}
-              {success && <div className="success">{success}</div>}
             </div>
             <div id="legujabbStoryTarto">
               {viewFelhasznalonev === felhasznalonev && legujabbStory ? (
@@ -379,24 +452,6 @@ const User = () => {
                           <div className="content">
                             <p className="heading">{legujabbStory.cim}</p>
                             <p className="leiras">{legujabbStory.leiras}</p>
-                            <div className="storyIconsTarto">
-                              <div id="storyIconEdit" className="storyIcons">
-                                <Link to={`/updatestory/${legujabbStory._id}`}>
-                                  <img
-                                    id="story_edit"
-                                    src="/images/story_edit.png"
-                                    alt=""
-                                  />
-                                </Link>
-                              </div>
-                              <div id="storyIconDelete" className="storyIcons">
-                                <img
-                                  id="story_delete"
-                                  src="/images/story_delete.png"
-                                  alt=""
-                                />
-                              </div>
-                            </div>
                           </div>
                         </div>
                       </div>
@@ -426,7 +481,6 @@ const User = () => {
               )}
             </div>
           </div>
-
           <div className="boritokepFeltoltes">
             {isEditing && (
               <div>
@@ -445,6 +499,8 @@ const User = () => {
             )}
           </div>
         </div>
+        {error && <div className="error">{error}</div>}
+        {success && <div className="success">{success}</div>}
         {viewFelhasznalonev === felhasznalonev &&
           (isEditing === false ? (
             <div className="editButtons">
@@ -506,40 +562,45 @@ const User = () => {
           {story.map((story) =>
             viewFelhasznalonev === felhasznalonev ? (
               <div className="storyLink">
-                <Link to={`/story/${story._id}`}>
-                  <div className="book-container">
-                    <div className="book">
-                      {story.isPublished === true && (
-                        <img src="/images/verify.png" id="publishedBagde" />
-                      )}
-                      <div className="front-content">
-                        <img src={story.boritokep} alt="" />
-                      </div>
-                      <div className="content">
+                <div className="book-container">
+                  <div className="book">
+                    {story.isPublished === true && (
+                      <img
+                        src="/images/verify.png"
+                        id="publishedBagde"
+                        hidden={showModal}
+                      />
+                    )}
+                    <div className="front-content">
+                      <img src={story.boritokep} alt="" />
+                    </div>
+                    <div className="content">
+                      <Link to={`/story/${story._id}`}>
                         <p className="heading">{story.cim}</p>
-                        <p className="leiras">{story.leiras}</p>
-                        <div className="storyIconsTarto">
-                          <div id="storyIconEdit" className="storyIcons">
-                            <Link to={`/updatestory/${story._id}`}>
-                              <img
-                                id="story_edit"
-                                src="/images/story_edit.png"
-                                alt=""
-                              />
-                            </Link>
-                          </div>
-                          <div id="storyIconDelete" className="storyIcons">
+                      </Link>
+                      <p className="leiras">{story.leiras}</p>
+                      <div className="storyIconsTarto">
+                        <div id="storyIconEdit" className="storyIcons">
+                          <Link to={`/updatestory/${story._id}`}>
                             <img
-                              id="story_delete"
-                              src="/images/story_delete.png"
+                              id="story_edit"
+                              src="/images/story_edit.png"
                               alt=""
                             />
-                          </div>
+                          </Link>
+                        </div>
+                        <div id="storyIconDelete" className="storyIcons">
+                          <img
+                            id="story_delete"
+                            src="/images/story_delete.png"
+                            alt=""
+                            onClick={() => deleteId(story._id)}
+                          />
                         </div>
                       </div>
                     </div>
                   </div>
-                </Link>
+                </div>
               </div>
             ) : (
               story.isPublished === true && (
@@ -563,6 +624,19 @@ const User = () => {
           )}
         </div>
       </div>
+      <Modal
+        isOpen={showModal}
+        onRequestClose={closeModal}
+        contentLabel="Megerősítés"
+        style={modalStyles}
+        id="deleteModal"
+      >
+        <h2 id="deleteText">Biztos hogy törlöd az adatot?</h2>
+        <div className="modal-buttons">
+          <button onClick={() => torol(itemToDelete)}>Törlés</button>
+          <button onClick={closeModal}>Mégsem</button>
+        </div>
+      </Modal>
     </div>
   );
 };

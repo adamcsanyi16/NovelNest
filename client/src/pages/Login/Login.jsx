@@ -12,7 +12,7 @@ const Login = () => {
   const { dispatch } = useAuthContext();
   const url = "http://localhost:3500";
 
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const belep = async () => {
     setIsLoading(true);
@@ -55,6 +55,7 @@ const Login = () => {
           localStorage.setItem("user", JSON.stringify(response));
           dispatch({ type: "LOGIN", payload: response });
           setIsLoading(false);
+          navigate(`/profil/${felhasznalonev}`);
         }
       } else {
         setError("A jelszó nem egyezik!");

@@ -24,9 +24,9 @@ img {
   -webkit-user-drag: none;
 }
 
-.App {
+/*.App {
   height: 100vh;
-}
+}*/
 
 /*NAVBAR*/
 .navbar {
@@ -387,6 +387,12 @@ form {
   font-size: 20px;
   font-weight: 1000;
 }
+.book .content a {
+  text-decoration: none;
+  color: $feher;
+  font-size: 20px;
+  font-weight: 1000;
+}
 
 .book:hover .content {
   transform: translateY(0);
@@ -407,8 +413,8 @@ form {
 }
 
 #story_edit {
-  height: 30px;
-  width: 30px;
+  height: 28px;
+  width: 28px;
   border-radius: 0px;
 }
 
@@ -431,6 +437,7 @@ form {
 
 #storyIconDelete {
   background-color: $feher;
+  cursor: pointer;
 }
 
 #storyIconEdit {
@@ -922,6 +929,17 @@ body.active-modal {
 
 .egyKoveto a:hover {
   color: $sotetkek;
+}
+
+/*MODALS*/
+#deleteModal {
+  z-index: 10;
+}
+
+#deleteText {
+  text-align: center;
+  color: $sotetkek;
+  margin-bottom: 20px;
 }
 
 @media only screen and (max-width: 650px) {

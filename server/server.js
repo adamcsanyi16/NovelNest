@@ -593,6 +593,28 @@ app.get("/story", async (req, res) => {
   }
 });
 
+app.delete("/story", async (req, res) => {
+  try {
+    const id = req.body.id;
+    const toroltAdat = await Story.findOneAndDelete({ _id: id }).exec();
+    console.log(toroltAdat.boritokepNev);
+    if (toroltAdat) {
+      cloudinary.api
+        .delete_resources([toroltAdat.boritokepNev], {
+          resource_type: "image",
+          invalidate: true,
+        })
+        .then(() => console.log("Sikeres borítókép törlés"))
+        .catch((error) => console.log(error));
+      res.status(200).json({ msg: "Sikeres adat törlés!" });
+    } else {
+      res.status(404).json({ msg: "A történet nem található!" });
+    }
+  } catch (error) {
+    res.status(500).json({ msg: "Valami hiba történt!" });
+  }
+});
+
 app.post("/onestory", async (req, res) => {
   try {
     const id = req.body.id;
