@@ -380,6 +380,9 @@ const User = () => {
                       style={{ opacity: 0.6 }}
                       className="profilomProfil"
                     />
+                    <div className="profilomProfil" id="profilomSzerkesztes">
+                      Szerkesztés
+                    </div>
                   </div>
                 ) : (
                   <img
@@ -406,25 +409,40 @@ const User = () => {
                 </div>
               </div>
               <div id="profilomInfo_container">
-                <div className="kovetok">
-                  <h4 style={{ cursor: "pointer" }} onClick={modalKovetoim}>
-                    Követők: {viewKovetoim}
-                  </h4>
-                  <h4 style={{ cursor: "pointer" }} onClick={modalKoveteseim}>
-                    Követés: {viewKoveteseim}
-                  </h4>
-                </div>
-                <div className="kovetoGomb">
-                  {felhasznalonev != viewFelhasznalonev ? (
-                    kovetem === false ? (
-                      <button onClick={bekovetes}>Követés</button>
-                    ) : (
-                      <button onClick={kikovetes}>Kikövetés</button>
-                    )
-                  ) : (
-                    ""
-                  )}
-                </div>
+                {viewKoveteseim && (
+                  <div>
+                    <div className="kovetok">
+                      <h4 style={{ cursor: "pointer" }} onClick={modalKovetoim}>
+                        Követők: {viewKovetoim}
+                      </h4>
+                      <h4
+                        style={{ cursor: "pointer" }}
+                        onClick={modalKoveteseim}
+                      >
+                        Követés: {viewKoveteseim}
+                      </h4>
+                    </div>
+                    <div className="kovetoGomb">
+                      {felhasznalonev != viewFelhasznalonev ? (
+                        kovetem === false ? (
+                          <button onClick={bekovetes}>Követés</button>
+                        ) : (
+                          <button
+                            onClick={kikovetes}
+                            style={{
+                              backgroundColor: "#f5f5f5",
+                              color: "black",
+                            }}
+                          >
+                            Követem
+                          </button>
+                        )
+                      ) : (
+                        ""
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
             <div className="profilomBio_container">
