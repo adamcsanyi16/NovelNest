@@ -387,7 +387,7 @@ const Updatestory = () => {
             </div>
             <div className="form-row">
               <textarea
-                maxLength="150"
+                maxLength="200"
                 value={leiras}
                 type="text"
                 placeholder="Írd le röviden miről fog szólni a történeted!"
@@ -396,6 +396,7 @@ const Updatestory = () => {
                 onChange={(e) => setLeiras(e.target.value)}
               />
             </div>
+            <p id="leirasCounter">{leiras.length}/200</p>
             <div className="button-row">
               <button disabled={isLoading} onClick={tovabb}>
                 Tovább
