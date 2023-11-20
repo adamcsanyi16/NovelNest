@@ -597,7 +597,6 @@ app.delete("/story", async (req, res) => {
   try {
     const id = req.body.id;
     const toroltAdat = await Story.findOneAndDelete({ _id: id }).exec();
-    console.log(toroltAdat.boritokepNev);
     if (toroltAdat) {
       cloudinary.api
         .delete_resources([toroltAdat.boritokepNev], {

@@ -580,7 +580,7 @@ const User = () => {
           {story.map((story) =>
             viewFelhasznalonev === felhasznalonev ? (
               <div className="storyLink">
-                <div className="book-container">
+                <div className="book-container" id="user-book-container">
                   <div className="book">
                     {story.isPublished === true && (
                       <img
