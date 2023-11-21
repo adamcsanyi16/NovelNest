@@ -134,13 +134,16 @@ app.post("/regisztral", async (req, res) => {
     }
 
     const profilkep =
-      "https://res.cloudinary.com/dfklaexjp/image/upload/v1698234703/user_wx5ex5.jpg";
+      "https://res.cloudinary.com/diktrthqs/image/upload/v1699204617/user_wx5ex5.jpg";
+
+    const profilkepNev = "user_wx5ex5";
 
     const newUser = new User({
       felhasznalonev,
       email,
       jelszo,
       profilkep: profilkep,
+      profilkepNev: profilkepNev,
     });
     await newUser.save();
     const token = createToken(
