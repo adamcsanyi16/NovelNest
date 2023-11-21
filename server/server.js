@@ -424,7 +424,7 @@ app.post("/addstory", async (req, res) => {
       nyelv,
       kategoria,
       story,
-      published,
+      isPublished,
     } = req.body;
 
     const storyLetezik = await Story.findOne({ cim });
@@ -441,7 +441,7 @@ app.post("/addstory", async (req, res) => {
             console.log(error);
           }
 
-          if (published) {
+          if (isPublished) {
             const newStory = new Story({
               cim: cim,
               szerzo: szerzo,
@@ -452,7 +452,7 @@ app.post("/addstory", async (req, res) => {
               nyelv: nyelv,
               kategoria: kategoria,
               story: story,
-              isPublished: published,
+              isPublished: isPublished,
             });
             await newStory.save();
           } else {
@@ -466,6 +466,7 @@ app.post("/addstory", async (req, res) => {
               nyelv: nyelv,
               kategoria: kategoria,
               story: story,
+              isPublished: isPublished,
             });
             await newStory.save();
           }

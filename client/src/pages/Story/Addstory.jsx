@@ -9,7 +9,7 @@ const Addstory = () => {
   const [success, setSuccess] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [toggleForm, setToggleForm] = useState(false);
-  const [published, setPublished] = useState(false);
+  const [isPublished, setIsPublished] = useState(false);
 
   const [felhasznalonev, setFelhasznalonev] = useState("");
   const [cim, setCim] = useState("");
@@ -180,7 +180,7 @@ const Addstory = () => {
       nyelv,
       kategoria,
       story,
-      published,
+      isPublished,
     };
     if (toggleForm == true) {
       const elkuld = async () => {
@@ -228,9 +228,12 @@ const Addstory = () => {
     }
   };
 
-  const publikalas = (e) => {
-    setPublished(true);
-    feldolgoz(e);
+  const togglePublikalas = () => {
+    if (isPublished) {
+      setIsPublished(false);
+    } else {
+      setIsPublished(true);
+    }
   };
 
   function displayImage(e) {
@@ -373,7 +376,17 @@ const Addstory = () => {
           <div className="buttons">
             <button onClick={tovabb}>Vissza</button>
             <button onClick={feldolgoz}>Mentés</button>
-            <button onClick={publikalas}>Mentés és publikálás</button>
+            <div className="publishingButton">
+              <p>Publikálás</p>
+              <label class="switch">
+                <input
+                  type="checkbox"
+                  checked={isPublished}
+                  onChange={togglePublikalas}
+                />
+                <span class="slider"></span>
+              </label>
+            </div>
           </div>
           {error && <div className="error">{error}</div>}
           {success && <div className="success">{success}</div>}
