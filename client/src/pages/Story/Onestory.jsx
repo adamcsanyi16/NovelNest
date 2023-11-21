@@ -93,6 +93,22 @@ const Onestory = () => {
     fetchData();
   }, [user, id]);
 
+  const ertekeles = async () => {
+    try {
+      console.log("ertekeles");
+      const adat = await fetch(url + "/ertekeles", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+        body: JSON.stringify({ id, felhasznalonev, sajatErtekeles }),
+      });
+    } catch (error) {
+      setError("Valami hiba történt a mentés során!" + error.message);
+    }
+  };
+
   const hozzaszolasKuld = () => {
     console.log(hozzaszolas);
     socket.emit("ujhozzaszolas", id, hozzaszolas, felhasznalonev);
@@ -125,6 +141,7 @@ const Onestory = () => {
                 viewBox="0 0 24 24"
                 onClick={() => {
                   SetSajatErtekeles(5);
+                  ertekeles();
                 }}
               >
                 <path
@@ -140,6 +157,7 @@ const Onestory = () => {
                 viewBox="0 0 24 24"
                 onClick={() => {
                   SetSajatErtekeles(4);
+                  ertekeles();
                 }}
               >
                 <path
@@ -155,6 +173,7 @@ const Onestory = () => {
                 viewBox="0 0 24 24"
                 onClick={() => {
                   SetSajatErtekeles(3);
+                  ertekeles();
                 }}
               >
                 <path
@@ -170,6 +189,7 @@ const Onestory = () => {
                 viewBox="0 0 24 24"
                 onClick={() => {
                   SetSajatErtekeles(2);
+                  ertekeles();
                 }}
               >
                 <path
@@ -185,6 +205,7 @@ const Onestory = () => {
                 viewBox="0 0 24 24"
                 onClick={() => {
                   SetSajatErtekeles(1);
+                  ertekeles();
                 }}
               >
                 <path
