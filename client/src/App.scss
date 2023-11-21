@@ -131,6 +131,7 @@ button:active {
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-bottom: 20px;
 }
 
 .editButtons {
@@ -836,6 +837,10 @@ form {
 .kovetok {
   display: grid;
   grid-template-columns: 50% 50%;
+}
+
+.kovetoGomb {
+  padding-top: 15px;
 }
 
 #kovetoMutatoCim {

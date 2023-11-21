@@ -100,7 +100,7 @@ const User = () => {
         setViewKoveteseimListKep(response.viewKoveteseimListKep);
         setStory(response.story);
         setLegujabbStory(response.legujabbStory);
-        console.log(story);
+        setIsLoading(false);
       } else {
         const response = await adat.json();
         setError(response.msg);
@@ -354,6 +354,13 @@ const User = () => {
 
   return (
     <div className="profilom">
+      {!isLoading ? (
+        <div>
+          <h1>nem tölt</h1>
+        </div>
+      ) : (
+        <div class="loader"></div>
+      )}
       <div
         className="profilomHatter"
         style={
