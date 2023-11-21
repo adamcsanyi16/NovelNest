@@ -73,15 +73,23 @@ const Updatestory = () => {
           setSzerzo(onestory.szerzo);
           setBoritokep(onestory.boritokep);
           setKarakterek(onestory.karakterek);
-          //setKategoria(onestory.kategoria);
-          //setNyelv(onestory.nyelv);
           setLeiras(onestory.leiras);
           setStory(onestory.story);
           setIsPublished(onestory.isPublished);
 
           if (dropdownKategoria.length > 0 && dropdownNyelv.length > 0) {
-            setKategoria(onestory.kategoria);
-            setNyelv(onestory.nyelv);
+            let loadKategoria = {
+              value: onestory.kategoria,
+              label: onestory.kategoria,
+            };
+
+            let loadNyelv = {
+              value: onestory.nyelv,
+              label: onestory.nyelv,
+            };
+
+            setKategoria(loadKategoria);
+            setNyelv(loadNyelv);
           }
 
           setSuccess(data.msg);
@@ -205,6 +213,7 @@ const Updatestory = () => {
 
   const tovabb = () => {
     setToggleForm(!toggleForm);
+    console.log(toggleForm);
   };
 
   const modosit = (event) => {
@@ -363,7 +372,7 @@ const Updatestory = () => {
             </div>
             <div className="form-row" id="select-row">
               <Select
-                defaultInputValue={kategoria}
+                value={!toggleForm ? kategoria : kategoria.label}
                 className="custom-select"
                 placeholder="Kategória"
                 styles={selectStyles}
@@ -371,7 +380,7 @@ const Updatestory = () => {
                 onChange={handleDropdownCategory}
               />
               <Select
-                defaultInputValue={nyelv}
+                value={!toggleForm ? nyelv : nyelv.label}
                 className="custom-select"
                 placeholder="Nyelv"
                 styles={selectStyles}

@@ -669,6 +669,12 @@ form {
   gap: 5px;
 }
 
+.errorMessage {
+  text-align: center;
+  margin-top: 100px;
+  color: $sotetkek;
+}
+
 /* PROFILOM OLDAL */
 .profilomHatter {
   background-position: center;
@@ -967,6 +973,10 @@ body.active-modal {
   text-align: center;
   color: $sotetkek;
   margin-bottom: 20px;
+}
+
+.modal-buttons button {
+  cursor: pointer;
 }
 
 @media only screen and (max-width: 650px) {
