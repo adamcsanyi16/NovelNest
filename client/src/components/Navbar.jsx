@@ -59,11 +59,7 @@ const Navbar = () => {
           <span>{felhasznalonev}</span>
           {user.profilkep && (
             <Link to={`/profil/${felhasznalonev}`}>
-              <img
-                src={`${profilkep}`}
-                alt="Profilkép"
-                className="profile-image"
-              />
+              <img src={`${profilkep}`} alt="  " className="profile-image" />
             </Link>
           )}
           <button className="logout-btn" onClick={handleLogout}>

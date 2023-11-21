@@ -196,6 +196,9 @@ const User = () => {
       if (response.ok) {
         setSuccess("Profil sikeresen bekövetve!");
         setIsLoading(false);
+        setInterval(() => {
+          setSuccess(null);
+        }, 3000);
       } else {
         const data = await response.json();
         setError(data.msg);
@@ -228,6 +231,9 @@ const User = () => {
       if (response.ok) {
         setSuccess("Profil sikeresen kikövetve!");
         setIsLoading(false);
+        setInterval(() => {
+          setSuccess(null);
+        }, 3000);
       } else {
         const data = await response.json();
         setError(data.msg);

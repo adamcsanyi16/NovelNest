@@ -383,6 +383,7 @@ app.post("/bekovet", async (req, res) => {
         $push: { koveteseim: viewFelhasznalonev },
       }
     );
+    res.status(200).json({ msg: "Profil sikeresen bekövetve" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ msg: error.message });
@@ -404,6 +405,7 @@ app.post("/kikovet", async (req, res) => {
         $pull: { koveteseim: viewFelhasznalonev },
       }
     );
+    res.status(200).json({ msg: "Profil sikeresen kikövetve" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ msg: error.message });
