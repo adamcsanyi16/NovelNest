@@ -6,6 +6,7 @@ import { useLogout } from "../../hooks/useLogout";
 const Story = () => {
   const { user } = useAuthContext();
   const { logout } = useLogout();
+  const [isLoading, setIsLoading] = useState(false);
 
   const [felhasznalonev, setFelhasznalonev] = useState("");
   const [osszesStory, SetOsszesStory] = useState([]);
@@ -38,6 +39,7 @@ const Story = () => {
   }, [user, felhasznalonev]);
 
   useEffect(() => {
+    setIsLoading(true);
     const fetchData = async () => {
       try {
         const response = await fetch(url + "/story", {
@@ -52,6 +54,7 @@ const Story = () => {
           const data = await response.json();
           SetOsszesStory(data.story);
           console.log(osszesStory);
+          setIsLoading(false);
         } else {
           const data = await response.json();
           if (data.msg.includes("Token expired")) {
@@ -68,6 +71,7 @@ const Story = () => {
 
   return (
     <div className="storyWrap">
+      {!isLoading ? <div></div> : <div className="loader"></div>}
       <div className="sortingContainer"></div>
       <div className="storyContainer">
         {osszesStory.map((story) => (

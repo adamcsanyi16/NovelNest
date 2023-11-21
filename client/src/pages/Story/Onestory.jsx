@@ -10,6 +10,7 @@ const Onestory = () => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [felhasznalonev, setFelhasznalonev] = useState("");
+  const [isLoading, SetIsLoading] = useState(false);
 
   const [cim, setCim] = useState("");
   const [szerzo, setSzerzo] = useState("");
@@ -58,6 +59,7 @@ const Onestory = () => {
   }, [user, felhasznalonev]);
 
   useEffect(() => {
+    SetIsLoading(true);
     const fetchData = async () => {
       try {
         const response = await fetch(url + "/onestory", {
@@ -80,6 +82,7 @@ const Onestory = () => {
           setNyelv(onestory.nyelv);
           setLeiras(onestory.leiras);
           SetStory(onestory.story);
+          SetIsLoading(false);
         }
       } catch (error) {
         console.log("Fetch error:", error);
@@ -100,29 +103,33 @@ const Onestory = () => {
   });
 
   return (
-    <div className="oneStory-container">
-      <div className="info">
-        <div className="boritokep">
-          <img src={boritokep} alt="" />
+    <div>
+      {!isLoading ? <div></div> : <div className="loader"></div>}
+
+      <div className="oneStory-container">
+        <div className="info">
+          <div className="boritokep">
+            <img src={boritokep} alt="" />
+          </div>
+          <Link to={`/profil/${szerzo}`}>
+            <h3>{szerzo}</h3>
+          </Link>
+          <p>{karakterek}</p>
         </div>
-        <Link to={`/profil/${szerzo}`}>
-          <h3>{szerzo}</h3>
-        </Link>
-        <p>{karakterek}</p>
-      </div>
-      <div className="onlystory">
-        <h1>{cim}</h1>
-        <p>{story}</p>
-        <div className="comments">
-          <h3>Hozzászólások</h3>
-          <input
-            className="input"
-            id="commentInput"
-            type="text"
-            placeholder="Hozzászólás írása"
-            onChange={(e) => SetHozzaszolas(e.target.value)}
-          />
-          <button onClick={hozzaszolasKuld}>Yaay</button>
+        <div className="onlystory">
+          <h1>{cim}</h1>
+          <p>{story}</p>
+          <div className="comments">
+            <h3>Hozzászólások</h3>
+            <input
+              className="input"
+              id="commentInput"
+              type="text"
+              placeholder="Hozzászólás írása"
+              onChange={(e) => SetHozzaszolas(e.target.value)}
+            />
+            <button onClick={hozzaszolasKuld}>Yaay</button>
+          </div>
         </div>
       </div>
     </div>

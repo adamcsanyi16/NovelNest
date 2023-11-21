@@ -55,6 +55,7 @@ const Updatestory = () => {
   }, [user, felhasznalonev]);
 
   useEffect(() => {
+    setIsLoading(true);
     const fetchData = async () => {
       try {
         const response = await fetch(url + "/onestory", {
@@ -93,6 +94,7 @@ const Updatestory = () => {
           }
 
           setSuccess(data.msg);
+          setIsLoading(false);
         } else {
           const data = await response.json();
           setError(data.msg);
@@ -231,8 +233,8 @@ const Updatestory = () => {
       boritokep,
       leiras,
       karakterek,
-      nyelv,
-      kategoria,
+      nyelv: nyelv.value,
+      kategoria: kategoria.value,
       story,
       isPublished,
     };
@@ -248,8 +250,6 @@ const Updatestory = () => {
           boritokep.trim() === "" ||
           leiras.trim() === "" ||
           karakterek.trim() === "" ||
-          nyelv.trim() === "" ||
-          kategoria.trim() === "" ||
           story.trim() === ""
         ) {
           setError("Nem maradhat üres cella!");
@@ -310,6 +310,7 @@ const Updatestory = () => {
 
   return (
     <div>
+      {!isLoading ? <div></div> : <div className="loader"></div>}
       {felhasznalonev == szerzo ? (
         <div className="updateStory-container">
           {!toggleForm ? (

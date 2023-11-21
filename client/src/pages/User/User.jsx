@@ -354,13 +354,7 @@ const User = () => {
 
   return (
     <div className="profilom">
-      {!isLoading ? (
-        <div>
-          <h1>nem tölt</h1>
-        </div>
-      ) : (
-        <div class="loader"></div>
-      )}
+      {!isLoading ? <div></div> : <div className="loader"></div>}
       <div
         className="profilomHatter"
         style={
@@ -383,7 +377,7 @@ const User = () => {
                     />
                     <img
                       src={`${viewProfilkep}`}
-                      alt={`${viewFelhasznalonev} profilképe`}
+                      alt="  "
                       style={{ opacity: 0.6 }}
                       className="profilomProfil"
                     />
@@ -394,7 +388,7 @@ const User = () => {
                 ) : (
                   <img
                     src={`${viewProfilkep}`}
-                    alt={`${viewFelhasznalonev} profilképe`}
+                    alt="  "
                     className="profilomProfil"
                   />
                 )}
