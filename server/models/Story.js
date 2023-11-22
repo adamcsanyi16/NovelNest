@@ -44,6 +44,11 @@ const storySchema = new mongoose.Schema(
     comments: {
       type: Array,
     },
+    ertekelesek: [
+      {
+        ertekeles: Number,
+      },
+    ],
   },
   { timestamps: true }
 );

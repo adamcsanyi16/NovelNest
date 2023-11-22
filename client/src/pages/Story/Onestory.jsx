@@ -22,17 +22,14 @@ const Onestory = () => {
   const [story, SetStory] = useState("");
   const [hozzaszolas, SetHozzaszolas] = useState("");
   const [sajatErtekeles, SetSajatErtekeles] = useState("");
+  const [star1Src, SetStar1Src] = useState("/images/star.png");
+  const [star2Src, SetStar2Src] = useState("/images/star.png");
+  const [star3Src, SetStar3Src] = useState("/images/star.png");
+  const [star4Src, SetStar4Src] = useState("/images/star.png");
+  const [star5Src, SetStar5Src] = useState("/images/star.png");
 
   const userLocalStorage = JSON.parse(localStorage.getItem("user"));
   const token = userLocalStorage.token;
-  console.log(token);
-  const socket = io.connect("http://localhost:3500", {
-    query: { token: token },
-  });
-
-  socket.on("connect_error", (error) => {
-    console.error("Socket.io connection error:", error);
-  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -95,7 +92,6 @@ const Onestory = () => {
 
   const ertekeles = async () => {
     try {
-      console.log("ertekeles");
       const adat = await fetch(url + "/ertekeles", {
         method: "POST",
         headers: {
@@ -104,6 +100,11 @@ const Onestory = () => {
         },
         body: JSON.stringify({ id, felhasznalonev, sajatErtekeles }),
       });
+      if (adat.ok) {
+        console.log("sikeres ertekeles");
+      } else {
+        console.log(error.message);
+      }
     } catch (error) {
       setError("Valami hiba történt a mentés során!" + error.message);
     }
@@ -111,13 +112,7 @@ const Onestory = () => {
 
   const hozzaszolasKuld = () => {
     console.log(hozzaszolas);
-    socket.emit("ujhozzaszolas", id, hozzaszolas, felhasznalonev);
   };
-
-  socket.on("hozzaszolasError", (error) => {
-    console.log("Error during hozzaszolas:", sajt);
-    // Handle the error on the client side
-  });
 
   return (
     <div>
@@ -134,86 +129,67 @@ const Onestory = () => {
           <p>{karakterek}</p>
           <p>{sajatErtekeles}⭐</p>
           <div className="rating">
-            <input type="radio" id="star-1" name="star-radio" value="star-1" />
-            <label for="star-1">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                onClick={() => {
-                  SetSajatErtekeles(5);
-                  ertekeles();
-                }}
-              >
-                <path
-                  pathLength="360"
-                  d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"
-                ></path>
-              </svg>
-            </label>
-            <input type="radio" id="star-2" name="star-radio" value="star-1" />
-            <label for="star-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                onClick={() => {
-                  SetSajatErtekeles(4);
-                  ertekeles();
-                }}
-              >
-                <path
-                  pathLength="360"
-                  d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"
-                ></path>
-              </svg>
-            </label>
-            <input type="radio" id="star-3" name="star-radio" value="star-1" />
-            <label for="star-3">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                onClick={() => {
-                  SetSajatErtekeles(3);
-                  ertekeles();
-                }}
-              >
-                <path
-                  pathLength="360"
-                  d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"
-                ></path>
-              </svg>
-            </label>
-            <input type="radio" id="star-4" name="star-radio" value="star-1" />
-            <label for="star-4">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                onClick={() => {
-                  SetSajatErtekeles(2);
-                  ertekeles();
-                }}
-              >
-                <path
-                  pathLength="360"
-                  d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"
-                ></path>
-              </svg>
-            </label>
-            <input type="radio" id="star-5" name="star-radio" value="star-1" />
-            <label for="star-5">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                onClick={() => {
-                  SetSajatErtekeles(1);
-                  ertekeles();
-                }}
-              >
-                <path
-                  pathLength="360"
-                  d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"
-                ></path>
-              </svg>
-            </label>
+            <img
+              onClick={() => {
+                SetStar1Src("/images/starfilled.png");
+                SetStar2Src("/images/star.png");
+                SetStar3Src("/images/star.png");
+                SetStar4Src("/images/star.png");
+                SetStar5Src("/images/star.png");
+                SetSajatErtekeles(1);
+              }}
+              src={star1Src}
+              alt=""
+            />
+            <img
+              onClick={() => {
+                SetStar1Src("/images/starfilled.png");
+                SetStar2Src("/images/starfilled.png");
+                SetStar3Src("/images/star.png");
+                SetStar4Src("/images/star.png");
+                SetStar5Src("/images/star.png");
+                SetSajatErtekeles(2);
+              }}
+              src={star2Src}
+              alt=""
+            />
+            <img
+              onClick={() => {
+                SetStar1Src("/images/starfilled.png");
+                SetStar2Src("/images/starfilled.png");
+                SetStar3Src("/images/starfilled.png");
+                SetStar4Src("/images/star.png");
+                SetStar5Src("/images/star.png");
+                SetSajatErtekeles(3);
+              }}
+              src={star3Src}
+              alt=""
+            />
+            <img
+              onClick={() => {
+                SetStar1Src("/images/starfilled.png");
+                SetStar2Src("/images/starfilled.png");
+                SetStar3Src("/images/starfilled.png");
+                SetStar4Src("/images/starfilled.png");
+                SetStar5Src("/images/star.png");
+                SetSajatErtekeles(4);
+              }}
+              src={star4Src}
+              alt=""
+            />
+            <img
+              onClick={() => {
+                SetStar1Src("/images/starfilled.png");
+                SetStar2Src("/images/starfilled.png");
+                SetStar3Src("/images/starfilled.png");
+                SetStar4Src("/images/starfilled.png");
+                SetStar5Src("/images/starfilled.png");
+                SetSajatErtekeles(5);
+              }}
+              src={star5Src}
+              alt=""
+            />
+            <button onClick={() => ertekeles()}>Értékelés</button>
           </div>
         </div>
         <div className="onlystory">
