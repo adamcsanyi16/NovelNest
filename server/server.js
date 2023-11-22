@@ -91,6 +91,28 @@ const io = new Server(server, {
   transports: ["websocket", "polling"],
 });
 
+io.on("connection", (socket) => {
+  console.log("A user connected");
+
+  // Example: Broadcasting a message to all connected clients
+  socket.on("chat message", (msg) => {
+    io.emit("chat message", msg);
+  });
+
+  // Example: Handling a custom event
+  socket.on("customEvent", (data) => {
+    console.log("Received custom event:", data);
+
+    // Broadcasting to all clients except the sender
+    socket.broadcast.emit("customEventResponse", "This is a response");
+  });
+
+  // Handle disconnect
+  socket.on("disconnect", () => {
+    console.log("User disconnected");
+  });
+});
+
 //ROUTES
 app.get("/", (req, res) => {
   res.send("Hello World");

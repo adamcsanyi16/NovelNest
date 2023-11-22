@@ -3,6 +3,8 @@ import { Link, useParams } from "react-router-dom";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { io } from "socket.io-client";
 
+const socket = io.connect("http://localhost:3500");
+
 const Onestory = () => {
   const url = "http://localhost:3500";
   const { user } = useAuthContext();
@@ -30,6 +32,26 @@ const Onestory = () => {
 
   const userLocalStorage = JSON.parse(localStorage.getItem("user"));
   const token = userLocalStorage.token;
+
+  socket.on("connect", () => {
+    console.log("Connected to the server");
+
+    // Example: Emitting a message
+    socket.emit("chat message", "Hello, server!");
+  });
+
+  // Example: Listening for a message
+  socket.on("chat message", (msg) => {
+    console.log("Received message from server:", msg);
+  });
+
+  // Example: Emitting a custom event
+  socket.emit("customEvent", { data: "Some data" });
+
+  // Example: Listening for a custom event
+  socket.on("customEventResponse", (response) => {
+    console.log("Received custom event response:", response);
+  });
 
   useEffect(() => {
     const fetchData = async () => {
