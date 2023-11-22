@@ -126,16 +126,8 @@ io.on("connection", (socket) => {
       const id = msg;
       const story = await Story.findOne({ _id: id });
 
-      if (story) {
-        const hozzaszolasok = story.hozzaszolasok;
-        console.log(hozzaszolasok);
-        if (hozzaszolasok.length > 0) {
-          setTimeout(() => {
-            socket.emit("hozzaszolasok", hozzaszolasok);
-            socket.emit("hozzaszolasok", hozzaszolasok);
-          }, 5000);
-        }
-      }
+      const hozzaszolasok = story.hozzaszolasok;
+      io.emit("hozzaszolasok", { id, hozzaszolasok });
     } catch (error) {
       socket.emit("error", "Nem érhetőek el a hozzászólások");
     }

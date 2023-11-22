@@ -130,8 +130,10 @@ const Onestory = () => {
   };
 
   socket.on("hozzaszolasok", (hozzaszolasok) => {
-    SetOsszesHozzaszolas(hozzaszolasok);
-    console.log(osszesHozzaszolas);
+    if (id == hozzaszolasok.id) {
+      console.log(hozzaszolasok);
+      SetOsszesHozzaszolas(hozzaszolasok);
+    }
   });
 
   return (
@@ -217,12 +219,6 @@ const Onestory = () => {
           <p>{story}</p>
           <div className="comments">
             <h3>Hozzászólások</h3>
-            {osszesHozzaszolas.map((comment) => {
-              <div>
-                <p>{comment.felhasznalonev}</p>
-                <p>{comment.hozzaszolas}</p>
-              </div>;
-            })}
             <input
               className="input"
               id="commentInput"
