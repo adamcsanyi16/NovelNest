@@ -91,26 +91,6 @@ const io = new Server(server, {
   transports: ["websocket", "polling"],
 });
 
-const isValidToken = (token) => {
-  try {
-    const decoded = jwt.verify(token, process.env.SECRET);
-    return true;
-  } catch (error) {
-    return false;
-  }
-};
-
-io.use((socket, next) => {
-  const token = socket.handshake.auth.token;
-
-  // Perform token validation logic using the isValidToken function
-  if (token && isValidToken(token)) {
-    return next();
-  } else {
-    return next(new Error("Authentication error: Invalid token"));
-  }
-});
-
 //ROUTES
 app.get("/", (req, res) => {
   res.send("Hello World");
@@ -699,6 +679,6 @@ mongoose
   .catch(() => console.log(error.message));
 
 const port = process.env.PORT || 3500;
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`http://localhost:${port}`);
 });
