@@ -132,6 +132,7 @@ io.on("connection", (socket) => {
         if (hozzaszolasok.length > 0) {
           setTimeout(() => {
             socket.emit("hozzaszolasok", hozzaszolasok);
+            socket.emit("hozzaszolasok", hozzaszolasok);
           }, 5000);
         }
       }
