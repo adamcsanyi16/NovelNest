@@ -55,7 +55,6 @@ const Updatestory = () => {
   }, [user, felhasznalonev]);
 
   useEffect(() => {
-    setIsLoading(true);
     const fetchData = async () => {
       try {
         const response = await fetch(url + "/onestory", {
@@ -94,7 +93,6 @@ const Updatestory = () => {
           }
 
           setSuccess(data.msg);
-          setIsLoading(false);
         } else {
           const data = await response.json();
           setError(data.msg);
@@ -108,6 +106,7 @@ const Updatestory = () => {
   }, [user, id, dropdownKategoria, dropdownNyelv]);
 
   useEffect(() => {
+    setIsLoading(true);
     const fetchDropdownCategory = async () => {
       try {
         const adat = await fetch(url + "/kategoria", {
@@ -125,6 +124,7 @@ const Updatestory = () => {
             value: option.kategoria,
           }));
           setDropDownKategoria(CategoryOptions);
+          setIsLoading(false);
         } else {
           const response = await adat.json();
           setError(response.msg);
