@@ -30,6 +30,7 @@ const Onestory = () => {
   const [star3Src, SetStar3Src] = useState("/images/star.png");
   const [star4Src, SetStar4Src] = useState("/images/star.png");
   const [star5Src, SetStar5Src] = useState("/images/star.png");
+  const [atlagErtekeles, SetAtlagErtekeles] = useState(null);
 
   const userLocalStorage = JSON.parse(localStorage.getItem("user"));
   const token = userLocalStorage.token;
@@ -74,7 +75,6 @@ const Onestory = () => {
         if (response.ok) {
           const data = await response.json();
           SetOsszesHozzaszolas(data.hozzaszolas);
-          console.log(data.hozzaszolas);
         } else {
           const data = await response.json();
           setError(data.msg);
@@ -122,12 +122,23 @@ const Onestory = () => {
   }, [user, id]);
 
   const ertekeles = () => {
-    socket.emit("ujErtekeles", { id, felhasznalonev, sajatErtekeles });
+    socket.emit("newrating", { id, felhasznalonev, sajatErtekeles });
   };
 
   const hozzaszolasKuld = () => {
-    socket.emit("ujHozzaszolas", { id, felhasznalonev, hozzaszolas });
+    if (hozzaszolas.trim() === "") {
+    } else {
+      socket.emit("ujHozzaszolas", { id, felhasznalonev, hozzaszolas });
+      SetHozzaszolas("");
+    }
   };
+
+  socket.on("rating", (msg) => {
+    if (id === msg.id) {
+      const atlagErtekeles = Math.round(msg.avgRating * 10) / 10;
+      SetAtlagErtekeles(atlagErtekeles);
+    }
+  });
 
   socket.on("error", (msg) => {
     setError(msg);
@@ -137,13 +148,8 @@ const Onestory = () => {
     setSuccess(msg);
   });
 
-  const hozzaszolasLeker = () => {
-    socket.emit("hozzaszolasokLeker", id);
-  };
-
   socket.on("hozzaszolasok", (msg) => {
     if (id == msg.id) {
-      console.log(msg.hozzaszolasok);
       SetOsszesHozzaszolas(msg.hozzaszolasok);
     }
   });
@@ -161,7 +167,7 @@ const Onestory = () => {
             <h3>{szerzo}</h3>
           </Link>
           <p>{karakterek}</p>
-          <p>{sajatErtekeles}⭐</p>
+          <p>{atlagErtekeles}⭐</p>
           <div className="rating">
             <img
               onClick={() => {
@@ -224,34 +230,43 @@ const Onestory = () => {
               alt=""
             />
             <button onClick={ertekeles}>Értékelés</button>
+            {error && <div className="error">{error}</div>}
+          </div>
+          <div className="comments">
+            <h3>Hozzászólások ({osszesHozzaszolas.length})</h3>
+            <div className="allComments">
+              <table>
+                {osszesHozzaszolas.reverse().map((comment) => (
+                  <tr>
+                    <td>
+                      <Link to={`/profil/${comment.felhasznalonev}`}>
+                        <b>{comment.felhasznalonev}</b>
+                      </Link>
+                      : <i>{comment.hozzaszolas}</i>
+                    </td>
+                  </tr>
+                ))}
+              </table>
+            </div>
+            <div className="commentInputContainer">
+              <input
+                className="input"
+                id="commentInput"
+                value={hozzaszolas}
+                type="text"
+                placeholder="Hozzászólás írása"
+                onChange={(e) => SetHozzaszolas(e.target.value)}
+                autoComplete="off"
+              />
+              <button id="commentButton" onClick={hozzaszolasKuld}>
+                Küldés
+              </button>
+            </div>
           </div>
         </div>
         <div className="onlystory">
           <h1>{cim}</h1>
           <p>{story}</p>
-          <div className="comments">
-            <h3>Hozzászólások</h3>
-            {osszesHozzaszolas.map((comment) => (
-              <table>
-                <tr>
-                  <td>
-                    {comment.felhasznalonev} : {comment.hozzaszolas}
-                  </td>
-                </tr>
-              </table>
-            ))}
-            <input
-              className="input"
-              id="commentInput"
-              type="text"
-              placeholder="Hozzászólás írása"
-              onChange={(e) => SetHozzaszolas(e.target.value)}
-            />
-            <button onClick={hozzaszolasKuld}>Yaay</button>
-            <button onClick={hozzaszolasLeker}>Leker</button>
-          </div>
-          {success && <div className="success">{success}</div>}
-          {error && <div className="error">{error}</div>}
         </div>
       </div>
     </div>
