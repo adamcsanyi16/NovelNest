@@ -30,10 +30,9 @@ img {
 
 /*NAVBAR*/
 .navbar {
-  margin-top: 10px;
   display: flex;
   gap: 30px;
-  padding: 20px;
+  padding: 30px;
   justify-content: center;
   align-items: center;
 }
@@ -524,7 +523,7 @@ form {
 }
 
 .storyContainer {
-  padding: 30px;
+  padding: 0px 30px;
   display: grid;
   grid-template-columns: 25% 25% 25% 25%;
   flex-basis: 100%;
@@ -554,10 +553,17 @@ form {
 .storyWrap {
   display: flex;
   flex: 1;
+  padding-top: 20px;
 }
 
 .sortingContainer {
   flex-basis: 250px;
+  padding: 10px;
+}
+
+.sortingContainer .input {
+  scale: 1;
+  width: 100%;
 }
 
 #leirasCounter {
