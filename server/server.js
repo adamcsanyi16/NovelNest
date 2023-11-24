@@ -114,7 +114,12 @@ io.on("connection", (socket) => {
           },
         }
       );
+
       io.emit("success", "Sikeres hozzászólás!");
+      const story = await Story.findOne({ _id: id });
+
+      const hozzaszolasok = story.hozzaszolasok;
+      io.emit("hozzaszolasok", { id, hozzaszolasok });
     } catch (error) {
       io.emit("error", "Sikertelen hozzászólás!");
     }
