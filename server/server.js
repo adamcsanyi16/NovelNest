@@ -690,6 +690,28 @@ app.post("/onestory", async (req, res) => {
   }
 });
 
+app.post("/ertekeles", async (req, res) => {
+  try {
+    const { id, felhasznalonev, Sajatertekeles } = req.body;
+    console.log(req.body);
+    const ujErtekeles = Number(Sajatertekeles);
+    console.log(ujErtekeles);
+    const onestory = await Story.findOneAndUpdate(
+      { _id: id },
+      {
+        $push: {
+          ertekelesek: {
+            ertekeles: ujErtekeles,
+          },
+        },
+      }
+    );
+    res.status(200).json({ onestory });
+  } catch (error) {
+    res.status(500).json({ msg: "Valami hiba történt: " + error.message });
+  }
+});
+
 //GETTING DROPDOWNS DATA
 app.get("/kategoria", async (req, res) => {
   try {
