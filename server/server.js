@@ -81,6 +81,7 @@ app.use(express.urlencoded({ extended: false }));
 //SOCKET.IO
 const http = require("http");
 const { Server } = require("socket.io");
+const { Socket } = require("dgram");
 const server = http.createServer(app);
 
 const io = new Server(server, {
@@ -92,24 +93,48 @@ const io = new Server(server, {
 });
 
 io.on("connection", (socket) => {
-  console.log("A user connected");
+  console.log("A user connected: " + socket.id);
 
-  // Example: Broadcasting a message to all connected clients
-  socket.on("chat message", (msg) => {
-    io.emit("chat message", msg);
+  //SOCKET.IO MESSAGES
+
+  socket.on("ujHozzaszolas", async (msg) => {
+    try {
+      const id = msg.id;
+      const felhasznalonev = msg.felhasznalonev;
+      const hozzaszolas = msg.hozzaszolas;
+
+      const ujHozzaszolas = await Story.findByIdAndUpdate(
+        { _id: id },
+        {
+          $push: {
+            hozzaszolasok: {
+              felhasznalonev: felhasznalonev,
+              hozzaszolas: hozzaszolas,
+            },
+          },
+        }
+      );
+      io.emit("success", "Sikeres hozzászólás!");
+    } catch (error) {
+      io.emit("error", "Sikertelen hozzászólás!");
+    }
   });
 
-  // Example: Handling a custom event
-  socket.on("customEvent", (data) => {
-    console.log("Received custom event:", data);
+  socket.on("hozzaszolasokLeker", async (msg) => {
+    try {
+      console.log(msg);
+      const id = msg;
+      const story = await Story.findOne({ _id: id });
 
-    // Broadcasting to all clients except the sender
-    socket.broadcast.emit("customEventResponse", "This is a response");
+      const hozzaszolasok = story.hozzaszolasok;
+      io.emit("hozzaszolasok", { id, hozzaszolasok });
+    } catch (error) {
+      socket.emit("error", "Nem érhetőek el a hozzászólások");
+    }
   });
 
-  // Handle disconnect
   socket.on("disconnect", () => {
-    console.log("User disconnected");
+    console.log("User disconnected: " + socket.id);
   });
 });
 

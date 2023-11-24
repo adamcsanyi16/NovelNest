@@ -41,7 +41,7 @@ const storySchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    comments: {
+    hozzaszolasok: {
       type: Array,
     },
     ertekelesek: {

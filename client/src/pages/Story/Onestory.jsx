@@ -23,6 +23,7 @@ const Onestory = () => {
   const [kategoria, setKategoria] = useState("");
   const [story, SetStory] = useState("");
   const [hozzaszolas, SetHozzaszolas] = useState("");
+  const [osszesHozzaszolas, SetOsszesHozzaszolas] = useState([]);
   const [sajatErtekeles, SetSajatErtekeles] = useState("");
   const [star1Src, SetStar1Src] = useState("/images/star.png");
   const [star2Src, SetStar2Src] = useState("/images/star.png");
@@ -32,26 +33,6 @@ const Onestory = () => {
 
   const userLocalStorage = JSON.parse(localStorage.getItem("user"));
   const token = userLocalStorage.token;
-
-  socket.on("connect", () => {
-    console.log("Connected to the server");
-
-    // Example: Emitting a message
-    socket.emit("chat message", "Hello, server!");
-  });
-
-  // Example: Listening for a message
-  socket.on("chat message", (msg) => {
-    console.log("Received message from server:", msg);
-  });
-
-  // Example: Emitting a custom event
-  socket.emit("customEvent", { data: "Some data" });
-
-  // Example: Listening for a custom event
-  socket.on("customEventResponse", (response) => {
-    console.log("Received custom event response:", response);
-  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -133,8 +114,27 @@ const Onestory = () => {
   };
 
   const hozzaszolasKuld = () => {
-    console.log(hozzaszolas);
+    socket.emit("ujHozzaszolas", { id, felhasznalonev, hozzaszolas });
   };
+
+  socket.on("error", (msg) => {
+    setError(msg);
+  });
+
+  socket.on("success", (msg) => {
+    setSuccess(msg);
+  });
+
+  const hozzaszolasLeker = () => {
+    socket.emit("hozzaszolasokLeker", id);
+  };
+
+  socket.on("hozzaszolasok", (hozzaszolasok) => {
+    if (id == hozzaszolasok.id) {
+      console.log(hozzaszolasok);
+      SetOsszesHozzaszolas(hozzaszolasok);
+    }
+  });
 
   return (
     <div>
@@ -227,7 +227,10 @@ const Onestory = () => {
               onChange={(e) => SetHozzaszolas(e.target.value)}
             />
             <button onClick={hozzaszolasKuld}>Yaay</button>
+            <button onClick={hozzaszolasLeker}>Leker</button>
           </div>
+          {success && <div className="success">{success}</div>}
+          {error && <div className="error">{error}</div>}
         </div>
       </div>
     </div>
