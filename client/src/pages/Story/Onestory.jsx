@@ -93,24 +93,8 @@ const Onestory = () => {
     fetchData();
   }, [user, id]);
 
-  const ertekeles = async () => {
-    try {
-      const adat = await fetch(url + "/ertekeles", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user.token}`,
-        },
-        body: JSON.stringify({ id, felhasznalonev, sajatErtekeles }),
-      });
-      if (adat.ok) {
-        console.log("sikeres ertekeles");
-      } else {
-        console.log(error.message);
-      }
-    } catch (error) {
-      setError("Valami hiba történt a mentés során!" + error.message);
-    }
+  const ertekeles = () => {
+    socket.emit("ujErtekeles", { id, felhasznalonev, sajatErtekeles });
   };
 
   const hozzaszolasKuld = () => {
@@ -211,7 +195,7 @@ const Onestory = () => {
               src={star5Src}
               alt=""
             />
-            <button onClick={() => ertekeles()}>Értékelés</button>
+            <button onClick={ertekeles}>Értékelés</button>
           </div>
         </div>
         <div className="onlystory">

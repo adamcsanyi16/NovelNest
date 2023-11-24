@@ -123,6 +123,36 @@ io.on("connection", (socket) => {
     } catch (error) {
       io.emit("error", "Sikertelen hozzászólás!");
     }
+
+    socket.on("ujErtekeles", async (msg) => {
+      console.log(msg);
+      try {
+        const id = msg.id;
+        const felhasznalonev = msg.felhasznalonev;
+        const ertekeles = msg.Sajatertekeles;
+
+        const ujErtekeles = await Story.findByIdAndUpdate(
+          { _id: id },
+          {
+            $push: {
+              ertekelesek: {
+                felhasznalonev: felhasznalonev,
+                ertekeles: ertekeles,
+              },
+            },
+          }
+        );
+
+        io.emit("success", "Sikeres értékelés!");
+        const story = await Story.findOne({ _id: id });
+
+        const ertekelesek = story.ertekelesek;
+
+        io.emit("ertekelesek", { id, ertekelesek });
+      } catch (error) {
+        io.emit("error", "Sikertelen értékelés!");
+      }
+    });
   });
 
   socket.on("hozzaszolasokLeker", async (msg) => {
@@ -654,28 +684,6 @@ app.post("/onestory", async (req, res) => {
   try {
     const id = req.body.id;
     const onestory = await Story.find({ _id: id });
-    res.status(200).json({ onestory });
-  } catch (error) {
-    res.status(500).json({ msg: "Valami hiba történt: " + error.message });
-  }
-});
-
-app.post("/ertekeles", async (req, res) => {
-  try {
-    const { id, felhasznalonev, Sajatertekeles } = req.body;
-    console.log(req.body);
-    const ujErtekeles = Number(Sajatertekeles);
-    console.log(ujErtekeles);
-    const onestory = await Story.findOneAndUpdate(
-      { _id: id },
-      {
-        $push: {
-          ertekelesek: {
-            ertekeles: ujErtekeles,
-          },
-        },
-      }
-    );
     res.status(200).json({ onestory });
   } catch (error) {
     res.status(500).json({ msg: "Valami hiba történt: " + error.message });
