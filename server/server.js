@@ -660,6 +660,7 @@ app.post("/onestory", async (req, res) => {
   }
 });
 
+//RATINGS
 app.post("/ertekeles", async (req, res) => {
   try {
     const { id, felhasznalonev, Sajatertekeles } = req.body;
@@ -677,6 +678,18 @@ app.post("/ertekeles", async (req, res) => {
       }
     );
     res.status(200).json({ onestory });
+  } catch (error) {
+    res.status(500).json({ msg: "Valami hiba történt: " + error.message });
+  }
+});
+
+//COMMENTS
+app.post("/hozzaszolas", async (req, res) => {
+  try {
+    const id = req.body.id;
+    const story = await Story.findById({ _id: id });
+    const hozzaszolas = story.hozzaszolasok;
+    res.status(200).json({ hozzaszolas });
   } catch (error) {
     res.status(500).json({ msg: "Valami hiba történt: " + error.message });
   }

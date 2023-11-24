@@ -60,6 +60,34 @@ const Onestory = () => {
   }, [user, felhasznalonev]);
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(url + "/hozzaszolas", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+          body: JSON.stringify({ id }),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          SetOsszesHozzaszolas(data.hozzaszolas);
+          console.log(data.hozzaszolas);
+        } else {
+          const data = await response.json();
+          setError(data.msg);
+        }
+      } catch (error) {
+        console.log("Fetch error:", error);
+      }
+    };
+
+    fetchData();
+  }, [user, felhasznalonev]);
+
+  useEffect(() => {
     SetIsLoading(true);
     const fetchData = async () => {
       try {
@@ -129,10 +157,10 @@ const Onestory = () => {
     socket.emit("hozzaszolasokLeker", id);
   };
 
-  socket.on("hozzaszolasok", (hozzaszolasok) => {
-    if (id == hozzaszolasok.id) {
-      console.log(hozzaszolasok);
-      SetOsszesHozzaszolas(hozzaszolasok);
+  socket.on("hozzaszolasok", (msg) => {
+    if (id == msg.id) {
+      console.log(msg.hozzaszolasok);
+      SetOsszesHozzaszolas(msg.hozzaszolasok);
     }
   });
 
@@ -219,6 +247,15 @@ const Onestory = () => {
           <p>{story}</p>
           <div className="comments">
             <h3>Hozzászólások</h3>
+            {osszesHozzaszolas.map((comment) => (
+              <table>
+                <tr>
+                  <td>
+                    {comment.felhasznalonev} : {comment.hozzaszolas}
+                  </td>
+                </tr>
+              </table>
+            ))}
             <input
               className="input"
               id="commentInput"
