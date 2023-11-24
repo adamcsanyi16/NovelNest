@@ -123,36 +123,6 @@ io.on("connection", (socket) => {
     } catch (error) {
       io.emit("error", "Sikertelen hozzászólás!");
     }
-
-    socket.on("ujErtekeles", async (msg) => {
-      console.log(msg);
-      try {
-        const id = msg.id;
-        const felhasznalonev = msg.felhasznalonev;
-        const ertekeles = msg.Sajatertekeles;
-
-        const ujErtekeles = await Story.findByIdAndUpdate(
-          { _id: id },
-          {
-            $push: {
-              ertekelesek: {
-                felhasznalonev: felhasznalonev,
-                ertekeles: ertekeles,
-              },
-            },
-          }
-        );
-
-        io.emit("success", "Sikeres értékelés!");
-        const story = await Story.findOne({ _id: id });
-
-        const ertekelesek = story.ertekelesek;
-
-        io.emit("ertekelesek", { id, ertekelesek });
-      } catch (error) {
-        io.emit("error", "Sikertelen értékelés!");
-      }
-    });
   });
 
   socket.on("hozzaszolasokLeker", async (msg) => {
@@ -165,6 +135,39 @@ io.on("connection", (socket) => {
       io.emit("hozzaszolasok", { id, hozzaszolasok });
     } catch (error) {
       socket.emit("error", "Nem érhetőek el a hozzászólások");
+    }
+  });
+
+  socket.on("newrating", async (msg) => {
+    try {
+      const id = msg.id;
+      const felhasznalonev = msg.felhasznalonev;
+      const ertekeles = msg.sajatErtekeles;
+      const story = await Story.findOneAndUpdate(
+        { _id: id },
+        {
+          $push: {
+            ertekelesek: {
+              felhasznalonev: felhasznalonev,
+              ertekeles: ertekeles,
+            },
+          },
+        }
+      );
+      socket.emit("success", "Sikeres értékelés!");
+
+      const osszesErtekelesTomb = story.ertekelesek;
+      const ertekelesek = [];
+      osszesErtekelesTomb.forEach((ertekeles) => {
+        ertekelesek.push(ertekeles.ertekeles);
+      });
+      console.log(ertekelesek);
+      const avgRating =
+        ertekelesek.reduce((a, b) => a + b, 0) / ertekelesek.length;
+
+      socket.emit("rating", { id, avgRating });
+    } catch (error) {
+      socket.emit("error", "Sikertelen értékelés!");
     }
   });
 

@@ -601,6 +601,97 @@ form {
   -o-border-radius: 10px;
 }
 
+/*COMMENTS*/
+.comments h3 {
+  margin-top: 5px;
+  margin-bottom: 20px;
+  padding-bottom: 0px;
+}
+
+.comments {
+  margin-top: 30px;
+  border: $vilagoskek 2px solid;
+  border-radius: 10px;
+  padding: 10px;
+  scale: 0.8;
+  height: 500px;
+}
+
+.allComments {
+  margin: auto;
+  line-height: 2;
+  text-align: left;
+  padding: 5px;
+  height: 375px;
+  overflow-y: scroll;
+}
+
+.allComments::-webkit-scrollbar {
+  background: $feher;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  width: 10px;
+  box-shadow: inset 0 0 5px grey;
+}
+
+.allComments::-webkit-scrollbar-thumb {
+  background-color: $vilagoskek;
+  border: 1px solid $feher;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+}
+
+.allComments::-webkit-scrollbar-thumb:hover {
+  background-color: $sotetkek;
+}
+
+.allComments td {
+}
+
+#commentInput {
+  line-height: 28px;
+  border: 2px solid transparent;
+  border-bottom-color: $vilagoskek;
+  padding: 0.2rem 0;
+  outline: none;
+  width: 65%;
+  background-color: transparent;
+  color: $sotetkek;
+  transition: 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  font-family: $mainfont;
+  font-size: 9px;
+}
+
+#commentInput:focus,
+#commentInput:hover {
+  outline: none;
+  padding: 0.2rem 1rem;
+  border-radius: 1rem;
+  border-color: $vilagoskek;
+}
+
+#commentInput::placeholder {
+  color: $vilagoskek;
+  font-family: $mainfont;
+  font-size: 9px;
+}
+
+#commentButton {
+  width: 30%;
+  scale: 0.8;
+  cursor: pointer;
+}
+
+#commentError {
+  margin-top: 0;
+}
+
 /*RATING*/
 .rating {
   display: flex;
