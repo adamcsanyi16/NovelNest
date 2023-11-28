@@ -4,6 +4,9 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { useLogout } from "../../hooks/useLogout";
 import Modal from "react-modal";
 import config from "../../components/config";
+import { io } from "socket.io-client";
+
+const socket = io.connect(config.URL);
 
 const User = () => {
   const url = config.URL;
@@ -86,7 +89,6 @@ const User = () => {
 
       if (adat.ok) {
         const response = await adat.json();
-        console.log(response);
         setViewFelhasznalonev(response.viewFelhasznalonev);
         setViewEmail(response.viewEmail);
         setViewProfilkep(response.viewProfilkep);
@@ -176,74 +178,34 @@ const User = () => {
   }, [user, felhasznalonev, felhasznalonevKuld]);
 
   //(UN)FOLLOWING SYSTEM
-  const bekovetes = async () => {
-    setIsLoading(true);
-    setSuccess(null);
-    setError(null);
-    setKovetem(true);
-    setViewKovetoim(viewKovetoim + 1);
-    try {
-      const response = await fetch(`${url}/bekovet`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user.token}`,
-        },
-        body: JSON.stringify({
-          felhasznalonev: felhasznalonev,
-          viewFelhasznalonev: viewFelhasznalonev,
-        }),
-      });
-      if (response.ok) {
-        setSuccess("Profil sikeresen bekövetve!");
-        setIsLoading(false);
-        setInterval(() => {
-          setSuccess(null);
-        }, 3000);
-      } else {
-        const data = await response.json();
-        setError(data.msg);
-        setIsLoading(false);
-      }
-    } catch (error) {
-      setError("Valami hiba történt a mentés során!" + error.message);
-    }
+
+  const bekovetes = () => {
+    socket.emit("bekovetes", { felhasznalonev, viewFelhasznalonev });
+    setKovetem(!kovetem);
   };
 
-  const kikovetes = async () => {
-    setIsLoading(true);
-    setSuccess(null);
-    setError(null);
-    setKovetem(false);
-    setViewKovetoim(viewKovetoim - 1);
-
-    try {
-      const response = await fetch(`${url}/kikovet`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user.token}`,
-        },
-        body: JSON.stringify({
-          felhasznalonev: felhasznalonev,
-          viewFelhasznalonev: viewFelhasznalonev,
-        }),
-      });
-      if (response.ok) {
-        setSuccess("Profil sikeresen kikövetve!");
-        setIsLoading(false);
-        setInterval(() => {
-          setSuccess(null);
-        }, 3000);
-      } else {
-        const data = await response.json();
-        setError(data.msg);
-        setIsLoading(false);
-      }
-    } catch (error) {
-      setError("Valami hiba történt a mentés során!" + error.message);
-    }
+  const kikovetes = () => {
+    socket.emit("kikovetes", { felhasznalonev, viewFelhasznalonev });
+    setKovetem(!kovetem);
   };
+
+  socket.on("kovetokUpdate", (msg) => {
+    if (viewFelhasznalonev == msg.viewFelhasznalonev) {
+      console.log("ugyanaz");
+      setViewKovetoimList(msg.viewKovetoimList);
+      setViewKoveteseimList(msg.viewKoveteseimList);
+      setViewKovetoimListKep(msg.viewKovetoimListKep);
+      setViewKoveteseimListKep(msg.viewKoveteseimListKep);
+    }
+  });
+
+  socket.on("error", (msg) => {
+    setError(msg);
+  });
+
+  socket.on("success", (msg) => {
+    setSuccess(msg);
+  });
 
   function displayImage_profil(e) {
     const fileInput = e.target;
@@ -421,13 +383,13 @@ const User = () => {
                   <div>
                     <div className="kovetok">
                       <h4 style={{ cursor: "pointer" }} onClick={modalKovetoim}>
-                        Követők: {viewKovetoim}
+                        Követők: {viewKovetoimList.length}
                       </h4>
                       <h4
                         style={{ cursor: "pointer" }}
                         onClick={modalKoveteseim}
                       >
-                        Követés: {viewKoveteseim}
+                        Követés: {viewKoveteseimList.length}
                       </h4>
                     </div>
                     <div className="kovetoGomb">
@@ -547,7 +509,7 @@ const User = () => {
             </div>
             <div className="kovetokMutato">
               <h4 id="kovetoMutatoCim">
-                {viewFelhasznalonev} követői({viewKovetoim})
+                {viewFelhasznalonev} követői({viewKovetoimList.length})
               </h4>
               {viewKovetoimListKep &&
                 viewKovetoimListKep.map((item, index) => (
@@ -569,7 +531,7 @@ const User = () => {
             </button>
             <div className="kovetokMutato">
               <h4 id="kovetoMutatoCim">
-                {viewFelhasznalonev} követi({viewKoveteseim})
+                {viewFelhasznalonev} követi({viewKoveteseimList.length})
               </h4>
               {viewKoveteseimListKep &&
                 viewKoveteseimListKep.map((item, index) => (

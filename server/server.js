@@ -138,6 +138,124 @@ io.on("connection", (socket) => {
     }
   });
 
+  /* FOLLOWING SYSTEM */
+
+  socket.on("bekovetes", async (msg) => {
+    console.log(msg.felhasznalonev, msg.viewFelhasznalonev);
+    try {
+      const felhasznalonev = msg.felhasznalonev;
+      const viewFelhasznalonev = msg.viewFelhasznalonev;
+      const bekovetettuser = await User.findOneAndUpdate(
+        { felhasznalonev: viewFelhasznalonev },
+        {
+          $push: { kovetoim: felhasznalonev },
+        }
+      );
+      const bekovetouser = await User.findOneAndUpdate(
+        { felhasznalonev },
+        {
+          $push: { koveteseim: viewFelhasznalonev },
+        }
+      );
+      const user = await User.findOne({ felhasznalonev: viewFelhasznalonev });
+
+      if (user) {
+        const koveteseimProfilkepArray = [];
+        const kovetoimProfilkepArray = [];
+
+        for (const koveteseimEmber of user.koveteseim) {
+          const koveteseimUser = await User.findOne({
+            felhasznalonev: koveteseimEmber,
+          });
+          if (koveteseimUser) {
+            koveteseimProfilkepArray.push(koveteseimUser.profilkep);
+          }
+        }
+
+        for (const kovetoEmber of user.kovetoim) {
+          const kovetoUser = await User.findOne({
+            felhasznalonev: kovetoEmber,
+          });
+          if (kovetoUser) {
+            kovetoimProfilkepArray.push(kovetoUser.profilkep);
+          }
+        }
+
+        let viewKovetoimList = user.kovetoim;
+        let viewKoveteseimList = user.koveteseim;
+        let viewKovetoimListKep = kovetoimProfilkepArray;
+        let viewKoveteseimListKep = koveteseimProfilkepArray;
+        console.log(viewKovetoimListKep);
+        console.log(viewKoveteseimListKep);
+        io.emit("kovetokUpdate", {
+          viewKovetoimList,
+          viewKovetoimListKep,
+          viewKoveteseimList,
+          viewKoveteseimListKep,
+          viewFelhasznalonev,
+        });
+      }
+    } catch (error) {}
+  });
+
+  socket.on("kikovetes", async (msg) => {
+    try {
+      const felhasznalonev = msg.felhasznalonev;
+      const viewFelhasznalonev = msg.viewFelhasznalonev;
+
+      const bekovetettuser = await User.findOneAndUpdate(
+        { felhasznalonev: viewFelhasznalonev },
+        {
+          $pull: { kovetoim: felhasznalonev },
+        }
+      );
+      const bekovetouser = await User.findOneAndUpdate(
+        { felhasznalonev },
+        {
+          $pull: { koveteseim: viewFelhasznalonev },
+        }
+      );
+      const user = await User.findOne({ felhasznalonev: viewFelhasznalonev });
+
+      if (user) {
+        const koveteseimProfilkepArray = [];
+        const kovetoimProfilkepArray = [];
+
+        for (const koveteseimEmber of user.koveteseim) {
+          const koveteseimUser = await User.findOne({
+            felhasznalonev: koveteseimEmber,
+          });
+          if (koveteseimUser) {
+            koveteseimProfilkepArray.push(koveteseimUser.profilkep);
+          }
+        }
+
+        for (const kovetoEmber of user.kovetoim) {
+          const kovetoUser = await User.findOne({
+            felhasznalonev: kovetoEmber,
+          });
+          if (kovetoUser) {
+            kovetoimProfilkepArray.push(kovetoUser.profilkep);
+          }
+        }
+
+        let viewKovetoimList = user.kovetoim;
+        let viewKoveteseimList = user.koveteseim;
+        let viewKovetoimListKep = kovetoimProfilkepArray;
+        let viewKoveteseimListKep = koveteseimProfilkepArray;
+        console.log(viewKovetoimListKep);
+        console.log(viewKoveteseimListKep);
+        io.emit("kovetokUpdate", {
+          viewKovetoimList,
+          viewKovetoimListKep,
+          viewKoveteseimList,
+          viewKoveteseimListKep,
+          viewFelhasznalonev,
+        });
+      }
+    } catch (error) {}
+  });
+
   socket.on("newrating", async (msg) => {
     try {
       const id = msg.id;
@@ -156,16 +274,13 @@ io.on("connection", (socket) => {
       );
       socket.emit("success", "Sikeres értékelés!");
 
-      const osszesErtekelesTomb = story.ertekelesek;
-      const ertekelesek = [];
-      osszesErtekelesTomb.forEach((ertekeles) => {
-        ertekelesek.push(ertekeles.ertekeles);
+      const ertekelesLekeres = await Story.findOne({
+        _id: id,
       });
-      console.log(ertekelesek);
-      const avgRating =
-        ertekelesek.reduce((a, b) => a + b, 0) / ertekelesek.length;
+      const osszesErtekelesTomb = ertekelesLekeres.ertekelesek;
+      console.log(osszesErtekelesTomb);
 
-      socket.emit("rating", { id, avgRating });
+      socket.emit("rating", { id, osszesErtekelesTomb });
     } catch (error) {
       socket.emit("error", "Sikertelen értékelés!");
     }
@@ -428,49 +543,6 @@ app.post("/userupdate", async (req, res) => {
     res.status(200).json(updatedUser);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ msg: error.message });
-  }
-});
-
-//FOLLOWING SYSTEM
-app.post("/bekovet", async (req, res) => {
-  try {
-    const { felhasznalonev, viewFelhasznalonev } = req.body;
-    const bekovetettuser = await User.findOneAndUpdate(
-      { felhasznalonev: viewFelhasznalonev },
-      {
-        $push: { kovetoim: felhasznalonev },
-      }
-    );
-    const bekovetouser = await User.findOneAndUpdate(
-      { felhasznalonev },
-      {
-        $push: { koveteseim: viewFelhasznalonev },
-      }
-    );
-    res.status(200).json({ msg: "Profil sikeresen bekövetve" });
-  } catch (error) {
-    res.status(500).json({ msg: error.message });
-  }
-});
-
-app.post("/kikovet", async (req, res) => {
-  try {
-    const { felhasznalonev, viewFelhasznalonev } = req.body;
-    const bekovetettuser = await User.findOneAndUpdate(
-      { felhasznalonev: viewFelhasznalonev },
-      {
-        $pull: { kovetoim: felhasznalonev },
-      }
-    );
-    const bekovetouser = await User.findOneAndUpdate(
-      { felhasznalonev },
-      {
-        $pull: { koveteseim: viewFelhasznalonev },
-      }
-    );
-    res.status(200).json({ msg: "Profil sikeresen kikövetve" });
-  } catch (error) {
     res.status(500).json({ msg: error.message });
   }
 });

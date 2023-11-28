@@ -32,6 +32,8 @@ const Onestory = () => {
   const [star4Src, SetStar4Src] = useState("/images/star.png");
   const [star5Src, SetStar5Src] = useState("/images/star.png");
   const [atlagErtekeles, SetAtlagErtekeles] = useState(null);
+  const [isRated, SetIsRated] = useState(false);
+  const [ertekelok, setErtekelok] = useState([]);
 
   const userLocalStorage = JSON.parse(localStorage.getItem("user"));
   const token = userLocalStorage.token;
@@ -112,6 +114,17 @@ const Onestory = () => {
           setNyelv(onestory.nyelv);
           setLeiras(onestory.leiras);
           SetStory(onestory.story);
+          const osszesErtekelesTomb = onestory.ertekelesek;
+          const ertekelesek = [];
+          const ertekelok = [];
+          osszesErtekelesTomb.forEach((ertekeles) => {
+            ertekelesek.push(ertekeles.ertekeles);
+            ertekelok.push(ertekeles.felhasznalonev);
+          });
+          setErtekelok(ertekelok);
+          const avgRating =
+            ertekelesek.reduce((a, b) => a + b, 0) / ertekelesek.length;
+          SetAtlagErtekeles(Math.round(avgRating * 10) / 10);
           SetIsLoading(false);
         }
       } catch (error) {
@@ -123,7 +136,16 @@ const Onestory = () => {
   }, [user, id]);
 
   const ertekeles = () => {
-    socket.emit("newrating", { id, felhasznalonev, sajatErtekeles });
+    if (ertekelok.includes(felhasznalonev)) {
+      setError("Te már értékelted ezt a történetet!");
+      setTimeout(() => {
+        setError("");
+      }, 2000);
+      SetIsRated(true);
+    } else {
+      socket.emit("newrating", { id, felhasznalonev, sajatErtekeles });
+      SetIsLoading(true);
+    }
   };
 
   const hozzaszolasKuld = () => {
@@ -136,8 +158,22 @@ const Onestory = () => {
 
   socket.on("rating", (msg) => {
     if (id === msg.id) {
-      const atlagErtekeles = Math.round(msg.avgRating * 10) / 10;
-      SetAtlagErtekeles(atlagErtekeles);
+      const osszesErtekelesTomb = msg.osszesErtekelesTomb;
+      const ertekelesek = [];
+      const ertekelok = [];
+      osszesErtekelesTomb.forEach((ertekeles) => {
+        ertekelesek.push(ertekeles.ertekeles);
+      });
+      osszesErtekelesTomb.forEach((ertekeles) => {
+        ertekelok.push(ertekeles.felhasznalonev);
+      });
+      const avgRating =
+        ertekelesek.reduce((a, b) => a + b, 0) / ertekelesek.length;
+      if (ertekelok.includes(felhasznalonev)) {
+        SetIsRated(true);
+      }
+      SetAtlagErtekeles(Math.round(avgRating * 10) / 10);
+      SetIsLoading(false);
     }
   });
 
@@ -168,71 +204,84 @@ const Onestory = () => {
             <h3>{szerzo}</h3>
           </Link>
           <p>{karakterek}</p>
-          <p>{atlagErtekeles}⭐</p>
-          <div className="rating">
-            <img
-              onClick={() => {
-                SetStar1Src("/images/starfilled.png");
-                SetStar2Src("/images/star.png");
-                SetStar3Src("/images/star.png");
-                SetStar4Src("/images/star.png");
-                SetStar5Src("/images/star.png");
-                SetSajatErtekeles(1);
-              }}
-              src={star1Src}
-              alt=""
-            />
-            <img
-              onClick={() => {
-                SetStar1Src("/images/starfilled.png");
-                SetStar2Src("/images/starfilled.png");
-                SetStar3Src("/images/star.png");
-                SetStar4Src("/images/star.png");
-                SetStar5Src("/images/star.png");
-                SetSajatErtekeles(2);
-              }}
-              src={star2Src}
-              alt=""
-            />
-            <img
-              onClick={() => {
-                SetStar1Src("/images/starfilled.png");
-                SetStar2Src("/images/starfilled.png");
-                SetStar3Src("/images/starfilled.png");
-                SetStar4Src("/images/star.png");
-                SetStar5Src("/images/star.png");
-                SetSajatErtekeles(3);
-              }}
-              src={star3Src}
-              alt=""
-            />
-            <img
-              onClick={() => {
-                SetStar1Src("/images/starfilled.png");
-                SetStar2Src("/images/starfilled.png");
-                SetStar3Src("/images/starfilled.png");
-                SetStar4Src("/images/starfilled.png");
-                SetStar5Src("/images/star.png");
-                SetSajatErtekeles(4);
-              }}
-              src={star4Src}
-              alt=""
-            />
-            <img
-              onClick={() => {
-                SetStar1Src("/images/starfilled.png");
-                SetStar2Src("/images/starfilled.png");
-                SetStar3Src("/images/starfilled.png");
-                SetStar4Src("/images/starfilled.png");
-                SetStar5Src("/images/starfilled.png");
-                SetSajatErtekeles(5);
-              }}
-              src={star5Src}
-              alt=""
-            />
-            <button onClick={ertekeles}>Értékelés</button>
-            {error && <div className="error">{error}</div>}
-          </div>
+          {atlagErtekeles > 0 ? (
+            <div>
+              <p style={{ marginTop: 5 }}>{atlagErtekeles}⭐</p>
+            </div>
+          ) : (
+            <div>
+              <p style={{ marginTop: 5 }}>⭐Értékeld te először⭐</p>
+            </div>
+          )}
+          {isRated == true ? (
+            <div></div>
+          ) : (
+            <div className="rating">
+              <img
+                onClick={() => {
+                  SetStar1Src("/images/starfilled.png");
+                  SetStar2Src("/images/star.png");
+                  SetStar3Src("/images/star.png");
+                  SetStar4Src("/images/star.png");
+                  SetStar5Src("/images/star.png");
+                  SetSajatErtekeles(1);
+                }}
+                src={star1Src}
+                alt=""
+              />
+              <img
+                onClick={() => {
+                  SetStar1Src("/images/starfilled.png");
+                  SetStar2Src("/images/starfilled.png");
+                  SetStar3Src("/images/star.png");
+                  SetStar4Src("/images/star.png");
+                  SetStar5Src("/images/star.png");
+                  SetSajatErtekeles(2);
+                }}
+                src={star2Src}
+                alt=""
+              />
+              <img
+                onClick={() => {
+                  SetStar1Src("/images/starfilled.png");
+                  SetStar2Src("/images/starfilled.png");
+                  SetStar3Src("/images/starfilled.png");
+                  SetStar4Src("/images/star.png");
+                  SetStar5Src("/images/star.png");
+                  SetSajatErtekeles(3);
+                }}
+                src={star3Src}
+                alt=""
+              />
+              <img
+                onClick={() => {
+                  SetStar1Src("/images/starfilled.png");
+                  SetStar2Src("/images/starfilled.png");
+                  SetStar3Src("/images/starfilled.png");
+                  SetStar4Src("/images/starfilled.png");
+                  SetStar5Src("/images/star.png");
+                  SetSajatErtekeles(4);
+                }}
+                src={star4Src}
+                alt=""
+              />
+              <img
+                onClick={() => {
+                  SetStar1Src("/images/starfilled.png");
+                  SetStar2Src("/images/starfilled.png");
+                  SetStar3Src("/images/starfilled.png");
+                  SetStar4Src("/images/starfilled.png");
+                  SetStar5Src("/images/starfilled.png");
+                  SetSajatErtekeles(5);
+                }}
+                src={star5Src}
+                alt=""
+              />
+              <button onClick={ertekeles}>Értékelés</button>
+            </div>
+          )}
+
+          {error && <div className="error">{error}</div>}
           <div className="comments">
             <h3>Hozzászólások ({osszesHozzaszolas.length})</h3>
             <div className="allComments">
