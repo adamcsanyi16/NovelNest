@@ -82,34 +82,14 @@ const Story = () => {
   const levenshteinDistance = (str1, str2) =>
     new DamerauLevenshtein(str1, str2);
 
-  useEffect(() => {
-    const checkboxFilteredStories = osszesStory.filter((story) => {
-      const languageFilter =
-        (!magyarChecked || story.nyelv.toLowerCase() === "magyar") &&
-        (!angolChecked || story.nyelv.toLowerCase() === "angol");
-
-      const categoryFilter =
-        (!horrorChecked || story.kategoria.toLowerCase() === "horror") &&
-        (!humorChecked || story.kategoria.toLowerCase() === "humor") &&
-        (!fantaziaChecked || story.kategoria.toLowerCase() === "fantazia");
-
-      return categoryFilter || languageFilter;
-    });
-
-    setCheckboxFilteredStories(checkboxFilteredStories);
-  }, [
-    magyarChecked,
-    angolChecked,
-    horrorChecked,
-    humorChecked,
-    fantaziaChecked,
-  ]);
-
-  /*const combinedFilteredStories = osszesStory.filter((story) => {
+  const combinedFilteredStories = osszesStory.filter((story) => {
     // Checkbox filters
     const languageFilter =
-      (!magyarChecked || story.nyelv.toLowerCase() === "magyar") &&
-      (!angolChecked || story.nyelv.toLowerCase() === "angol");
+      ((!magyarChecked || story.nyelv.toLowerCase() === "magyar") &&
+        (!angolChecked || story.nyelv.toLowerCase() === "angol")) ||
+      (angolChecked && magyarChecked) ||
+      (story.nyelv.toLowerCase() === "angol" &&
+        story.nyelv.toLowerCase() === "magyar");
 
     const categoryFilter =
       (!horrorChecked || story.kategoria.toLowerCase() === "horror") &&
@@ -122,7 +102,7 @@ const Story = () => {
 
     const hasSimilarTitle = titleWords.some((word) => {
       const distance = levenshteinDistance(word, searchTermLower);
-      return distance.similarity >= 0.15;
+      return distance.similarity >= 0.35;
     });
 
     return (
@@ -143,7 +123,7 @@ const Story = () => {
     ).similarity;
 
     return distanceB - distanceA;
-  });*/
+  });
 
   return (
     <div className="storyWrap">
@@ -234,7 +214,7 @@ const Story = () => {
         </div>
       </div>
       <div className="storyContainer">
-        {checkboxFilteredStories.map((story) => (
+        {sortedStories.map((story) => (
           <div className="storyLink" key={story._id}>
             <Link to={`/story/${story._id}`}>
               <div className="book-container" key={story._id}>
