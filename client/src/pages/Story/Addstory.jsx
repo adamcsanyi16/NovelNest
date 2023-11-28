@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../hooks/useAuthContext";
+import config from "../../components/config";
 import Select from "react-select";
 
 const Addstory = () => {
@@ -23,7 +24,7 @@ const Addstory = () => {
 
   const [dropdownKategoria, setDropDownKategoria] = useState("");
   const [dropdownNyelv, setDropDownNyelv] = useState("");
-  const url = "http://localhost:3500";
+  const url = config.URL;
 
   const navigate = useNavigate();
 

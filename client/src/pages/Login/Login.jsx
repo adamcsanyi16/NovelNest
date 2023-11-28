@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../hooks/useAuthContext";
+import config from "../../components/config";
 import bcrypt from "bcryptjs";
 
 const Login = () => {
@@ -10,7 +11,7 @@ const Login = () => {
   const [success, setSuccess] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const { dispatch } = useAuthContext();
-  const url = "http://localhost:3500";
+  const url = config.URL;
 
   const navigate = useNavigate();
 

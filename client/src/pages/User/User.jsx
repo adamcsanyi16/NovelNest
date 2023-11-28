@@ -3,9 +3,10 @@ import { useAuthContext } from "../../hooks/useAuthContext";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useLogout } from "../../hooks/useLogout";
 import Modal from "react-modal";
+import config from "../../components/config";
 
 const User = () => {
-  const url = "http://localhost:3500";
+  const url = config.URL;
   const { user } = useAuthContext();
   const { logout } = useLogout();
 
@@ -583,7 +584,7 @@ const User = () => {
           </div>
         )}
 
-        <div className="storyContainer">
+        <div className="storyContainer" id="userStoryContainer">
           {story.map((story) =>
             viewFelhasznalonev === felhasznalonev ? (
               <div className="storyLink">

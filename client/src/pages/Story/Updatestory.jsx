@@ -2,9 +2,10 @@ import { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import Select from "react-select";
+import config from "../../components/config";
 
 const Updatestory = () => {
-  const url = "http://localhost:3500";
+  const url = config.URL;
   const { user } = useAuthContext();
   const { id } = useParams();
   const paramId = id;

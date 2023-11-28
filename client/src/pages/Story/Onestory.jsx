@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useAuthContext } from "../../hooks/useAuthContext";
+import config from "../../components/config";
 import { io } from "socket.io-client";
 
-const socket = io.connect("http://localhost:3500");
+const socket = io.connect(config.URL);
 
 const Onestory = () => {
-  const url = "http://localhost:3500";
+  const url = config.URL;
   const { user } = useAuthContext();
   const { id } = useParams();
   const [error, setError] = useState(null);
