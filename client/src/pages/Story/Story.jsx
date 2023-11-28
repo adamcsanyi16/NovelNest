@@ -11,8 +11,15 @@ const Story = () => {
 
   const [felhasznalonev, setFelhasznalonev] = useState("");
   const [osszesStory, SetOsszesStory] = useState([]);
+  const [checkboxFilteredStories, setCheckboxFilteredStories] = useState([]);
 
   const [searchTerm, setSearchTerm] = useState("");
+
+  const [magyarChecked, setMagyarChecked] = useState(false);
+  const [angolChecked, setAngolChecked] = useState(false);
+  const [horrorChecked, setHorrorChecked] = useState(false);
+  const [humorChecked, setHumorChecked] = useState(false);
+  const [fantaziaChecked, setFantaziaChecked] = useState(false);
 
   const url = "http://localhost:3500";
 
@@ -75,17 +82,57 @@ const Story = () => {
   const levenshteinDistance = (str1, str2) =>
     new DamerauLevenshtein(str1, str2);
 
-  const filteredStories = osszesStory.filter((story) => {
-    if (searchTerm.trim() === "") {
-      return true;
-    }
-    const combinedData = `${story.cim.toLowerCase()}`;
+  useEffect(() => {
+    const checkboxFilteredStories = osszesStory.filter((story) => {
+      const languageFilter =
+        (!magyarChecked || story.nyelv.toLowerCase() === "magyar") &&
+        (!angolChecked || story.nyelv.toLowerCase() === "angol");
+
+      const categoryFilter =
+        (!horrorChecked || story.kategoria.toLowerCase() === "horror") &&
+        (!humorChecked || story.kategoria.toLowerCase() === "humor") &&
+        (!fantaziaChecked || story.kategoria.toLowerCase() === "fantazia");
+
+      return categoryFilter || languageFilter;
+    });
+
+    setCheckboxFilteredStories(checkboxFilteredStories);
+  }, [
+    magyarChecked,
+    angolChecked,
+    horrorChecked,
+    humorChecked,
+    fantaziaChecked,
+  ]);
+
+  /*const combinedFilteredStories = osszesStory.filter((story) => {
+    // Checkbox filters
+    const languageFilter =
+      (!magyarChecked || story.nyelv.toLowerCase() === "magyar") &&
+      (!angolChecked || story.nyelv.toLowerCase() === "angol");
+
+    const categoryFilter =
+      (!horrorChecked || story.kategoria.toLowerCase() === "horror") &&
+      (!humorChecked || story.kategoria.toLowerCase() === "humor") &&
+      (!fantaziaChecked || story.kategoria.toLowerCase() === "fantazia");
+
+    // Search filter
+    const titleWords = story.cim.toLowerCase().split(" ");
     const searchTermLower = searchTerm.toLowerCase();
-    const distance = levenshteinDistance(combinedData, searchTermLower);
-    return distance.similarity >= 0.15;
+
+    const hasSimilarTitle = titleWords.some((word) => {
+      const distance = levenshteinDistance(word, searchTermLower);
+      return distance.similarity >= 0.15;
+    });
+
+    return (
+      categoryFilter &&
+      languageFilter &&
+      (searchTerm.trim() === "" || hasSimilarTitle)
+    );
   });
 
-  const sortedStories = filteredStories.sort((a, b) => {
+  const sortedStories = combinedFilteredStories.sort((a, b) => {
     const distanceA = levenshteinDistance(
       a.cim.toLowerCase(),
       searchTerm.toLowerCase()
@@ -95,9 +142,8 @@ const Story = () => {
       searchTerm.toLowerCase()
     ).similarity;
 
-    // Sort in descending order
     return distanceB - distanceA;
-  });
+  });*/
 
   return (
     <div className="storyWrap">
@@ -110,9 +156,85 @@ const Story = () => {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
+        <div className="nyelv">
+          <span>Nyelv</span>
+          <div className="checkbox">
+            <div class="content">
+              <label class="checkBox">
+                <input
+                  id="ch1"
+                  type="checkbox"
+                  checked={magyarChecked}
+                  onChange={(e) => setMagyarChecked(e.target.checked)}
+                />
+                <div class="transition"></div>
+              </label>
+            </div>
+            <p>Magyar</p>
+          </div>
+          <div className="checkbox">
+            <div class="content">
+              <label class="checkBox">
+                <input
+                  id="ch1"
+                  type="checkbox"
+                  checked={angolChecked}
+                  onChange={(e) => setAngolChecked(e.target.checked)}
+                />
+                <div class="transition"></div>
+              </label>
+            </div>
+            <p>Angol</p>
+          </div>
+        </div>
+        <div className="kategoria">
+          <span>Kategória</span>
+          <div className="checkbox">
+            <div class="content">
+              <label class="checkBox">
+                <input
+                  id="ch1"
+                  type="checkbox"
+                  checked={horrorChecked}
+                  onChange={(e) => setHorrorChecked(e.target.checked)}
+                />
+                <div class="transition"></div>
+              </label>
+            </div>
+            <p>Horror</p>
+          </div>
+          <div className="checkbox">
+            <div class="content">
+              <label class="checkBox">
+                <input
+                  id="ch1"
+                  type="checkbox"
+                  checked={humorChecked}
+                  onChange={(e) => setHumorChecked(e.target.checked)}
+                />
+                <div class="transition"></div>
+              </label>
+            </div>
+            <p>Humor</p>
+          </div>
+          <div className="checkbox">
+            <div class="content">
+              <label class="checkBox">
+                <input
+                  id="ch1"
+                  type="checkbox"
+                  checked={fantaziaChecked}
+                  onChange={(e) => setFantaziaChecked(e.target.checked)}
+                />
+                <div class="transition"></div>
+              </label>
+            </div>
+            <p>Fantázia</p>
+          </div>
+        </div>
       </div>
       <div className="storyContainer">
-        {sortedStories.map((story) => (
+        {checkboxFilteredStories.map((story) => (
           <div className="storyLink" key={story._id}>
             <Link to={`/story/${story._id}`}>
               <div className="book-container" key={story._id}>

@@ -523,7 +523,7 @@ form {
 }
 
 .storyContainer {
-  padding: 0px 30px;
+  padding: 0px 30px 0px 0px;
   display: grid;
   grid-template-columns: 25% 25% 25% 25%;
   flex-basis: 100%;
@@ -557,13 +557,17 @@ form {
 }
 
 .sortingContainer {
-  flex-basis: 250px;
-  padding: 10px;
+  flex-basis: 300px;
+  padding: 20px;
 }
 
 .sortingContainer .input {
   scale: 1;
   width: 100%;
+}
+
+.sortingContainer .input::placeholder {
+  font-size: 11px;
 }
 
 #leirasCounter {
@@ -655,9 +659,6 @@ form {
 
 .allComments::-webkit-scrollbar-thumb:hover {
   background-color: $sotetkek;
-}
-
-.allComments td {
 }
 
 #commentInput {
@@ -1169,6 +1170,78 @@ body.active-modal {
   50% {
     transform: scale(1.2, 1);
   }
+}
+
+//CHECKBOXES
+.clear {
+  clear: both;
+}
+
+.checkbox .content {
+  scale: 0.7;
+}
+
+.checkBox {
+  display: block;
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  border: 3px solid $feher;
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0px 0px 0px 2px $narancs;
+}
+
+.checkBox div {
+  width: 60px;
+  height: 60px;
+  background-color: $narancs;
+  top: -52px;
+  left: -52px;
+  position: absolute;
+  transform: rotateZ(45deg);
+  z-index: 100;
+}
+
+.checkBox input[type="checkbox"]:checked + div {
+  left: -10px;
+  top: -10px;
+}
+
+.checkBox input[type="checkbox"] {
+  position: absolute;
+  left: 50px;
+  visibility: hidden;
+}
+
+.transition {
+  transition: 300ms ease;
+}
+
+.nyelv,
+.kategoria {
+  margin-top: 30px;
+  padding-bottom: 15px;
+  border-bottom: $narancs 2px solid;
+}
+
+.nyelv span,
+.kategoria span {
+  font-size: 18px;
+  color: $sotetkek;
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 10px 10px 0px 0px;
+}
+
+.checkbox p {
+  font-size: 12px;
+  color: $sotetkek;
 }
 
 @media only screen and (max-width: 650px) {
