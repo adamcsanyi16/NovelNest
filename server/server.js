@@ -274,16 +274,13 @@ io.on("connection", (socket) => {
       );
       socket.emit("success", "Sikeres értékelés!");
 
-      const osszesErtekelesTomb = story.ertekelesek;
-      const ertekelesek = [];
-      osszesErtekelesTomb.forEach((ertekeles) => {
-        ertekelesek.push(ertekeles.ertekeles);
+      const ertekelesLekeres = await Story.findOne({
+        _id: id,
       });
-      console.log(ertekelesek);
-      const avgRating =
-        ertekelesek.reduce((a, b) => a + b, 0) / ertekelesek.length;
+      const osszesErtekelesTomb = ertekelesLekeres.ertekelesek;
+      console.log(osszesErtekelesTomb);
 
-      socket.emit("rating", { id, avgRating });
+      socket.emit("rating", { id, osszesErtekelesTomb });
     } catch (error) {
       socket.emit("error", "Sikertelen értékelés!");
     }
