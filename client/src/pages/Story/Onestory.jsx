@@ -35,9 +35,6 @@ const Onestory = () => {
   const [isRated, SetIsRated] = useState(false);
   const [ertekelok, setErtekelok] = useState([]);
 
-  const userLocalStorage = JSON.parse(localStorage.getItem("user"));
-  const token = userLocalStorage.token;
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -200,19 +197,50 @@ const Onestory = () => {
           <div className="boritokep">
             <img src={boritokep} alt="" />
           </div>
-          <Link to={`/profil/${szerzo}`}>
-            <h3>{szerzo}</h3>
-          </Link>
-          <p>{karakterek}</p>
-          {atlagErtekeles > 0 ? (
-            <div>
-              <p style={{ marginTop: 5 }}>{atlagErtekeles}⭐</p>
-            </div>
-          ) : (
-            <div>
-              <p style={{ marginTop: 5 }}>⭐Értékeld te először⭐</p>
-            </div>
-          )}
+          <div className="oneStoryTable">
+            <table>
+              <tr>
+                <td id="elsoOszlop">Szerző:</td>
+                <td>
+                  <Link to={`/profil/${szerzo}`}>
+                    <h3>{szerzo}</h3>
+                  </Link>
+                </td>
+              </tr>
+              <tr>
+                <td>Kategória:</td>
+                <td>
+                  <p>{kategoria}</p>
+                </td>
+              </tr>
+              <tr>
+                <td>Nyelv:</td>
+                <td>
+                  <p>{nyelv}</p>
+                </td>
+              </tr>
+              <tr>
+                <td>Főszereplők:</td>
+                <td id="karakterekSzoveg">
+                  <p>{karakterek}</p>
+                </td>
+              </tr>
+              <tr>
+                <td>Értékelés:</td>
+                <td>
+                  {atlagErtekeles > 0 ? (
+                    <div className="ertekelesDiv">
+                      <p>{atlagErtekeles}⭐</p>
+                    </div>
+                  ) : (
+                    <div className="ertekelesDiv">
+                      <p>⭐Értékeld te először⭐</p>
+                    </div>
+                  )}
+                </td>
+              </tr>
+            </table>
+          </div>
           {isRated == true ? (
             <div></div>
           ) : (
@@ -288,12 +316,15 @@ const Onestory = () => {
               <table>
                 {osszesHozzaszolas.reverse().map((comment) => (
                   <tr>
-                    <td>
-                      <Link to={`/profil/${comment.felhasznalonev}`}>
-                        <b>{comment.felhasznalonev}</b>
-                      </Link>
-                      : <i>{comment.hozzaszolas}</i>
-                    </td>
+                    <div id="commentRow">
+                      <td>
+                        <Link to={`/profil/${comment.felhasznalonev}`}>
+                          <b>{comment.felhasznalonev}</b>
+                        </Link>
+                        : <i>{comment.hozzaszolas}</i>
+                      </td>
+                      <img src="/images/story_delete.png" />
+                    </div>
                   </tr>
                 ))}
               </table>

@@ -86,17 +86,14 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: `http://${process.env.LAN}:3000`,
     methods: ["GET", "POST"],
   },
   transports: ["websocket", "polling"],
 });
 
 io.on("connection", (socket) => {
-  console.log("A user connected: " + socket.id);
-
   //SOCKET.IO MESSAGES
-
   socket.on("ujHozzaszolas", async (msg) => {
     try {
       const id = msg.id;
@@ -139,7 +136,6 @@ io.on("connection", (socket) => {
   });
 
   /* FOLLOWING SYSTEM */
-
   socket.on("bekovetes", async (msg) => {
     console.log(msg.felhasznalonev, msg.viewFelhasznalonev);
     try {
@@ -256,6 +252,7 @@ io.on("connection", (socket) => {
     } catch (error) {}
   });
 
+  //RATING SYSTEM
   socket.on("newrating", async (msg) => {
     try {
       const id = msg.id;
@@ -869,5 +866,5 @@ mongoose
 
 const port = process.env.PORT || 3500;
 server.listen(port, () => {
-  console.log(`http://localhost:${port}`);
+  console.log(`http://${process.env.LAN}:${port}`);
 });

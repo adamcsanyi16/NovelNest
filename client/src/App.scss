@@ -573,6 +573,19 @@ form {
   padding: 20px;
 }
 
+.sortingContainer p {
+  color: $sotetkek;
+  font-size: 9px;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+
+.sortingContainer p:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 .sortingContainer::-webkit-scrollbar {
   background: $feher;
   border-radius: 4px;
@@ -626,10 +639,13 @@ form {
   color: $sotetkek;
 }
 
+.oneStory-container a:hover {
+  text-decoration: underline;
+}
+
 .info {
   color: $sotetkek;
   text-align: center;
-  margin: 10px;
 }
 
 .boritokep {
@@ -648,6 +664,23 @@ form {
   -o-border-radius: 10px;
 }
 
+.oneStoryTable {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.oneStoryTable td {
+  padding: 5px;
+  text-align: left;
+}
+
+#karakterekSzoveg {
+  width: 60%;
+}
+
 /*COMMENTS*/
 .comments h3 {
   margin-top: 5px;
@@ -656,7 +689,7 @@ form {
 }
 
 .comments {
-  margin-top: 30px;
+  margin-top: 20px;
   border: $vilagoskek 2px solid;
   border-radius: 10px;
   padding: 10px;
@@ -671,6 +704,15 @@ form {
   padding: 5px;
   height: 375px;
   overflow-y: scroll;
+}
+
+.allComments td {
+  width: 100%;
+}
+
+.allComments img {
+  width: 20px;
+  cursor: pointer;
 }
 
 .allComments::-webkit-scrollbar {
@@ -696,6 +738,12 @@ form {
 
 .allComments::-webkit-scrollbar-thumb:hover {
   background-color: $sotetkek;
+}
+
+#commentRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 #commentInput {
@@ -739,9 +787,9 @@ form {
 /*RATING*/
 .rating {
   display: flex;
-  gap: 0.3rem;
   justify-content: center;
-  margin-top: 15px;
+  align-items: center;
+  gap: 0.3rem;
 }
 
 .rating img {

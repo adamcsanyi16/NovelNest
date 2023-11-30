@@ -2,13 +2,14 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useLogout } from "../hooks/useLogout";
 import { useAuthContext } from "../hooks/useAuthContext";
+import config from "./config";
 
 const Navbar = () => {
   const [felhasznalonev, setFelhasznalonev] = useState("");
   const [profilkep, setProfilkep] = useState("");
   const { user } = useAuthContext();
   const { logout } = useLogout();
-  const url = "http://localhost:3500";
+  const url = config.URL;
 
   useEffect(() => {
     const fetchData = async () => {

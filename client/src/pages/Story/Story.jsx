@@ -162,11 +162,31 @@ const Story = () => {
     return distanceB - distanceA;
   });
 
+  const resetAll = () => {
+    setSearchTerm("");
+    setMagyarChecked(false);
+    setAngolChecked(false);
+    setAkcioChecked(false);
+    setDramaChecked(false);
+    setFantaziaChecked(false);
+    setHorrorChecked(false);
+    setHumorChecked(false);
+    setKalandChecked(false);
+    setKrimiChecked(false);
+    setParanormalChecked(false);
+    setRomantikaChecked(false);
+    setScifiChecked(false);
+    setVersChecked(false);
+  };
+
   return (
     <div className="stories">
       <div className="storyWrap">
         {!isLoading ? <div></div> : <div className="loader"></div>}
         <div className="sortingContainer">
+          <p className="default" onClick={resetAll}>
+            Alapértelmezett
+          </p>
           <input
             className="input"
             type="text"
