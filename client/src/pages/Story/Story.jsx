@@ -225,8 +225,8 @@ const Story = () => {
               <p>Angol</p>
             </div>
           </div>
-          <div className="kategoria">
-            <span>Kategória</span>
+            <span id="kategoriaSpan">Kategória</span>
+          <div className="kategoria" id="kategoria">
             <div className="checkbox">
               <div class="content">
                 <label class="checkBox">

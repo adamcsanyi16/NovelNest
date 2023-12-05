@@ -14,6 +14,7 @@ const User = () => {
   const { logout } = useLogout();
 
   const [felhasznalonev, setFelhasznalonev] = useState("");
+  const [isAdmin, SetIsAdmin] = useState(false);
   const { felhasznalonevKuld } = useParams();
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
@@ -64,6 +65,7 @@ const User = () => {
           const isAdmin = data.isAdmin;
           const felhasznalonev = data.felhasznalonev;
           setFelhasznalonev(felhasznalonev);
+          SetIsAdmin(isAdmin);
         }
       } catch (error) {
         console.log("Fetch error:", error);
@@ -548,7 +550,7 @@ const User = () => {
 
         <div className="storyContainer" id="userStoryContainer">
           {story.map((story) =>
-            viewFelhasznalonev === felhasznalonev ? (
+            isAdmin || viewFelhasznalonev === felhasznalonev ? (
               <div className="storyLink">
                 <div className="book-container" id="user-book-container">
                   <div className="book">
