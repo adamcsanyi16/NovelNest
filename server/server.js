@@ -39,7 +39,7 @@ const StoryCoverOptions = {
     {
       height: 400,
       width: 300,
-      crop: "scale",
+      crop: "fill",
       quality: "auto",
       fetch_format: "auto",
     },
