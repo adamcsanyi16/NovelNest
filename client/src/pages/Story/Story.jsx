@@ -31,6 +31,14 @@ const Story = () => {
   const [scifiChecked, setScifiChecked] = useState(false);
   const [versChecked, setVersChecked] = useState(false);
 
+  const [star1Src, SetStar1Src] = useState("/images/star.png");
+  const [star2Src, SetStar2Src] = useState("/images/star.png");
+  const [star3Src, SetStar3Src] = useState("/images/star.png");
+  const [star4Src, SetStar4Src] = useState("/images/star.png");
+  const [star5Src, SetStar5Src] = useState("/images/star.png");
+  const [atlagErtekeles, SetAtlagErtekeles] = useState(null);
+  const [sajatErtekeles, SetSajatErtekeles] = useState("");
+
   const url = config.URL;
 
   useEffect(() => {
@@ -177,6 +185,11 @@ const Story = () => {
     setRomantikaChecked(false);
     setScifiChecked(false);
     setVersChecked(false);
+    SetStar1Src("/images/star.png");
+    SetStar2Src("/images/star.png");
+    SetStar3Src("/images/star.png");
+    SetStar4Src("/images/star.png");
+    SetStar5Src("/images/star.png");
   };
 
   return (
@@ -225,8 +238,8 @@ const Story = () => {
               <p>Angol</p>
             </div>
           </div>
-            <span id="kategoriaSpan">Kategória</span>
           <div className="kategoria" id="kategoria">
+            <span id="kategoriaSpan">Kategória</span>
             <div className="checkbox">
               <div class="content">
                 <label class="checkBox">
@@ -523,6 +536,71 @@ const Story = () => {
                 </label>
               </div>
               <p>Vers</p>
+            </div>
+          </div>
+          <div className="ertekeles">
+            <span>Értékelés</span>
+            <div className="sortRating">
+              <img
+                onClick={() => {
+                  SetStar1Src("/images/starfilled.png");
+                  SetStar2Src("/images/star.png");
+                  SetStar3Src("/images/star.png");
+                  SetStar4Src("/images/star.png");
+                  SetStar5Src("/images/star.png");
+                  SetSajatErtekeles(1);
+                }}
+                src={star1Src}
+                alt=""
+              />
+              <img
+                onClick={() => {
+                  SetStar1Src("/images/starfilled.png");
+                  SetStar2Src("/images/starfilled.png");
+                  SetStar3Src("/images/star.png");
+                  SetStar4Src("/images/star.png");
+                  SetStar5Src("/images/star.png");
+                  SetSajatErtekeles(2);
+                }}
+                src={star2Src}
+                alt=""
+              />
+              <img
+                onClick={() => {
+                  SetStar1Src("/images/starfilled.png");
+                  SetStar2Src("/images/starfilled.png");
+                  SetStar3Src("/images/starfilled.png");
+                  SetStar4Src("/images/star.png");
+                  SetStar5Src("/images/star.png");
+                  SetSajatErtekeles(3);
+                }}
+                src={star3Src}
+                alt=""
+              />
+              <img
+                onClick={() => {
+                  SetStar1Src("/images/starfilled.png");
+                  SetStar2Src("/images/starfilled.png");
+                  SetStar3Src("/images/starfilled.png");
+                  SetStar4Src("/images/starfilled.png");
+                  SetStar5Src("/images/star.png");
+                  SetSajatErtekeles(4);
+                }}
+                src={star4Src}
+                alt=""
+              />
+              <img
+                onClick={() => {
+                  SetStar1Src("/images/starfilled.png");
+                  SetStar2Src("/images/starfilled.png");
+                  SetStar3Src("/images/starfilled.png");
+                  SetStar4Src("/images/starfilled.png");
+                  SetStar5Src("/images/starfilled.png");
+                  SetSajatErtekeles(5);
+                }}
+                src={star5Src}
+                alt=""
+              />
             </div>
           </div>
         </div>

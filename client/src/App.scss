@@ -587,28 +587,7 @@ form {
 }
 
 .sortingContainer::-webkit-scrollbar {
-  background: $feher;
-  border-radius: 4px;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  width: 10px;
-  box-shadow: inset 0 0 5px grey;
-}
-
-.sortingContainer::-webkit-scrollbar-thumb {
-  background-color: $vilagoskek;
-  border: 1px solid $feher;
-  border-radius: 4px;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-}
-
-.sortingContainer::-webkit-scrollbar-thumb:hover {
-  background-color: $sotetkek;
+  display: none;
 }
 
 .sortingContainer .input {
@@ -1183,7 +1162,6 @@ body.active-modal {
 }
 
 /*LOADER*/
-
 .loader {
   width: 48px;
   height: 48px;
@@ -1318,6 +1296,7 @@ body.active-modal {
 }
 
 .nyelv,
+.ertekeles,
 .kategoria {
   margin-top: 30px;
   padding-bottom: 15px;
@@ -1326,7 +1305,6 @@ body.active-modal {
 }
 
 #kategoria {
-  margin-top: 3px;
   height: 250px;
   overflow-y: scroll;
   overflow-x: hidden;
@@ -1358,7 +1336,8 @@ body.active-modal {
 }
 
 .nyelv span,
-.kategoria span {
+.kategoria span,
+.ertekeles span {
   font-size: 18px;
   color: $sotetkek;
 }
@@ -1374,6 +1353,25 @@ body.active-modal {
   margin: 3px;
   font-size: 12px;
   color: $sotetkek;
+}
+
+.sortRating {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 20px;
+  padding-bottom: 10px;
+}
+
+.sortRating img {
+  height: 30px;
+  cursor: pointer;
+}
+
+.ertekelesGomb {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 @media only screen and (max-width: 650px) {
