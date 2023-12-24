@@ -494,12 +494,21 @@ const User = () => {
         {viewFelhasznalonev === felhasznalonev &&
           (isEditing === false ? (
             <div className="editButtons">
-              <button onClick={() => setIsEditing(true)}>Szerkesztés</button>
+              <button
+                style={{ cursor: "pointer" }}
+                onClick={() => setIsEditing(true)}
+              >
+                Szerkesztés
+              </button>
             </div>
           ) : (
             <div className="editButtons">
-              <button onClick={userinfo}>Vissza</button>
-              <button onClick={valtoztatas}>Mentés</button>
+              <button style={{ cursor: "pointer" }} onClick={userinfo}>
+                Vissza
+              </button>
+              <button style={{ cursor: "pointer" }} onClick={valtoztatas}>
+                Mentés
+              </button>
             </div>
           ))}
         {toggleKovetoim && (

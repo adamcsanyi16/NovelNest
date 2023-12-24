@@ -124,7 +124,6 @@ io.on("connection", (socket) => {
 
   socket.on("hozzaszolasokLeker", async (msg) => {
     try {
-      console.log(msg);
       const id = msg;
       const story = await Story.findOne({ _id: id });
 
@@ -137,7 +136,6 @@ io.on("connection", (socket) => {
 
   /* FOLLOWING SYSTEM */
   socket.on("bekovetes", async (msg) => {
-    console.log(msg.felhasznalonev, msg.viewFelhasznalonev);
     try {
       const felhasznalonev = msg.felhasznalonev;
       const viewFelhasznalonev = msg.viewFelhasznalonev;
@@ -181,8 +179,6 @@ io.on("connection", (socket) => {
         let viewKoveteseimList = user.koveteseim;
         let viewKovetoimListKep = kovetoimProfilkepArray;
         let viewKoveteseimListKep = koveteseimProfilkepArray;
-        console.log(viewKovetoimListKep);
-        console.log(viewKoveteseimListKep);
         io.emit("kovetokUpdate", {
           viewKovetoimList,
           viewKovetoimListKep,
@@ -239,8 +235,6 @@ io.on("connection", (socket) => {
         let viewKoveteseimList = user.koveteseim;
         let viewKovetoimListKep = kovetoimProfilkepArray;
         let viewKoveteseimListKep = koveteseimProfilkepArray;
-        console.log(viewKovetoimListKep);
-        console.log(viewKoveteseimListKep);
         io.emit("kovetokUpdate", {
           viewKovetoimList,
           viewKovetoimListKep,
@@ -275,7 +269,6 @@ io.on("connection", (socket) => {
         _id: id,
       });
       const osszesErtekelesTomb = ertekelesLekeres.ertekelesek;
-      console.log(osszesErtekelesTomb);
 
       socket.emit("rating", { id, osszesErtekelesTomb });
     } catch (error) {

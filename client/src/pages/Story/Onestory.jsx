@@ -200,7 +200,9 @@ const Onestory = () => {
           <div className="oneStoryTable">
             <table>
               <tr>
-                <td id="elsoOszlop"><p>Szerző:</p></td>
+                <td id="elsoOszlop">
+                  <p>Szerző:</p>
+                </td>
                 <td>
                   <Link to={`/profil/${szerzo}`}>
                     <h3>{szerzo}</h3>
@@ -208,25 +210,33 @@ const Onestory = () => {
                 </td>
               </tr>
               <tr>
-                <td id="elsoOszlop"><p>Kategória:</p></td>
+                <td id="elsoOszlop">
+                  <p>Kategória:</p>
+                </td>
                 <td>
                   <p>{kategoria}</p>
                 </td>
               </tr>
               <tr>
-                <td id="elsoOszlop"><p>Nyelv:</p></td>
+                <td id="elsoOszlop">
+                  <p>Nyelv:</p>
+                </td>
                 <td>
                   <p>{nyelv}</p>
                 </td>
               </tr>
               <tr>
-                <td id="elsoOszlop"><p>Főszereplők:</p></td>
+                <td id="elsoOszlop">
+                  <p>Főszereplők:</p>
+                </td>
                 <td id="karakterekSzoveg">
                   <p>{karakterek}</p>
                 </td>
               </tr>
               <tr>
-                <td id="elsoOszlop"><p>Értékelés:</p></td>
+                <td id="elsoOszlop">
+                  <p>Értékelés:</p>
+                </td>
                 <td>
                   {atlagErtekeles > 0 ? (
                     <div className="ertekelesDiv">
@@ -305,7 +315,9 @@ const Onestory = () => {
                 src={star5Src}
                 alt=""
               />
-              <button onClick={ertekeles}>Értékelés</button>
+              <button style={{ cursor: "pointer" }} onClick={ertekeles}>
+                Értékelés
+              </button>
             </div>
           )}
 
