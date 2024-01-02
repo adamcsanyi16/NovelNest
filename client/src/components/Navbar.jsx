@@ -43,6 +43,10 @@ const Navbar = () => {
 
   return (
     <div className="navbar">
+      <div id="logo">
+        <img src="/images/novelnest-blue.png" alt="" />
+        <h1>NovelNest</h1>
+      </div>
       {!user ? (
         <div className="main">
           <Link to="/">Kezdőlap</Link>
