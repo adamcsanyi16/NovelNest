@@ -17,6 +17,7 @@ import Adddropdowns from "./pages/Adddropdowns/Adddropdowns";
 import Story from "./pages/Story/Story";
 import Onestory from "./pages/Story/Onestory";
 import Updatestory from "./pages/Story/Updatestory";
+import Reset from "./pages/ResetPass/Reset";
 
 function App() {
   const { user } = useAuthContext;
@@ -43,6 +44,7 @@ function App() {
           <Route path="/updatestory/:id" element={<Updatestory />} />
           <Route path="/dropdownfelvetel" element={<Adddropdowns />} />
           <Route path="/profil/:felhasznalonevKuld" element={<User />} />
+          <Route path="/valtoztat" element={<Reset />} />
         </Routes>
       </Router>
     </div>

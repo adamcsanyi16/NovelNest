@@ -28,6 +28,11 @@ const Navbar = () => {
           const felhasznalonev = data.felhasznalonev;
           setProfilkep(data.profilkep);
           setFelhasznalonev(felhasznalonev);
+        } else {
+          const data = await response.json();
+          if (data.msg.includes("Token expired")) {
+            logout();
+          }
         }
       } catch (error) {
         console.log("Fetch error:", error);
@@ -45,7 +50,9 @@ const Navbar = () => {
     <div className="navbar">
       <div id="logo">
         <img src="/images/novelnest-blue.png" alt="" />
-        <h1>NovelNest</h1>
+        <p>
+          Novel<span>Nest</span>
+        </p>
       </div>
       {!user ? (
         <div className="main">

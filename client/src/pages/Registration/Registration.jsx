@@ -60,7 +60,7 @@ const Registration = () => {
       dispatch({ type: "LOGIN", payload: response });
 
       setIsLoading(false);
-      //navigate("/eredmenyek");
+      navigate(`/profil/${felhasznalonev}`);
     }
   };
 

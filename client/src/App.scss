@@ -104,7 +104,15 @@ img {
 }
 
 #logo img {
-  width: 60px;
+  width: 50px;
+}
+
+#logo p {
+  font-size: 28px;
+}
+
+#logo span {
+  font-weight: 900;
 }
 
 /*BUTTONS*/
@@ -151,6 +159,12 @@ button:active {
 .editButtons {
   display: flex;
   justify-content: flex-end;
+}
+
+.send-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /*SWITCH BUTTONS*/

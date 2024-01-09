@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 const multer = require("multer");
 const jwt = require("jsonwebtoken");
 const validator = require("validator");
+const nodemailer = require("nodemailer");
 const cloudinary = require("cloudinary").v2;
 const requireAuth = require("./middlewares/requireAuth");
 
@@ -78,6 +79,110 @@ app.use(cors());
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: false }));
 
+//HTML EMAIL FOR REG
+const htmlRegister = `
+  <html>
+    <head>
+      <style>
+        @import url("https://fonts.googleapis.com/css2?family=Martian+Mono:wght@100;200;300;400;500;600;700;800&display=swap");
+        body {
+          font-family: "Martian Mono", monospace;
+          background-color: #ffffff;
+          padding: 20px;
+        }
+        .container {
+          background-color: #f5f5f5;
+          padding: 20px;
+          border-radius: 5px;
+        }
+        h1 {
+          color: #363061;
+          text-align: center;
+        }
+        p {
+          color: #5756ae;
+          line-height: 1.5;
+          text-align: center;
+        }
+        span {
+          color: #f99417;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <h1>Üdvözöl a NovelNest csapata!</h1>
+        <p>Sikeresen regisztráltál a <span>NovelNest</span> oldalára! <br> Fedezd fel az egyre bővülő történeteket és ha kedvet kaptál akár készíts is egyet!</p>
+      </div>
+    </body>
+  </html>
+`;
+
+//RESET EMAIL FUNCTION
+const sendEmail = ({ email, KOD }) => {
+  const transporter = nodemailer.createTransport({
+    service: process.env.SERVICE,
+    auth: {
+      user: process.env.EMAIL,
+      pass: process.env.PASS,
+    },
+  });
+
+  const mailOptions = {
+    from: process.env.EMAIL,
+    to: email,
+    subject: "Jelszó helyreállítás",
+    html: `
+    <html>
+      <head>
+        <style>
+          /* CSS styles for the email layout */
+          body {
+            font-family: Arial, sans-serif;
+            background-color: #f1f1f1;
+            padding: 20px;
+          }
+          .container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 5px;
+          }
+          h1 {
+            color: #333333;
+            text-align: center;
+          }
+          h2 {
+            color: #333333;
+            text-align: center;
+            letter-spacing: 5px;
+          }
+          p {
+            color: #666666;
+            line-height: 1.5;
+            text-align: center;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <h1>Jelszó Helyreállítás</h1>
+          <p>A következő sorban kapott 4 számjegyű kódodat kell megadnod, hogy hitelesítsd magad!</p>
+          <h2>${KOD}</h2>
+        </div>
+      </body>
+    </html>
+  `,
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.log("Hiba az email küldésekor:", error.message);
+    } else {
+      console.log("Elküldve:", info.response);
+    }
+  });
+};
+
 //SOCKET.IO
 const http = require("http");
 const { Server } = require("socket.io");
@@ -113,7 +218,7 @@ io.on("connection", (socket) => {
       );
 
       io.emit("success", "Sikeres hozzászólás!");
-      const story = await Story.findOne({ _id: id });
+      const story = await Story.findOne({ _id: id }, { hozzaszolasok: 1 });
 
       const hozzaszolasok = story.hozzaszolasok;
       io.emit("hozzaszolasok", { id, hozzaszolasok });
@@ -125,7 +230,7 @@ io.on("connection", (socket) => {
   socket.on("hozzaszolasokLeker", async (msg) => {
     try {
       const id = msg;
-      const story = await Story.findOne({ _id: id });
+      const story = await Story.findOne({ _id: id }, { hozzaszolasok: 1 });
 
       const hozzaszolasok = story.hozzaszolasok;
       io.emit("hozzaszolasok", { id, hozzaszolasok });
@@ -151,25 +256,34 @@ io.on("connection", (socket) => {
           $push: { koveteseim: viewFelhasznalonev },
         }
       );
-      const user = await User.findOne({ felhasznalonev: viewFelhasznalonev });
+      const user = await User.findOne(
+        { felhasznalonev: viewFelhasznalonev },
+        { kovetoim: 1, koveteseim: 1 }
+      );
 
       if (user) {
         const koveteseimProfilkepArray = [];
         const kovetoimProfilkepArray = [];
 
         for (const koveteseimEmber of user.koveteseim) {
-          const koveteseimUser = await User.findOne({
-            felhasznalonev: koveteseimEmber,
-          });
+          const koveteseimUser = await User.findOne(
+            {
+              felhasznalonev: koveteseimEmber,
+            },
+            { profilkep: 1 }
+          );
           if (koveteseimUser) {
             koveteseimProfilkepArray.push(koveteseimUser.profilkep);
           }
         }
 
         for (const kovetoEmber of user.kovetoim) {
-          const kovetoUser = await User.findOne({
-            felhasznalonev: kovetoEmber,
-          });
+          const kovetoUser = await User.findOne(
+            {
+              felhasznalonev: kovetoEmber,
+            },
+            { profilkep: 1 }
+          );
           if (kovetoUser) {
             kovetoimProfilkepArray.push(kovetoUser.profilkep);
           }
@@ -207,25 +321,34 @@ io.on("connection", (socket) => {
           $pull: { koveteseim: viewFelhasznalonev },
         }
       );
-      const user = await User.findOne({ felhasznalonev: viewFelhasznalonev });
+      const user = await User.findOne(
+        { felhasznalonev: viewFelhasznalonev },
+        { koveteseim: 1, kovetoim: 1 }
+      );
 
       if (user) {
         const koveteseimProfilkepArray = [];
         const kovetoimProfilkepArray = [];
 
         for (const koveteseimEmber of user.koveteseim) {
-          const koveteseimUser = await User.findOne({
-            felhasznalonev: koveteseimEmber,
-          });
+          const koveteseimUser = await User.findOne(
+            {
+              felhasznalonev: koveteseimEmber,
+            },
+            { profilkep: 1 }
+          );
           if (koveteseimUser) {
             koveteseimProfilkepArray.push(koveteseimUser.profilkep);
           }
         }
 
         for (const kovetoEmber of user.kovetoim) {
-          const kovetoUser = await User.findOne({
-            felhasznalonev: kovetoEmber,
-          });
+          const kovetoUser = await User.findOne(
+            {
+              felhasznalonev: kovetoEmber,
+            },
+            { profilkep: 1 }
+          );
           if (kovetoUser) {
             kovetoimProfilkepArray.push(kovetoUser.profilkep);
           }
@@ -265,9 +388,12 @@ io.on("connection", (socket) => {
       );
       socket.emit("success", "Sikeres értékelés!");
 
-      const ertekelesLekeres = await Story.findOne({
-        _id: id,
-      });
+      const ertekelesLekeres = await Story.findOne(
+        {
+          _id: id,
+        },
+        { ertekelesek: 1 }
+      );
       const osszesErtekelesTomb = ertekelesLekeres.ertekelesek;
 
       socket.emit("rating", { id, osszesErtekelesTomb });
@@ -290,8 +416,11 @@ app.get("/", (req, res) => {
 app.post("/regisztral", async (req, res) => {
   try {
     const { felhasznalonev, email, jelszo } = req.body;
-    const emailLetezik = await User.findOne({ email });
-    const felhasznalonevLetezik = await User.findOne({ felhasznalonev });
+    const emailLetezik = await User.findOne({ email }, { email: 1 });
+    const felhasznalonevLetezik = await User.findOne(
+      { felhasznalonev },
+      { felhasznalonev: 1 }
+    );
 
     if (felhasznalonevLetezik) {
       throw Error("A felhasználónév már létezik!");
@@ -321,6 +450,31 @@ app.post("/regisztral", async (req, res) => {
       newUser.isAdmin,
       newUser.felhasznalonev
     );
+
+    const transporter = nodemailer.createTransport({
+      service: process.env.SERVICE,
+      auth: {
+        user: process.env.EMAIL,
+        pass: process.env.PASS,
+      },
+    });
+
+    const mailOptions = {
+      from: process.env.EMAIL,
+      to: email,
+      subject: "Sikeres regisztráció",
+      text: "Sikeresen regisztráltál a NovelNest oldalára!",
+      html: htmlRegister,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log("Hiba az email küldésekor:", error.message);
+      } else {
+        console.log("Elküldve:", info.response);
+      }
+    });
+
     res.status(200).json({
       msg: "Sikeres regisztráció",
       token,
@@ -335,7 +489,10 @@ app.post("/regisztral", async (req, res) => {
 app.post("/belepesJelszo", async (req, res) => {
   try {
     const { felhasznalonev } = req.body;
-    const user = await User.findOne({ felhasznalonev });
+    const user = await User.findOne(
+      { felhasznalonev },
+      { felhasznalonev: 1, jelszo: 1 }
+    );
     if (!user) {
       throw Error("Ez a felhasználó nincs regisztrálva!");
     }
@@ -350,7 +507,10 @@ app.post("/belepesJelszo", async (req, res) => {
 app.post("/belepes", async (req, res) => {
   try {
     const { felhasznalonev } = req.body;
-    const user = await User.findOne({ felhasznalonev });
+    const user = await User.findOne(
+      { felhasznalonev },
+      { _id: 1, isAdmin: 1, felhasznalonev: 1, profilkep: 1 }
+    );
     const token = createToken(user._id, user.isAdmin, user.felhasznalonev);
     const profilkep = user.profilkep;
     console.log(felhasznalonev, token);
@@ -364,6 +524,41 @@ app.post("/belepes", async (req, res) => {
   }
 });
 
+//RESET
+app.post("/emailkuldes", async (req, res) => {
+  try {
+    const { email } = req.body;
+    sendEmail(req.body);
+    res.status(200).json({
+      msg: `Az azonosító kód el lett küldve a(z) ${email} címre`,
+    });
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+});
+
+app.post("/valtoztat", async (req, res) => {
+  try {
+    const { universalEmail, jelszo, jelszoismetles } = req.body;
+    if (!jelszo || !jelszoismetles) {
+      throw Error("Nem hagyhatsz üresen cellákat!");
+    }
+    if (jelszo != jelszoismetles) {
+      throw Error("Nem egyezik a két jelszó!");
+    }
+
+    const hashedJelszo = await bcrypt.hash(jelszo, 10);
+    await User.findOneAndUpdate(
+      { email: universalEmail },
+      { jelszo: hashedJelszo },
+      { new: true }
+    );
+    res.status(200).json({ msg: "Sikeresen megváltoztattad a jelszavad!" });
+  } catch (error) {
+    res.status(500).json({ msg: error.message });
+  }
+});
+
 //AUTHENTICATED ROUTES
 app.use(requireAuth);
 
@@ -372,34 +567,45 @@ app.get(`/userinfo/:felhasznalonevKuld`, async (req, res) => {
   try {
     const felhasznalonev = req.params.felhasznalonevKuld;
     const user = await User.findOne({ felhasznalonev });
-
     if (user) {
       const koveteseimProfilkepArray = [];
       const kovetoimProfilkepArray = [];
 
       for (const koveteseimEmber of user.koveteseim) {
-        const koveteseimUser = await User.findOne({
-          felhasznalonev: koveteseimEmber,
-        });
+        const koveteseimUser = await User.findOne(
+          {
+            felhasznalonev: koveteseimEmber,
+          },
+          { profilkep: 1 }
+        );
         if (koveteseimUser) {
           koveteseimProfilkepArray.push(koveteseimUser.profilkep);
         }
       }
 
       for (const kovetoEmber of user.kovetoim) {
-        const kovetoUser = await User.findOne({ felhasznalonev: kovetoEmber });
+        const kovetoUser = await User.findOne(
+          { felhasznalonev: kovetoEmber },
+          { profilkep: 1 }
+        );
         if (kovetoUser) {
           kovetoimProfilkepArray.push(kovetoUser.profilkep);
         }
       }
 
-      const story = await Story.find({ szerzo: felhasznalonev });
+      const story = await Story.find(
+        { szerzo: felhasznalonev },
+        { boritokep: 1, cim: 1, szerzo: 1, leiras: 1, isPublished: 1 }
+      );
 
       // legújabb sztori elküldése
-      const publicStory = await Story.find({
-        szerzo: felhasznalonev,
-        isPublished: true,
-      });
+      const publicStory = await Story.find(
+        {
+          szerzo: felhasznalonev,
+          isPublished: true,
+        },
+        { boritokep: 1, cim: 1, szerzo: 1, leiras: 1, createdAt: 1 }
+      );
       publicStory.sort((a, b) => b.createdAt - a.createdAt);
       const legujabbStory = publicStory[0];
 
@@ -431,9 +637,12 @@ app.post(`/userinfo/:felhasznalonevKuld`, async (req, res) => {
   const viewFelhasznalonev = req.params.felhasznalonevKuld;
   const felhasznalonev = req.body;
   try {
-    const user = await User.findOne({
-      felhasznalonev: felhasznalonev.felhasznalonev,
-    });
+    const user = await User.findOne(
+      {
+        felhasznalonev: felhasznalonev.felhasznalonev,
+      },
+      { koveteseim: 1 }
+    );
     if (user.koveteseim.includes(viewFelhasznalonev)) {
       res.status(200).send({
         kovetem: true,
@@ -452,7 +661,10 @@ app.post(`/userinfo/:felhasznalonevKuld`, async (req, res) => {
 app.post("/userupdate", async (req, res) => {
   try {
     const { felhasznalonev, rolam, email, profilkep, boritokep } = req.body;
-    const user = await User.findOne({ felhasznalonev });
+    const user = await User.findOne(
+      { felhasznalonev },
+      { boritokepNev: 1, profilkepNev: 1 }
+    );
     const profilkepNev = user.profilkepNev;
     const boritokepNev = user.boritokepNev;
 
@@ -552,7 +764,7 @@ app.post("/addstory", async (req, res) => {
       isPublished,
     } = req.body;
 
-    const storyLetezik = await Story.findOne({ cim });
+    const storyLetezik = await Story.findOne({ cim }, { cim: 1 });
     if (storyLetezik) {
       throw Error("Már létezik egy történet ezzel a címmel");
     }
@@ -620,7 +832,13 @@ app.post("/updatestory", async (req, res) => {
     } = req.body;
     console.log(isPublished);
 
-    const updatedStory = await Story.findOne({ _id: paramId });
+    const updatedStory = await Story.findOne(
+      { _id: paramId },
+      {
+        boritokep: 1,
+        boritokepNev: 1,
+      }
+    );
     const boritokepNev = updatedStory.boritokepNev;
     const boritokepLink = updatedStory.boritokep;
 
@@ -717,7 +935,18 @@ app.post("/updatestory", async (req, res) => {
 
 app.get("/story", async (req, res) => {
   try {
-    const story = await Story.find({ isPublished: true });
+    const story = await Story.find(
+      { isPublished: true },
+      {
+        createdAt: 0,
+        updatedAt: 0,
+        story: 0,
+        karakterek: 0,
+        isPublished: 0,
+        boritokepNev: 0,
+        hozzaszolasok: 0,
+      }
+    );
     res.status(200).json({ story });
   } catch (error) {
     res.status(500).json({ msg: "Valami hiba történt: " + error.message });
@@ -748,7 +977,16 @@ app.delete("/story", async (req, res) => {
 app.post("/onestory", async (req, res) => {
   try {
     const id = req.body.id;
-    const onestory = await Story.find({ _id: id });
+    const onestory = await Story.find(
+      { _id: id },
+      {
+        createdAt: 0,
+        updatedAt: 0,
+        __v: 0,
+        boritokepNev: 0,
+        isPublished: 0,
+      }
+    );
     res.status(200).json({ onestory });
   } catch (error) {
     res.status(500).json({ msg: "Valami hiba történt: " + error.message });
@@ -781,7 +1019,12 @@ app.post("/ertekeles", async (req, res) => {
 app.post("/hozzaszolas", async (req, res) => {
   try {
     const id = req.body.id;
-    const story = await Story.findById({ _id: id });
+    const story = await Story.findById(
+      { _id: id },
+      {
+        hozzaszolasok: 1,
+      }
+    );
     const hozzaszolas = story.hozzaszolasok;
     res.status(200).json({ hozzaszolas });
   } catch (error) {
@@ -843,7 +1086,12 @@ app.get("/getInfos", async (req, res) => {
     const isAdmin = res.locals.isAdmin;
     const felhasznalonev = res.locals.felhasznalonev;
 
-    const user = await User.findOne({ felhasznalonev });
+    const user = await User.findOne(
+      { felhasznalonev },
+      {
+        profilkep: 1,
+      }
+    );
     const profilkep = user.profilkep;
     res.status(200).json({ isAdmin, felhasznalonev, profilkep });
   } catch (error) {
