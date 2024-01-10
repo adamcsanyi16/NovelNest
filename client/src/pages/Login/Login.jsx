@@ -103,10 +103,11 @@ const Login = () => {
           <button type="submit" disabled={isLoading}>
             Belépés
           </button>
-          <button onClick={navigate("/regisztracio")} id="sarga">
-            Új fiók
-          </button>
+          <Link to={"/regisztracio"}>
+            <button id="sarga">Új fiók</button>
+          </Link>
         </div>
+
         <div className="links">
           <Link to={"/valtoztat"}>Elfelejtetted a jelszavad?</Link>
         </div>
