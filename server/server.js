@@ -7,6 +7,7 @@ const multer = require("multer");
 const jwt = require("jsonwebtoken");
 const validator = require("validator");
 const nodemailer = require("nodemailer");
+const bcrypt = require("bcrypt");
 const cloudinary = require("cloudinary").v2;
 const requireAuth = require("./middlewares/requireAuth");
 

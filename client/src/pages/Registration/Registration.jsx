@@ -15,7 +15,7 @@ const Registration = () => {
   const { dispatch } = useAuthContext();
   const url = config.URL;
 
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const register = async () => {
     setIsLoading(true);

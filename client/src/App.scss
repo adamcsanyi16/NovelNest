@@ -127,12 +127,15 @@ button {
   font-size: 18px;
   transition: all 0.5s ease;
   scale: 0.8;
+  cursor: pointer;
+  border: 2px solid $vilagoskek;
 }
 
 button:hover {
   letter-spacing: 3px;
   background-color: $sotetkek;
   color: hsl(0, 0%, 100%);
+  border: 2px solid $sotetkek;
 }
 
 button:active {
@@ -147,6 +150,18 @@ button:active {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+#sarga {
+  background-color: $feher;
+  border: 2px solid $sotetkek;
+  color: $sotetkek;
+}
+
+#sarga:hover {
+  background-color: $sotetkek;
+  color: $feher;
+  cursor: pointer;
 }
 
 .button-row {
@@ -238,7 +253,7 @@ form {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 150px;
+  margin-top: 100px;
 }
 
 .forms-container h2 {

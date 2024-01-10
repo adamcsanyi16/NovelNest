@@ -103,9 +103,12 @@ const Login = () => {
           <button type="submit" disabled={isLoading}>
             Belépés
           </button>
+          <button onClick={navigate("/regisztracio")} id="sarga">
+            Új fiók
+          </button>
         </div>
         <div className="links">
-          <Link to={"/regisztracio"}>Még nincs fiókod? Regisztrálj!</Link>
+          <Link to={"/valtoztat"}>Elfelejtetted a jelszavad?</Link>
         </div>
         {error && <div className="error">{error}</div>}
         {success && <div className="success">{success}</div>}
