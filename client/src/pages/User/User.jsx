@@ -381,7 +381,7 @@ const User = () => {
                 </div>
               </div>
               <div id="profilomInfo_container">
-                {viewKoveteseim && (
+                {viewKoveteseim || viewKovetoim? (
                   <div>
                     <div className="kovetok">
                       <h4 style={{ cursor: "pointer" }} onClick={modalKovetoim}>
@@ -392,6 +392,39 @@ const User = () => {
                         onClick={modalKoveteseim}
                       >
                         Követés: {viewKoveteseimList.length}
+                      </h4>
+                    </div>
+                    <div className="kovetoGomb">
+                      {felhasznalonev != viewFelhasznalonev ? (
+                        kovetem === false ? (
+                          <button onClick={bekovetes}>Követés</button>
+                        ) : (
+                          <button
+                            onClick={kikovetes}
+                            style={{
+                              backgroundColor: "#f5f5f5",
+                              color: "black",
+                            }}
+                          >
+                            Követem
+                          </button>
+                        )
+                      ) : (
+                        ""
+                      )}
+                    </div>
+                  </div>
+                ) : (
+                  <div>
+                    <div className="kovetok">
+                      <h4 style={{ cursor: "pointer" }} onClick={modalKovetoim}>
+                        Követők: 0
+                      </h4>
+                      <h4
+                        style={{ cursor: "pointer" }}
+                        onClick={modalKoveteseim}
+                      >
+                        Követés: 0
                       </h4>
                     </div>
                     <div className="kovetoGomb">
