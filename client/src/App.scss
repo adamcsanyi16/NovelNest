@@ -583,6 +583,9 @@ form {
 #allStoryContainer::-webkit-scrollbar {
   overflow: hidden;
 }
+.storyWrap::-webkit-scrollbar {
+  overflow: hidden;
+}
 
 #userStoryContainer {
   padding: 30px;
@@ -595,7 +598,6 @@ form {
 }
 
 .storyLink {
-  margin: auto;
   gap: 10px;
 }
 
@@ -824,6 +826,8 @@ form {
 }
 
 .onlystory {
+  position: relative;
+  min-height: 100vh;
   text-align: center;
   color: $sotetkek;
 }
@@ -1458,6 +1462,25 @@ body.active-modal {
   font-size: 1.8rem;
   margin-top: 0.3rem;
   margin-bottom: 0rem;
+}
+
+/*PAGINATION*/
+.pagination {
+  text-align: center;
+}
+#currentPage {
+  color: $sotetkek;
+  font-size: smaller;
+}
+
+.pagination button.active {
+  background-color: $narancs;
+  color: $feher;
+  border: 1px solid $narancs;
+}
+
+.paginationButtons button {
+  padding: 17px 22px;
 }
 
 @media only screen and (max-width: 650px) {

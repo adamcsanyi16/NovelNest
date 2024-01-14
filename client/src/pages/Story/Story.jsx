@@ -39,6 +39,9 @@ const Story = () => {
   const [atlagErtekeles, SetAtlagErtekeles] = useState(null);
   const [sajatErtekeles, SetSajatErtekeles] = useState("");
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8;
+
   const url = config.URL;
 
   useEffect(() => {
@@ -99,18 +102,6 @@ const Story = () => {
   //VARIABLES
   const angol = "angol";
   const magyar = "magyar";
-
-  const akcio = "akció";
-  const drama = "dráma";
-  const fantazia = "fantázia";
-  const horror = "horror";
-  const humor = "humor";
-  const kaland = "kaland";
-  const krimi = "krimi";
-  const paranormal = "paranormális";
-  const romantika = "romantikus";
-  const scifi = "sci-fi";
-  const vers = "vers";
 
   //SEARCHING
   const levenshteinDistance = (str1, str2) =>
@@ -191,6 +182,10 @@ const Story = () => {
     SetStar4Src("/images/star.png");
     SetStar5Src("/images/star.png");
   };
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedStories = sortedStories.slice(startIndex, endIndex);
 
   return (
     <div className="stories">
@@ -604,27 +599,57 @@ const Story = () => {
             </div>
           </div>
         </div>
-        <div className="storyContainer" id="allStoryContainer">
-          {sortedStories.map((story) => (
-            <div className="storyLink" key={story._id}>
-              <Link to={`/story/${story._id}`}>
-                <div className="book-container" key={story._id}>
-                  <div className="book">
-                    <div className="front-content">
-                      <img src={story.boritokep} alt="" />
-                    </div>
-                    <div className="content">
-                      <p className="heading">{story.cim}</p>
-                      <p>{story.leiras}</p>
-                      <div id="author">
-                        <h3>{story.szerzo}</h3>
+        <div className="paginationAndStories">
+          <div className="storyContainer" id="allStoryContainer">
+            {paginatedStories.map((story) => (
+              <div className="storyLink" key={story._id}>
+                <Link to={`/story/${story._id}`}>
+                  <div className="book-container" key={story._id}>
+                    <div className="book">
+                      <div className="front-content">
+                        <img src={story.boritokep} alt="" />
+                      </div>
+                      <div className="content">
+                        <p className="heading">{story.cim}</p>
+                        <p>{story.leiras}</p>
+                        <div id="author">
+                          <h3>{story.szerzo}</h3>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </Link>
+                </Link>
+              </div>
+            ))}
+          </div>
+          <div className="pagination">
+            <span id="currentPage">{`${currentPage}. oldal`}</span>
+            <div className="paginationButtons">
+              <button
+                onClick={() =>
+                  setCurrentPage((prevPage) => Math.max(prevPage - 1, 1))
+                }
+                disabled={currentPage === 1}
+              >
+                <span class="material-symbols-outlined">chevron_left</span>
+              </button>
+              <button
+                onClick={() =>
+                  setCurrentPage((prevPage) =>
+                    Math.min(
+                      prevPage + 1,
+                      Math.ceil(sortedStories.length / itemsPerPage)
+                    )
+                  )
+                }
+                disabled={
+                  currentPage === Math.ceil(sortedStories.length / itemsPerPage)
+                }
+              >
+                <span class="material-symbols-outlined">chevron_right</span>
+              </button>
             </div>
-          ))}
+          </div>
         </div>
       </div>
     </div>

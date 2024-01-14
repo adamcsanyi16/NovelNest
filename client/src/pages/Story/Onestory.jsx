@@ -35,6 +35,9 @@ const Onestory = () => {
   const [isRated, SetIsRated] = useState(false);
   const [ertekelok, setErtekelok] = useState([]);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const wordsPerPage = 300;
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -187,6 +190,18 @@ const Onestory = () => {
       SetOsszesHozzaszolas(msg.hozzaszolasok);
     }
   });
+
+  //PAGINATION
+  const paginateStory = (story) => {
+    const words = story.split(/\s+/);
+    const startIndex = (currentPage - 1) * wordsPerPage;
+    const endIndex = startIndex + wordsPerPage;
+    return words.slice(startIndex, endIndex).join(" ");
+  };
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
 
   return (
     <div>
