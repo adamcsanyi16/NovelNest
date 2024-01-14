@@ -116,7 +116,6 @@ img {
 }
 /*HOME*/
 
-
 /*BUTTONS*/
 button {
   padding: 17px 40px;
@@ -1418,6 +1417,47 @@ body.active-modal {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+/*PASSWORD RESET*/
+.reset-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px 0px 30px 0px;
+  gap: 40px;
+}
+
+.reset-row input {
+  text-align: center;
+  width: 45px;
+}
+
+.reset-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.reset-link {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  margin: auto;
+}
+
+.resetPass p {
+  font-size: 15px;
+  text-align: center;
+}
+
+.resetPass span {
+  color: $narancs;
+}
+
+.resetPass #KOD {
+  font-size: 1.8rem;
+  margin-top: 0.3rem;
+  margin-bottom: 0rem;
 }
 
 @media only screen and (max-width: 650px) {

@@ -10,6 +10,8 @@ const nodemailer = require("nodemailer");
 const bcrypt = require("bcrypt");
 const cloudinary = require("cloudinary").v2;
 const requireAuth = require("./middlewares/requireAuth");
+const path = require("path");
+const fs = require("fs");
 
 //MODELS
 const User = require("./models/User");
@@ -79,45 +81,10 @@ const createToken = (_id, isAdmin, felhasznalonev) => {
 app.use(cors());
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, "public")));
 
-//HTML EMAIL FOR REG
-const htmlRegister = `
-  <html>
-    <head>
-      <style>
-        @import url("https://fonts.googleapis.com/css2?family=Martian+Mono:wght@100;200;300;400;500;600;700;800&display=swap");
-        body {
-          font-family: "Martian Mono", monospace;
-          background-color: #ffffff;
-          padding: 20px;
-        }
-        .container {
-          background-color: #f5f5f5;
-          padding: 20px;
-          border-radius: 5px;
-        }
-        h1 {
-          color: #363061;
-          text-align: center;
-        }
-        p {
-          color: #5756ae;
-          line-height: 1.5;
-          text-align: center;
-        }
-        span {
-          color: #f99417;
-        }
-      </style>
-    </head>
-    <body>
-      <div class="container">
-        <h1>Üdvözöl a NovelNest csapata!</h1>
-        <p>Sikeresen regisztráltál a <span>NovelNest</span> oldalára! <br> Fedezd fel az egyre bővülő történeteket és ha kedvet kaptál akár készíts is egyet!</p>
-      </div>
-    </body>
-  </html>
-`;
+//HTML PATHS
+const htmlEmailPath = path.join(__dirname, "public", "email.html");
 
 //RESET EMAIL FUNCTION
 const sendEmail = ({ email, KOD }) => {
@@ -135,44 +102,67 @@ const sendEmail = ({ email, KOD }) => {
     subject: "Jelszó helyreállítás",
     html: `
     <html>
-      <head>
-        <style>
-          /* CSS styles for the email layout */
-          body {
-            font-family: Arial, sans-serif;
-            background-color: #f1f1f1;
-            padding: 20px;
-          }
-          .container {
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 5px;
-          }
-          h1 {
-            color: #333333;
-            text-align: center;
-          }
-          h2 {
-            color: #333333;
-            text-align: center;
-            letter-spacing: 5px;
-          }
-          p {
-            color: #666666;
-            line-height: 1.5;
-            text-align: center;
-          }
-        </style>
-      </head>
-      <body>
-        <div class="container">
-          <h1>Jelszó Helyreállítás</h1>
-          <p>A következő sorban kapott 4 számjegyű kódodat kell megadnod, hogy hitelesítsd magad!</p>
-          <h2>${KOD}</h2>
+    <head>
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          background-color: #ffffff;
+          padding: 20px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        .container {
+          background-color: #f5f5f5;
+          padding: 20px;
+          border-radius: 30px;
+          width: 600px;
+        }
+        h1 {
+          color: #363061;
+          text-align: center;
+          font-weight: 800;
+        }
+        h2 {
+          color: #f99417;
+          text-align: center;
+          letter-spacing: 5px;
+        }
+        p {
+          color: #363061;
+          line-height: 1.5;
+          text-align: center;
+        }
+        .image {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          text-align: center;
+        }
+        .image img {
+          width: 200px;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <h1>Jelszó Helyreállítás</h1>
+        <div class="image">
+          <img
+            src="https://res.cloudinary.com/diktrthqs/image/upload/v1704896270/novelnest-blue-min_oyqxy2.png"
+            alt=""
+            style="display: block; margin: 0 auto"
+          />
         </div>
-      </body>
-    </html>
-  `,
+        <p>
+          A következő sorban kapott 4 számjegyű kódodat kell megadnod, hogy
+          hitelesítsd magad!
+        </p>
+        <h2>${KOD}</h2>
+      </div>
+    </body>
+  </html>
+    `,
   };
 
   transporter.sendMail(mailOptions, (error, info) => {
@@ -459,6 +449,8 @@ app.post("/regisztral", async (req, res) => {
         pass: process.env.PASS,
       },
     });
+
+    const htmlRegister = fs.readFileSync(htmlEmailPath, "utf8");
 
     const mailOptions = {
       from: process.env.EMAIL,

@@ -18,6 +18,7 @@ import Story from "./pages/Story/Story";
 import Onestory from "./pages/Story/Onestory";
 import Updatestory from "./pages/Story/Updatestory";
 import Reset from "./pages/ResetPass/Reset";
+import CodeAuth from "./pages/ResetPass/CodeAuth";
 
 function App() {
   const { user } = useAuthContext;

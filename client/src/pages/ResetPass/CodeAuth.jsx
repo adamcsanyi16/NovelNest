@@ -58,9 +58,11 @@ const CodeAuth = () => {
 
   return (
     <div className="forms-container">
-      <form className="addcomp">
+      <form className="resetPass">
         <h2 id="KOD">Írd be a megkapott kódot!</h2>
-        <p>Egy kódot küldtünk erre az email címre {universalEmail}</p>
+        <p>
+          Egy kódot küldtünk erre az email címre <span>{universalEmail}</span>
+        </p>
         <div className="reset-row">
           <input
             type="text"
@@ -123,7 +125,7 @@ const CodeAuth = () => {
           <Link
             onClick={ujrakuld}
             style={{
-              color: disable ? "#4d471bc9" : "#998d33c9",
+              color: disable ? "#363061" : "#f99417",
               cursor: disable ? "none" : "pointer",
               textDecorationLine: disable ? "none" : "underline",
             }}
