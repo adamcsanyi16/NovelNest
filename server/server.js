@@ -394,7 +394,6 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnect", () => {
-    console.log("User disconnected: " + socket.id);
   });
 });
 
@@ -977,7 +976,6 @@ app.post("/onestory", async (req, res) => {
         updatedAt: 0,
         __v: 0,
         boritokepNev: 0,
-        isPublished: 0,
       }
     );
     res.status(200).json({ onestory });
