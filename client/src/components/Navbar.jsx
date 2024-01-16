@@ -75,7 +75,13 @@ const Navbar = () => {
         {user ? (
           <div>
             <Link to="/story">
-              <img src="/images/novelnest-blue.png" alt="" />
+              <img
+                onClick={() => {
+                  setProfilMenu(false);
+                }}
+                src="/images/novelnest-blue.png"
+                alt=""
+              />
             </Link>
           </div>
         ) : (
@@ -113,14 +119,26 @@ const Navbar = () => {
             <div className="main">
               <div className="navbarIkon">
                 <Link to="/storyfelvetel">
-                  <span id="ujStory_ikon" class="material-symbols-outlined">
+                  <span
+                    onClick={() => {
+                      setProfilMenu(false);
+                    }}
+                    id="ujStory_ikon"
+                    class="material-symbols-outlined"
+                  >
                     edit_note
                   </span>
                 </Link>
               </div>
               <div className="navbarIkon">
                 <Link to="/story">
-                  <span id="storys_ikon" class="material-symbols-outlined">
+                  <span
+                    onClick={() => {
+                      setProfilMenu(false);
+                    }}
+                    id="storys_ikon"
+                    class="material-symbols-outlined"
+                  >
                     sticky_note_2
                   </span>
                 </Link>
