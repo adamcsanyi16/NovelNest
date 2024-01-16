@@ -580,6 +580,7 @@ form {
   grid-template-columns: 25% 25% 25% 25%;
   flex-basis: 100%;
   overflow-y: auto;
+  transition: all ease-in-out 1s;
 }
 
 #allStoryContainer::-webkit-scrollbar {
@@ -1122,7 +1123,7 @@ body.active-modal {
   height: 400px;
   margin-bottom: 20px;
   border-radius: 10px;
-  z-index: 1;
+  z-index: 9997;
 }
 
 .kovetokMutato {
@@ -1507,6 +1508,9 @@ body.active-modal {
 // RESZPONZÍV //
 
 // NAVBAR //
+.navbarIkon_tarto {
+  margin-left: 41px;
+}
 
 .navbarIkon {
   scale: 1.8;
@@ -1585,17 +1589,28 @@ body.active-modal {
   color: $sotetkek;
 }
 
-@media only screen and (max-width: 940px) {
-  #logo {
-    gap: 0px;
-  }
-
-  .main {
-    margin-left: 41px;
+@media only screen and (max-width: 1500px) {
+  .storyContainer {
+    grid-template-columns: 33% 33% 33%;
   }
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 940px) {
+}
+
+@media only screen and (max-width: 1250px) {
+  .storyContainer {
+    grid-template-columns: 50% 50%;
+  }
+}
+
+@media only screen and (max-width: 880px) {
+  .storyContainer {
+    grid-template-columns: 100%;
+  }
+}
+
+@media only screen and (max-width: 760px) {
   #logo {
     gap: 0px;
   }

@@ -109,7 +109,7 @@ const Navbar = () => {
           <Link to="/regisztracio">Regisztráció</Link>
         </div>
       ) : (
-        <div>
+        <div className="navbarIkon_tarto">
           {windowSize[0] > 940 ? (
             <div className="main">
               <Link to="/storyfelvetel">Írj sztorit!</Link>
