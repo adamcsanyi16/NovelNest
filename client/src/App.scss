@@ -331,6 +331,7 @@ form {
   height: 400px;
   border-radius: 20px;
   padding: 5px;
+  margin-top: 20px;
   box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
   background-color: $narancs;
   text-align: center;
@@ -1466,6 +1467,10 @@ body.active-modal {
 }
 
 /*PAGINATION*/
+.paginationAndStories {
+  width: 100%;
+}
+
 .pagination {
   text-align: center;
 }
@@ -1482,6 +1487,21 @@ body.active-modal {
 
 .paginationButtons button {
   padding: 17px 22px;
+}
+
+.paginationStory {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.paginationStory button.active {
+  background-color: $narancs;
+  color: $feher;
 }
 
 // RESZPONZÍV //

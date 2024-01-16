@@ -36,7 +36,6 @@ const Onestory = () => {
   const [ertekelok, setErtekelok] = useState([]);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const wordsPerPage = 300;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -192,11 +191,24 @@ const Onestory = () => {
   });
 
   //PAGINATION
+  const wordsPerPage = 1550;
+
   const paginateStory = (story) => {
-    const words = story.split(/\s+/);
     const startIndex = (currentPage - 1) * wordsPerPage;
     const endIndex = startIndex + wordsPerPage;
-    return words.slice(startIndex, endIndex).join(" ");
+
+    // Extract a portion of the story
+    let pageContent = story.substring(startIndex, endIndex);
+
+    // Check if the last word is split and not the last page
+    const lastWordIndex = pageContent.lastIndexOf(' ');
+
+    // If the last word is split and not the last page, add "-"
+    if (lastWordIndex !== -1 && lastWordIndex < pageContent.length - 1 && currentPage < Math.ceil(story.length / wordsPerPage)) {
+      pageContent = pageContent.substring(0, lastWordIndex) + '-';
+    }
+
+    return pageContent;
   };
 
   const handlePageChange = (pageNumber) => {
@@ -374,7 +386,23 @@ const Onestory = () => {
         </div>
         <div className="onlystory">
           <h1>{cim}</h1>
-          <p>{story}</p>
+          <p>{paginateStory(story)}</p>
+          {story.length > wordsPerPage && (
+            <div className="paginationStory">
+              {Array.from(
+                { length: Math.ceil(story.length / wordsPerPage) },
+                (_, index) => (
+                  <button
+                    key={index + 1}
+                    onClick={() => handlePageChange(index + 1)}
+                    className={currentPage === index + 1 ? "active" : ""}
+                  >
+                    {index + 1}
+                  </button>
+                )
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>

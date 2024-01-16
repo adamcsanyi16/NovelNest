@@ -14,6 +14,7 @@ const Updatestory = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [toggleForm, setToggleForm] = useState(false);
   const [felhasznalonev, setFelhasznalonev] = useState("");
+  const [isAdmin, setIsAdmin] = useState("");
 
   const [cim, setCim] = useState("");
   const [szerzo, setSzerzo] = useState("");
@@ -46,6 +47,7 @@ const Updatestory = () => {
           const isAdmin = data.isAdmin;
           const felhasznalonev = data.felhasznalonev;
           setFelhasznalonev(felhasznalonev);
+          setIsAdmin(isAdmin);
         }
       } catch (error) {
         console.log("Fetch error:", error);
@@ -169,11 +171,11 @@ const Updatestory = () => {
   }, [user]);
 
   const handleDropdownCategory = (selectedOption) => {
-    setKategoria(selectedOption.value);
+    setKategoria({ value: selectedOption.value, label: selectedOption.label });
   };
 
   const handleDropdownLanguage = (selectedOption) => {
-    setNyelv(selectedOption.value);
+    setNyelv({ value: selectedOption.value, label: selectedOption.label });
   };
 
   const selectStyles = {
@@ -312,7 +314,7 @@ const Updatestory = () => {
   return (
     <div>
       {!isLoading ? <div></div> : <div className="loader"></div>}
-      {felhasznalonev == szerzo ? (
+      {felhasznalonev == szerzo || isAdmin ? (
         <div className="updateStory-container">
           {!toggleForm ? (
             <div className="form-container">
