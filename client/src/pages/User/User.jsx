@@ -331,7 +331,7 @@ const User = () => {
         style={
           viewBoritokep
             ? { backgroundImage: `url('${viewBoritokep}')` }
-            : { background: "linear-gradient(#3f4e4f, #3f4e4f)" }
+            : { background: "linear-gradient(#363061, #5756ae)" }
         }
       >
         <div className="profilom_Tarto">
@@ -381,7 +381,7 @@ const User = () => {
                 </div>
               </div>
               <div id="profilomInfo_container">
-                {viewKoveteseim || viewKovetoim? (
+                {viewKoveteseim || viewKovetoim ? (
                   <div>
                     <div className="kovetok">
                       <h4 style={{ cursor: "pointer" }} onClick={modalKovetoim}>
