@@ -1595,12 +1595,23 @@ body.active-modal {
   }
 }
 
-@media only screen and (max-width: 940px) {
-}
-
 @media only screen and (max-width: 1250px) {
   .storyContainer {
     grid-template-columns: 50% 50%;
+  }
+}
+
+@media only screen and (max-width: 940px) {
+  .form-container {
+    display: block;
+    margin-left: 120px;
+  }
+
+  #file-storyform {
+    height: 400px;
+    width: 300px;
+    scale: 0.8;
+    margin-top: -40px;
   }
 }
 
@@ -1617,6 +1628,11 @@ body.active-modal {
 }
 
 @media only screen and (max-width: 650px) {
+  .form-container {
+    display: block;
+    margin-left: 100px;
+  }
+
   #logo {
     gap: 0px;
   }

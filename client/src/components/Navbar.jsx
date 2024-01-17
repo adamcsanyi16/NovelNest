@@ -176,7 +176,12 @@ const Navbar = () => {
           </div>
           {user && profilMenu && (
             <div className="profilMenu">
-              <Link to={`/profil/${felhasznalonev}`}>
+              <Link
+                to={`/profil/${felhasznalonev}`}
+                onClick={() => {
+                  setProfilMenu(false);
+                }}
+              >
                 <h2>{felhasznalonev}</h2>
               </Link>
               <div className="profilMenu_logout" onClick={menuLogout}>
