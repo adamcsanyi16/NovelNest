@@ -36,8 +36,7 @@ const Story = () => {
   const [star3Src, SetStar3Src] = useState("/images/star.png");
   const [star4Src, SetStar4Src] = useState("/images/star.png");
   const [star5Src, SetStar5Src] = useState("/images/star.png");
-  const [atlagErtekeles, SetAtlagErtekeles] = useState(null);
-  const [sajatErtekeles, SetSajatErtekeles] = useState("");
+  const [sajatErtekeles, SetSajatErtekeles] = useState(null);
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
@@ -141,6 +140,24 @@ const Story = () => {
     const hasSimilarAuthor =
       levenshteinDistance(author, searchTermLower).similarity >= 0.35;
 
+    if (sajatErtekeles !== null) {
+      let ertekelesArray = story.ertekelesek.map((item) => item.ertekeles);
+      let averageErtekeles =
+        ertekelesArray.reduce((acc, value) => acc + value, 0) /
+        ertekelesArray.length;
+      console.log(averageErtekeles);
+
+        return (
+          categoryFilter &&
+          languageFilter &&
+          (searchTerm.trim() === "" || hasSimilarTitle || hasSimilarAuthor) &&
+          (sajatErtekeles === null ||
+            sajatErtekeles === undefined ||
+            (averageErtekeles >= sajatErtekeles &&
+              averageErtekeles < sajatErtekeles + 1))
+        );
+    }
+
     return (
       categoryFilter &&
       languageFilter &&
@@ -176,6 +193,7 @@ const Story = () => {
     setRomantikaChecked(false);
     setScifiChecked(false);
     setVersChecked(false);
+    SetSajatErtekeles(null);
     SetStar1Src("/images/star.png");
     SetStar2Src("/images/star.png");
     SetStar3Src("/images/star.png");
@@ -597,6 +615,13 @@ const Story = () => {
                 alt=""
               />
             </div>
+            <Link
+              onClick={() => {
+                SetSajatErtekeles(NaN);
+              }}
+            >
+              Nem értékelt
+            </Link>
           </div>
         </div>
         <div className="paginationAndStories">
