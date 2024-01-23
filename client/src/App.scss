@@ -271,11 +271,6 @@ form {
   margin: 30px;
 }
 
-#select-row {
-  gap: 150px;
-  margin-left: -100px;
-}
-
 /*INPUT*/
 .input {
   line-height: 28px;
@@ -1474,6 +1469,7 @@ body.active-modal {
 
 .pagination {
   text-align: center;
+  margin-top: 20px;
 }
 #currentPage {
   color: $sotetkek;

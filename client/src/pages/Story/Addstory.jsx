@@ -86,6 +86,7 @@ const Addstory = () => {
 
   useEffect(() => {
     const fetchDropdownLanguage = async () => {
+      setIsLoading(true);
       try {
         const adat = await fetch(url + "/nyelv", {
           method: "GET",
@@ -102,9 +103,11 @@ const Addstory = () => {
             value: option.nyelv,
           }));
           setDropDownNyelv(LanguageOptions);
+          setIsLoading(false);
         } else {
           const response = await adat.json();
           setError(response.msg);
+          setIsLoading(false);
         }
       } catch (error) {
         console.log(error);
@@ -130,7 +133,7 @@ const Addstory = () => {
       borderBottomColor: "#f99417",
       borderRadius: state.isFocused ? "1rem" : "0",
       outline: state.isFocused && "none",
-      width: "200%",
+      width: "560px",
       backgroundColor: "transparent",
       borderColor: state.isFocused ? "#f99417" : "transparent",
       color: "#363062",
@@ -148,7 +151,20 @@ const Addstory = () => {
       ...provided,
       color: "#363062",
       fontFamily: '"Martian Mono", monospace',
-      fontSize: "9px",
+      fontSize: "11px",
+    }),
+    menu: (provided) => ({
+      ...provided,
+      width: "560px",
+      marginTop: "0",
+      borderRadius: "1rem",
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      padding: "1rem",
+      borderRadius: "1rem",
+      backgroundColor: state.isFocused ? "#f99417" : null,
+      color: state.isFocused ? "#fff" : "#f99417",
     }),
     placeholder: (provided, state) => ({
       ...provided,
@@ -257,6 +273,7 @@ const Addstory = () => {
 
   return (
     <div className="storyfelv">
+      {!isLoading ? <div></div> : <div className="loader"></div>}
       {!toggleForm ? (
         <div className="form-container">
           <form onSubmit={feldolgoz} className="storyform" id="file-storyform">
@@ -323,14 +340,18 @@ const Addstory = () => {
                 defaultInputValue={kategoria}
                 className="custom-select"
                 placeholder="Kategória"
+                disabled={isLoading}
                 styles={selectStyles}
                 options={dropdownKategoria}
                 onChange={handleDropdownCategory}
               />
+            </div>
+            <div className="form-row">
               <Select
                 defaultInputValue={nyelv}
                 className="custom-select"
                 placeholder="Nyelv"
+                disabled={isLoading}
                 styles={selectStyles}
                 options={dropdownNyelv}
                 onChange={handleDropdownLanguage}

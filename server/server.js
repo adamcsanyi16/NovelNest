@@ -182,7 +182,7 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: `http://${process.env.LOCALHOST}:3000`,
+    origin: `http://${process.env.LAN}:3000`,
     methods: ["GET", "POST"],
   },
   transports: ["websocket", "polling"],
@@ -393,8 +393,7 @@ io.on("connection", (socket) => {
     }
   });
 
-  socket.on("disconnect", () => {
-  });
+  socket.on("disconnect", () => {});
 });
 
 //ROUTES
@@ -1098,5 +1097,5 @@ mongoose
 
 const port = process.env.PORT || 3500;
 server.listen(port, () => {
-  console.log(`http://${process.env.LOCALHOST}:${port}`);
+  console.log(`http://${process.env.LAN}:${port}`);
 });

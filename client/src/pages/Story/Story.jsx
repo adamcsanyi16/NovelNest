@@ -142,10 +142,11 @@ const Story = () => {
 
     if (sajatErtekeles !== null) {
       let ertekelesArray = story.ertekelesek.map((item) => item.ertekeles);
-      let averageErtekeles =
-        ertekelesArray.reduce((acc, value) => acc + value, 0) /
-        ertekelesArray.length;
-      console.log(averageErtekeles);
+      if (ertekelesArray.length > 0) {
+        let averageErtekeles =
+          ertekelesArray.reduce((acc, value) => acc + value, 0) /
+          ertekelesArray.length;
+        console.log(averageErtekeles);
 
         return (
           categoryFilter &&
@@ -156,8 +157,15 @@ const Story = () => {
             (averageErtekeles >= sajatErtekeles &&
               averageErtekeles < sajatErtekeles + 1))
         );
+      } else {
+        return (
+          categoryFilter &&
+          languageFilter &&
+          (searchTerm.trim() === "" || hasSimilarTitle || hasSimilarAuthor) &&
+          sajatErtekeles === 0
+        );
+      }
     }
-
     return (
       categoryFilter &&
       languageFilter &&
@@ -617,7 +625,12 @@ const Story = () => {
             </div>
             <Link
               onClick={() => {
-                SetSajatErtekeles(NaN);
+                SetStar1Src("/images/star.png");
+                SetStar2Src("/images/star.png");
+                SetStar3Src("/images/star.png");
+                SetStar4Src("/images/star.png");
+                SetStar5Src("/images/star.png");
+                SetSajatErtekeles(0);
               }}
             >
               Nem értékelt
