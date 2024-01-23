@@ -651,6 +651,48 @@ form {
   color: $sotetkek;
 }
 
+.sortingContainerResponsive {
+  position: absolute;
+  overflow-y: auto;
+  width: 300px;
+  background-color: $feher;
+  visibility: hidden;
+  padding: 20px;
+  z-index: 9996;
+  border-right: $sotetkek solid 2px;
+  border-top: $sotetkek solid 2px;
+  border-bottom: $sotetkek solid 2px;
+  border-radius: 0px 10px 10px 0px;
+  box-shadow: $sotetkek 0 15px 30px -5px;
+}
+
+.sortingContainerResponsive p {
+  color: $sotetkek;
+  font-size: 9px;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+
+.sortingContainerResponsive p:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.sortingContainerResponsive::-webkit-scrollbar {
+  display: none;
+}
+
+.sortingContainerResponsive .input {
+  scale: 1;
+  width: 100%;
+  transition: none;
+}
+
+.sortingContainerResponsive .input::placeholder {
+  font-size: 11px;
+}
+
 /*ONESTORY*/
 .oneStory-container {
   display: grid;
@@ -1351,6 +1393,18 @@ body.active-modal {
   margin-bottom: 10px;
 }
 
+.ertekelesLink {
+  text-align: center;
+}
+.ertekelesLink a {
+  text-decoration: none;
+  font-size: 11px;
+  color: $sotetkek;
+}
+.ertekelesLink a:hover {
+  text-decoration: underline;
+}
+
 #kategoria {
   height: 250px;
   overflow-y: scroll;
@@ -1589,6 +1643,11 @@ body.active-modal {
   .storyContainer {
     grid-template-columns: 33% 33% 33%;
   }
+
+  #profileStories {
+    display: flex;
+    justify-content: center;
+  }
 }
 
 @media only screen and (max-width: 1250px) {
@@ -1597,13 +1656,13 @@ body.active-modal {
   }
 }
 
-@media only screen and (max-width: 940px) {
+@media only screen and (max-width: 1200px) {
   .profilomInfo_Tarto {
     display: block;
   }
 
   .profilomHatter {
-    height: 90vh;
+    height: 900px;
     width: 100%;
   }
 
@@ -1646,6 +1705,14 @@ body.active-modal {
     scale: 0.8;
     margin-top: -40px;
   }
+
+  .editButtons {
+    margin-top: 5px;
+  }
+
+  .boritokepFeltoltes {
+    margin-top: 100px;
+  }
 }
 
 @media only screen and (max-width: 880px) {
@@ -1677,5 +1744,11 @@ body.active-modal {
   .profilomInfo_container {
     margin-top: 0px;
     width: 100%;
+  }
+}
+
+@media only screen and (max-width: 550px) {
+  .storyContainer {
+    padding-right: 0px;
   }
 }

@@ -593,7 +593,7 @@ const User = () => {
         <div className="storyContainer" id="userStoryContainer">
           {story.map((story) =>
             isAdmin || viewFelhasznalonev === felhasznalonev ? (
-              <div className="storyLink">
+              <div className="storyLink" id="profileStories">
                 <div className="book-container" id="user-book-container">
                   <div className="book">
                     {story.isPublished === true && (

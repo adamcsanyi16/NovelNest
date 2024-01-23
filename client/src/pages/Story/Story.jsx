@@ -38,6 +38,13 @@ const Story = () => {
   const [star5Src, SetStar5Src] = useState("/images/star.png");
   const [sajatErtekeles, SetSajatErtekeles] = useState(null);
 
+  const [windowSize, setWindowSize] = useState([
+    window.innerWidth,
+    window.innerHeight,
+  ]);
+  const [showFilters, SetShowFilters] = useState(false);
+  const [filterVisibility, SetFilterVisibility] = useState("visible");
+
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
 
@@ -97,6 +104,29 @@ const Story = () => {
 
     fetchData();
   }, [user, felhasznalonev]);
+
+  // WINDOWS SIZE DETECTION
+  useEffect(() => {
+    const handleWindowResize = () => {
+      setWindowSize([window.innerWidth, window.innerHeight]);
+    };
+
+    window.addEventListener("resize", handleWindowResize);
+
+    return () => {
+      window.removeEventListener("resize", handleWindowResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (windowSize[0] > 550) {
+      SetFilterVisibility("visible");
+    } else if (windowSize[0] < 550 && showFilters === false) {
+      SetFilterVisibility("hidden");
+    } else if (windowSize[0] < 550 && showFilters === true) {
+      SetFilterVisibility("visible");
+    }
+  }, [windowSize[0], showFilters]);
 
   //VARIABLES
   const angol = "angol";
@@ -215,9 +245,28 @@ const Story = () => {
 
   return (
     <div className="stories">
+      {windowSize[0] < 550 && (
+        <span
+          className="material-symbols-outlined"
+          style={{ fontSize: "40px", color: "#363061", cursor: "pointer" }}
+          onClick={() => {
+            SetShowFilters(!showFilters);
+          }}
+        >
+          {showFilters ? "close" : "filter_alt"}
+        </span>
+      )}
+
       <div className="storyWrap">
         {!isLoading ? <div></div> : <div className="loader"></div>}
-        <div className="sortingContainer">
+        <div
+          style={{ visibility: `${filterVisibility}` }}
+          className={
+            windowSize[0] > 550
+              ? "sortingContainer"
+              : "sortingContainerResponsive"
+          }
+        >
           <p className="default" onClick={resetAll}>
             Alapértelmezett
           </p>
@@ -623,24 +672,26 @@ const Story = () => {
                 alt=""
               />
             </div>
-            <Link
-              onClick={() => {
-                SetStar1Src("/images/star.png");
-                SetStar2Src("/images/star.png");
-                SetStar3Src("/images/star.png");
-                SetStar4Src("/images/star.png");
-                SetStar5Src("/images/star.png");
-                SetSajatErtekeles(0);
-              }}
-            >
-              Nem értékelt
-            </Link>
+              <div className="ertekelesLink">
+                <Link
+                  onClick={() => {
+                    SetStar1Src("/images/star.png");
+                    SetStar2Src("/images/star.png");
+                    SetStar3Src("/images/star.png");
+                    SetStar4Src("/images/star.png");
+                    SetStar5Src("/images/star.png");
+                    SetSajatErtekeles(0);
+                  }}
+                >
+                  Nem értékelt
+                </Link>
+              </div>
           </div>
         </div>
         <div className="paginationAndStories">
           <div className="storyContainer" id="allStoryContainer">
             {paginatedStories.map((story) => (
-              <div className="storyLink" key={story._id}>
+              <div className="storyLink" id="profileStories" key={story._id}>
                 <Link to={`/story/${story._id}`}>
                   <div className="book-container" key={story._id}>
                     <div className="book">
