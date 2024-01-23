@@ -193,7 +193,6 @@ const User = () => {
 
   socket.on("kovetokUpdate", (msg) => {
     if (viewFelhasznalonev == msg.viewFelhasznalonev) {
-      console.log("ugyanaz");
       setViewKovetoimList(msg.viewKovetoimList);
       setViewKoveteseimList(msg.viewKoveteseimList);
       setViewKovetoimListKep(msg.viewKovetoimListKep);
