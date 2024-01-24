@@ -36,6 +36,7 @@ const Story = () => {
   const [star3Src, SetStar3Src] = useState("/images/star.png");
   const [star4Src, SetStar4Src] = useState("/images/star.png");
   const [star5Src, SetStar5Src] = useState("/images/star.png");
+  const [starBool, setStarBool] = useState(false);
   const [sajatErtekeles, SetSajatErtekeles] = useState(null);
 
   const [windowSize, setWindowSize] = useState([
@@ -46,7 +47,7 @@ const Story = () => {
   const [filterVisibility, SetFilterVisibility] = useState("visible");
 
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 8;
+  const [itemsPerPage, setItemsPerPage] = useState(8);
 
   const url = config.URL;
 
@@ -123,8 +124,14 @@ const Story = () => {
       SetFilterVisibility("visible");
     } else if (windowSize[0] < 550 && showFilters === false) {
       SetFilterVisibility("hidden");
+      setItemsPerPage(4);
     } else if (windowSize[0] < 550 && showFilters === true) {
       SetFilterVisibility("visible");
+      setItemsPerPage(4);
+    }
+
+    if (windowSize[0] > 1000) {
+      setItemsPerPage(8);
     }
   }, [windowSize[0], showFilters]);
 
@@ -232,11 +239,41 @@ const Story = () => {
     setScifiChecked(false);
     setVersChecked(false);
     SetSajatErtekeles(null);
+    setStarBool(false);
     SetStar1Src("/images/star.png");
     SetStar2Src("/images/star.png");
     SetStar3Src("/images/star.png");
     SetStar4Src("/images/star.png");
     SetStar5Src("/images/star.png");
+  };
+
+  const resetNyelv = () => {
+    setMagyarChecked(false);
+    setAngolChecked(false);
+  };
+
+  const resetKategoria = () => {
+    setAkcioChecked(false);
+    setDramaChecked(false);
+    setFantaziaChecked(false);
+    setHorrorChecked(false);
+    setHumorChecked(false);
+    setKalandChecked(false);
+    setKrimiChecked(false);
+    setParanormalChecked(false);
+    setRomantikaChecked(false);
+    setScifiChecked(false);
+    setVersChecked(false);
+  };
+
+  const resetErtekeles = () => {
+    SetSajatErtekeles(null);
+    SetStar1Src("/images/star.png");
+    SetStar2Src("/images/star.png");
+    SetStar3Src("/images/star.png");
+    SetStar4Src("/images/star.png");
+    SetStar5Src("/images/star.png");
+    setStarBool(false);
   };
 
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -278,7 +315,20 @@ const Story = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
           <div className="nyelv">
-            <span>Nyelv</span>
+            <div className="filterClose">
+              <span>Nyelv</span>
+              {magyarChecked || angolChecked ? (
+                <span
+                  className="material-symbols-outlined"
+                  onClick={resetNyelv}
+                >
+                  close
+                </span>
+              ) : (
+                ""
+              )}
+            </div>
+
             <div className="checkbox">
               <div class="content">
                 <label class="checkBox">
@@ -309,7 +359,29 @@ const Story = () => {
             </div>
           </div>
           <div className="kategoria" id="kategoria">
-            <span id="kategoriaSpan">Kategória</span>
+            <div className="filterClose">
+              <span>Kategória</span>
+              {akcioChecked ||
+              dramaChecked ||
+              fantaziaChecked ||
+              horrorChecked ||
+              humorChecked ||
+              kalandChecked ||
+              krimiChecked ||
+              paranormalChecked ||
+              romantikaChecked ||
+              scifiChecked ||
+              versChecked ? (
+                <span
+                  className="material-symbols-outlined"
+                  onClick={resetKategoria}
+                >
+                  close
+                </span>
+              ) : (
+                ""
+              )}
+            </div>
             <div className="checkbox">
               <div class="content">
                 <label class="checkBox">
@@ -609,7 +681,19 @@ const Story = () => {
             </div>
           </div>
           <div className="ertekeles">
-            <span>Értékelés</span>
+            <div className="filterClose">
+              <span>Értékelés</span>
+              {starBool ? (
+                <span
+                  className="material-symbols-outlined"
+                  onClick={resetErtekeles}
+                >
+                  close
+                </span>
+              ) : (
+                ""
+              )}
+            </div>
             <div className="sortRating">
               <img
                 onClick={() => {
@@ -618,6 +702,7 @@ const Story = () => {
                   SetStar3Src("/images/star.png");
                   SetStar4Src("/images/star.png");
                   SetStar5Src("/images/star.png");
+                  setStarBool(true);
                   SetSajatErtekeles(1);
                 }}
                 src={star1Src}
@@ -630,6 +715,7 @@ const Story = () => {
                   SetStar3Src("/images/star.png");
                   SetStar4Src("/images/star.png");
                   SetStar5Src("/images/star.png");
+                  setStarBool(true);
                   SetSajatErtekeles(2);
                 }}
                 src={star2Src}
@@ -642,6 +728,7 @@ const Story = () => {
                   SetStar3Src("/images/starfilled.png");
                   SetStar4Src("/images/star.png");
                   SetStar5Src("/images/star.png");
+                  setStarBool(true);
                   SetSajatErtekeles(3);
                 }}
                 src={star3Src}
@@ -654,6 +741,7 @@ const Story = () => {
                   SetStar3Src("/images/starfilled.png");
                   SetStar4Src("/images/starfilled.png");
                   SetStar5Src("/images/star.png");
+                  setStarBool(true);
                   SetSajatErtekeles(4);
                 }}
                 src={star4Src}
@@ -666,26 +754,28 @@ const Story = () => {
                   SetStar3Src("/images/starfilled.png");
                   SetStar4Src("/images/starfilled.png");
                   SetStar5Src("/images/starfilled.png");
+                  setStarBool(true);
                   SetSajatErtekeles(5);
                 }}
                 src={star5Src}
                 alt=""
               />
             </div>
-              <div className="ertekelesLink">
-                <Link
-                  onClick={() => {
-                    SetStar1Src("/images/star.png");
-                    SetStar2Src("/images/star.png");
-                    SetStar3Src("/images/star.png");
-                    SetStar4Src("/images/star.png");
-                    SetStar5Src("/images/star.png");
-                    SetSajatErtekeles(0);
-                  }}
-                >
-                  Nem értékelt
-                </Link>
-              </div>
+            <div className="ertekelesLink">
+              <Link
+                onClick={() => {
+                  SetStar1Src("/images/star.png");
+                  SetStar2Src("/images/star.png");
+                  SetStar3Src("/images/star.png");
+                  SetStar4Src("/images/star.png");
+                  SetStar5Src("/images/star.png");
+                  setStarBool(true);
+                  SetSajatErtekeles(0);
+                }}
+              >
+                Nem értékelt
+              </Link>
+            </div>
           </div>
         </div>
         <div className="paginationAndStories">

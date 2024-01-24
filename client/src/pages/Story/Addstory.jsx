@@ -325,16 +325,6 @@ const Addstory = () => {
                 onChange={(e) => setCim(e.target.value)}
               />
             </div>
-            <div className="form-row">
-              <input
-                type="text"
-                placeholder="Szerző"
-                value={szerzo}
-                className="input"
-                readOnly
-                onChange={(e) => setSzerzo(e.target.value)}
-              />
-            </div>
             <div className="form-row" id="select-row">
               <Select
                 defaultInputValue={kategoria}

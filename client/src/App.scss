@@ -1393,6 +1393,17 @@ body.active-modal {
   margin-bottom: 10px;
 }
 
+.filterClose {
+  display: flex;
+  justify-content: space-between;
+}
+
+.filterClose .material-symbols-outlined {
+  cursor: pointer;
+  padding-top: 5px;
+  color: $sotetkek;
+}
+
 .ertekelesLink {
   text-align: center;
 }
