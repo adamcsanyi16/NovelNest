@@ -155,6 +155,14 @@ const Onestory = () => {
     }
   };
 
+  const hozzaszolasTorles = (e, msgId) => {
+    e.preventDefault();
+
+    const storyId = id;
+    console.log(msgId);
+    socket.emit("hozzaszolasTorles", { storyId, msgId });
+  };
+
   socket.on("rating", (msg) => {
     if (id === msg.id) {
       const osszesErtekelesTomb = msg.osszesErtekelesTomb;
@@ -197,15 +205,16 @@ const Onestory = () => {
     const startIndex = (currentPage - 1) * wordsPerPage;
     const endIndex = startIndex + wordsPerPage;
 
-    // Extract a portion of the story
     let pageContent = story.substring(startIndex, endIndex);
 
-    // Check if the last word is split and not the last page
-    const lastWordIndex = pageContent.lastIndexOf(' ');
+    const lastWordIndex = pageContent.lastIndexOf(" ");
 
-    // If the last word is split and not the last page, add "-"
-    if (lastWordIndex !== -1 && lastWordIndex < pageContent.length - 1 && currentPage < Math.ceil(story.length / wordsPerPage)) {
-      pageContent = pageContent.substring(0, lastWordIndex) + '-';
+    if (
+      lastWordIndex !== -1 &&
+      lastWordIndex < pageContent.length - 1 &&
+      currentPage < Math.ceil(story.length / wordsPerPage)
+    ) {
+      pageContent = pageContent.substring(0, lastWordIndex) + "-";
     }
 
     return pageContent;
@@ -354,7 +363,7 @@ const Onestory = () => {
             <div className="allComments">
               <table>
                 {osszesHozzaszolas.reverse().map((comment) => (
-                  <tr>
+                  <tr key={comment._id}>
                     <div id="commentRow">
                       <td>
                         <Link to={`/profil/${comment.felhasznalonev}`}>
@@ -362,7 +371,10 @@ const Onestory = () => {
                         </Link>
                         : <i>{comment.hozzaszolas}</i>
                       </td>
-                      <img src="/images/story_delete.png" />
+                      <img
+                        src="/images/story_delete.png"
+                        onClick={(e) => hozzaszolasTorles(e, comment._id)}
+                      />
                     </div>
                   </tr>
                 ))}

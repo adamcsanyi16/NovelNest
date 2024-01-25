@@ -663,7 +663,7 @@ const User = () => {
         style={modalStyles}
         id="deleteModal"
       >
-        <h2 id="deleteText">Biztos hogy törlöd az adatot?</h2>
+        <h2 id="deleteText">Biztos hogy törlöd a történetet?</h2>
         <div className="modal-buttons">
           <button onClick={() => torol(itemToDelete)}>Törlés</button>
           <button onClick={closeModal}>Mégsem</button>

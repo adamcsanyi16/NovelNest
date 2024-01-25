@@ -196,11 +196,14 @@ io.on("connection", (socket) => {
       const felhasznalonev = msg.felhasznalonev;
       const hozzaszolas = msg.hozzaszolas;
 
+      const commentId = new mongoose.Types.ObjectId();
+
       const ujHozzaszolas = await Story.findByIdAndUpdate(
         { _id: id },
         {
           $push: {
             hozzaszolasok: {
+              _id: commentId,
               felhasznalonev: felhasznalonev,
               hozzaszolas: hozzaszolas,
             },
@@ -225,6 +228,32 @@ io.on("connection", (socket) => {
 
       const hozzaszolasok = story.hozzaszolasok;
       io.emit("hozzaszolasok", { id, hozzaszolasok });
+    } catch (error) {
+      socket.emit("error", "Nem érhetőek el a hozzászólások");
+    }
+  });
+
+  socket.on("hozzaszolasTorles", async (msg) => {
+    try {
+      const commentId = msg.msgId;
+      const storyId = msg.storyId;
+
+      const updatedStory = await Story.findOneAndUpdate(
+        { _id: storyId },
+        {
+          $pull: {
+            hozzaszolasok: { _id: commentId },
+          },
+        }
+      );
+
+      if (updatedStory) {
+        io.emit("success", "Hozzászólás sikeresen törölve!");
+        const hozzaszolasok = updatedStory.hozzaszolasok;
+        io.emit("hozzaszolasok", { id: storyId, hozzaszolasok });
+      } else {
+        io.emit("error", "Nem sikerült törölni a hozzászólást.");
+      }
     } catch (error) {
       socket.emit("error", "Nem érhetőek el a hozzászólások");
     }
