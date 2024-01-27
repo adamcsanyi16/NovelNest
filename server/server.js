@@ -242,10 +242,12 @@ io.on("connection", (socket) => {
         { _id: storyId },
         {
           $pull: {
-            hozzaszolasok: { _id: commentId },
-          },
-        }
+            hozzaszolasok: { _id: commentId }
+          }
+        },
+        { projection: { hozzaszolasok: 1 } }
       );
+      console.log(updatedStory);
 
       if (updatedStory) {
         io.emit("success", "Hozzászólás sikeresen törölve!");
