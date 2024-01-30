@@ -196,14 +196,11 @@ io.on("connection", (socket) => {
       const felhasznalonev = msg.felhasznalonev;
       const hozzaszolas = msg.hozzaszolas;
 
-      const commentId = new mongoose.Types.ObjectId();
-
-      const ujHozzaszolas = await Story.findByIdAndUpdate(
+      await Story.findByIdAndUpdate(
         { _id: id },
         {
           $push: {
             hozzaszolasok: {
-              _id: commentId,
               felhasznalonev: felhasznalonev,
               hozzaszolas: hozzaszolas,
             },
@@ -213,7 +210,6 @@ io.on("connection", (socket) => {
 
       io.emit("success", "Sikeres hozzászólás!");
       const story = await Story.findOne({ _id: id }, { hozzaszolasok: 1 });
-
       const hozzaszolasok = story.hozzaszolasok;
       io.emit("hozzaszolasok", { id, hozzaszolasok });
     } catch (error) {
@@ -235,27 +231,25 @@ io.on("connection", (socket) => {
 
   socket.on("hozzaszolasTorles", async (msg) => {
     try {
-      const commentId = msg.msgId;
-      const storyId = msg.storyId;
+      const user = msg.msgNev;
+      const comment = msg.msg;
+      const id = msg.storyId;
 
-      const updatedStory = await Story.findOneAndUpdate(
-        { _id: storyId },
+      await Story.findOneAndUpdate(
+        { _id: id },
         {
           $pull: {
-            hozzaszolasok: { _id: commentId }
-          }
+            hozzaszolasok: { felhasznalonev: user, hozzaszolas: comment },
+          },
         },
         { projection: { hozzaszolasok: 1 } }
       );
-      console.log(updatedStory);
 
-      if (updatedStory) {
-        io.emit("success", "Hozzászólás sikeresen törölve!");
-        const hozzaszolasok = updatedStory.hozzaszolasok;
-        io.emit("hozzaszolasok", { id: storyId, hozzaszolasok });
-      } else {
-        io.emit("error", "Nem sikerült törölni a hozzászólást.");
-      }
+      io.emit("success", "Sikeres hozzászólás!");
+      const story = await Story.findOne({ _id: id }, { hozzaszolasok: 1 });
+
+      const hozzaszolasok = story.hozzaszolasok;
+      io.emit("hozzaszolasok", { id, hozzaszolasok });
     } catch (error) {
       socket.emit("error", "Nem érhetőek el a hozzászólások");
     }

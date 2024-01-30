@@ -103,11 +103,31 @@ const Navbar = () => {
         </div>
       </div>
       {!user ? (
-        <div className="main">
-          <Link to="/">Kezdőlap</Link>
-          <Link to="/belepes">Belépés</Link>
-          <Link to="/regisztracio">Regisztráció</Link>
-        </div>
+        windowSize[0] > 930 ? (
+          <div className="main">
+            <Link to="/">Kezdőlap</Link>
+            <Link to="/belepes">Belépés</Link>
+            <Link to="/regisztracio">Regisztráció</Link>
+          </div>
+        ) : (
+          <div className="main">
+            <div className="navbarIkon">
+              <Link to="/">
+                <span class="material-symbols-outlined">home</span>
+              </Link>
+            </div>
+            <div className="navbarIkon">
+              <Link to="/belepes">
+                <span class="material-symbols-outlined">login</span>
+              </Link>
+            </div>
+            <div className="navbarIkon">
+              <Link to="/regisztracio">
+                <span class="material-symbols-outlined">add</span>
+              </Link>
+            </div>
+          </div>
+        )
       ) : (
         <div className="navbarIkon_tarto">
           {windowSize[0] > 940 ? (

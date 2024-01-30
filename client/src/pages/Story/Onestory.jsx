@@ -155,12 +155,10 @@ const Onestory = () => {
     }
   };
 
-  const hozzaszolasTorles = (e, msgId) => {
+  const hozzaszolasTorles = (e, msgNev, msg) => {
     e.preventDefault();
-
     const storyId = id;
-    console.log(msgId);
-    socket.emit("hozzaszolasTorles", { storyId, msgId });
+    socket.emit("hozzaszolasTorles", { storyId, msgNev, msg });
   };
 
   socket.on("rating", (msg) => {
@@ -371,10 +369,18 @@ const Onestory = () => {
                         </Link>
                         : <i>{comment.hozzaszolas}</i>
                       </td>
-                      <img
-                        src="/images/story_delete.png"
-                        onClick={(e) => hozzaszolasTorles(e, comment._id)}
-                      />
+                      {comment.felhasznalonev === felhasznalonev && (
+                        <img
+                          src="/images/story_delete.png"
+                          onClick={(e) =>
+                            hozzaszolasTorles(
+                              e,
+                              comment.felhasznalonev,
+                              comment.hozzaszolas
+                            )
+                          }
+                        />
+                      )}
                     </div>
                   </tr>
                 ))}
