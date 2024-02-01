@@ -38,10 +38,6 @@
       img {
         width: 200px;
       }
-      .bitmoji {
-        display: grid;
-        grid-template-columns: 33% 34% 33%;
-      }
     </style>
   </head>
   <body>
@@ -51,6 +47,7 @@
         <img
           src="https://res.cloudinary.com/diktrthqs/image/upload/v1704896270/novelnest-blue-min_oyqxy2.png"
           alt=""
+          style="display: block; margin: 0 auto"
         />
       </div>
       <p>
@@ -58,22 +55,35 @@
         Éld ki nálunk kreativitásodat és fedezd fel az egyre bővülő történeteket
         vagy ha kedvet kaptál akár írj is egyet!
       </p>
-      <div class="bitmoji">
-        <img
-          src="https://res.cloudinary.com/diktrthqs/image/upload/v1704898156/peti_dfferc.png"
-          alt=""
-        />
-        <img
-          src="https://res.cloudinary.com/diktrthqs/image/upload/v1704897399/adi1_cukuhy.png"
-          alt=""
-        />
-        <img
-          src="https://res.cloudinary.com/diktrthqs/image/upload/v1704898157/adi2_bvcx0y.png"
-          alt=""
-        />
-        <p>Búza Péter</p>
-        <p>Csányi Ádám</p>
-        <p>Geleta Ádám</p>
+      <div
+        class="bitmoji"
+        style="
+          display: flex;
+          justify-content: space-around;
+          align-items: center;
+        "
+      >
+        <div>
+          <img
+            src="https://res.cloudinary.com/diktrthqs/image/upload/v1704898156/peti_dfferc.png"
+            alt=""
+          />
+          <p>Búza Péter</p>
+        </div>
+        <div>
+          <img
+            src="https://res.cloudinary.com/diktrthqs/image/upload/v1704897399/adi1_cukuhy.png"
+            alt=""
+          />
+          <p>Csányi Ádám</p>
+        </div>
+        <div>
+          <img
+            src="https://res.cloudinary.com/diktrthqs/image/upload/v1704898157/adi2_bvcx0y.png"
+            alt=""
+          />
+          <p>Geleta Ádám</p>
+        </div>
       </div>
     </div>
   </body>
