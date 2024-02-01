@@ -197,23 +197,25 @@ const Onestory = () => {
   });
 
   //PAGINATION
-  const wordsPerPage = 1550;
+  const wordsPerPage = 1540;
+
+  let lastSpaceIndex = 0;
 
   const paginateStory = (story) => {
     const startIndex = (currentPage - 1) * wordsPerPage;
-    const endIndex = startIndex + wordsPerPage;
+
+    let endIndex = startIndex + wordsPerPage;
+    const nextSpaceIndex = story.indexOf(" ", endIndex);
+
+    if (nextSpaceIndex !== -1 && nextSpaceIndex < lastSpaceIndex) {
+      endIndex = lastSpaceIndex;
+    } else if (nextSpaceIndex !== -1) {
+      endIndex = nextSpaceIndex;
+    }
 
     let pageContent = story.substring(startIndex, endIndex);
 
-    const lastWordIndex = pageContent.lastIndexOf(" ");
-
-    if (
-      lastWordIndex !== -1 &&
-      lastWordIndex < pageContent.length - 1 &&
-      currentPage < Math.ceil(story.length / wordsPerPage)
-    ) {
-      pageContent = pageContent.substring(0, lastWordIndex) + "-";
-    }
+    lastSpaceIndex = endIndex;
 
     return pageContent;
   };
