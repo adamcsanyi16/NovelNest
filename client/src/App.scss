@@ -29,6 +29,182 @@ img {
   height: 100vh;
 }*/
 
+/*HOME*/
+
+.elso-keret {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  margin-top: 60px;
+}
+
+.bemutatkozo {
+  align-items: flex-end;
+  display: flex;
+  margin: 0px 158px 0px 170px;
+  width: auto;
+}
+
+.bemutatkozo-szoveg {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 22px;
+  width: 39.8rem;
+}
+
+.novelnest-szoveg {
+  align-items: center;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  padding: 0px 42px 109px 54px;
+  width: 100%;
+}
+
+.novelnest-iras {
+  align-items: baseline;
+  display: flex;
+  font-size: 70px;
+  font-weight: 400;
+  margin: 0px 13px 83px 10px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.novel {
+  color: #363061;
+}
+
+.nest {
+  color: #f99417;
+}
+
+.eredeti {
+  text-align: center;
+  max-width: 540px;
+  font-weight: 400;
+  flex-shrink: 0;
+}
+
+.ti {
+  font-size: 20px;
+  color: rgb(126, 115, 115);
+  font-weight: 800;
+}
+
+.gombok {
+  margin-left: 55px;
+}
+
+.irj-tort {
+  align-items: center;
+  border-radius: 64px;
+  font-size: 22px;
+}
+
+.olvas {
+  border-radius: 64px;
+  font-size: 22px;
+}
+
+.iros-kep {
+  height: 500px;
+  margin-left: 1px;
+  object-fit: contain;
+  vertical-align: top;
+  width: 550px;
+}
+
+.hogy {
+  align-items: center;
+  display: flex;
+  height: 1456px;
+  margin-bottom: 124px;
+  padding: 160px 384px 160px 344px;
+  position: relative;
+  scale: 0.8;
+}
+
+.hatter-container {
+  position: relative;
+  display: inline-block;
+}
+
+.hatter {
+  display: block;
+  width: 1900px;
+}
+
+.talald-ki {
+  position: absolute;
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0px 326px 339px 100px;
+  text-align: center;
+  color: #000000;
+}
+
+.hogy-ird {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  margin: 0px 352px 380px 740px;
+  position: absolute;
+  color: #000000;
+}
+
+.hogyan {
+  font-size: 40px;
+  font-style: italic;
+  font-weight: 400;
+  margin-bottom: 304px;
+  text-align: center;
+}
+
+.ird-le {
+  font-size: 20px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.oszd-meg {
+  position: absolute;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 600;
+  margin-left: 1600px;
+  margin-bottom: 320px;
+  color: #000000;
+}
+
+.also {
+  height: 200px;
+  width: 100%;
+  box-sizing: border-box;
+  border: solid 1.5px #000000;
+  border-radius: 48px 48px 0px 0px;
+  box-shadow: inset 13px 13px 42px rgba(0, 0, 0, 0.25);
+  background: #f99417;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  padding-left: 15px;
+  padding-right: 15px;
+  gap: 10px;
+}
+
+.also-szoveg {
+  font-size: 24px;
+}
+
+.also-szoveg2 {
+  font-size: 24px;
+}
+
 /*NAVBAR*/
 .navbar {
   display: flex;
