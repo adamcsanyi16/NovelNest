@@ -30,7 +30,11 @@ function App() {
           <Route path="*" element={<Notfound />} />
           <Route path="/" element={<Home />} />
           <Route
-            path="/belepes"
+            path="/belepes/"
+            element={!user ? <Login /> : <Navigate to="/storyfelvetel" />}
+          />
+          <Route
+            path="/belepes/:redirect"
             element={!user ? <Login /> : <Navigate to="/storyfelvetel" />}
           />
           <Route

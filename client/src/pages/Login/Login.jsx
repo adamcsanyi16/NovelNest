@@ -1,15 +1,16 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import config from "../../components/config";
 import bcrypt from "bcryptjs";
 
-const Login = () => {
+const Login = (props) => {
   const [felhasznalonev, setFelhasznalonev] = useState("");
   const [jelszo, setJelszo] = useState("");
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const { redirect } = useParams();
   const { dispatch } = useAuthContext();
   const url = config.URL;
 
@@ -56,7 +57,11 @@ const Login = () => {
           localStorage.setItem("user", JSON.stringify(response));
           dispatch({ type: "LOGIN", payload: response });
           setIsLoading(false);
-          navigate(`/profil/${felhasznalonev}`);
+          if (redirect) {
+            navigate("/" + redirect);
+          } else {
+            navigate(`/profil/${felhasznalonev}`);
+          }
         }
       } else {
         setError("A jelszó nem egyezik!");

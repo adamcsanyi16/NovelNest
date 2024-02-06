@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 const Home = () => {
   return (
@@ -29,10 +30,10 @@ const Home = () => {
             </p>
           </div>
           <div className="gombok">
-            <Link to={"/belepes"}>
+            <Link to={"/belepes/storyfelvetel"}>
               <button className="irj-tort">Írj történetet!</button>
             </Link>
-            <Link to={"/belepes"}>
+            <Link to={`/belepes/story`}>
               <button className="olvas">Olvasni szeretnék!</button>
             </Link>
           </div>
@@ -53,7 +54,8 @@ const Home = () => {
         </span>
         <br />
         <span className="also-szoveg2">
-        | Kapcsolat: novelnestteam@gmail.com  <br /> | Telefonszám: +36 40 535 9813 
+          | Kapcsolat: novelnestteam@gmail.com <br /> | Telefonszám: +36 40 535
+          9813
         </span>
       </div>
     </div>
