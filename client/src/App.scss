@@ -293,6 +293,171 @@ img {
 }
 /*HOME*/
 
+/*NOTFOUND*/
+
+.not-found {
+  align-items: center;
+  box-sizing: border-box;
+  display: flex;
+  overflow: hidden;
+  padding: 100px 100px 0px 192px;
+  position: relative;
+  width: 100%;
+  height: 860px;
+}
+
+.keret {
+  height: 832px;
+  position: relative;
+  width: 1114px;
+}
+
+.lany-kep {
+  border-radius: 69px;
+  height: 600px;
+  object-fit: cover;
+  position: absolute;
+  top: 70px;
+  vertical-align: top;
+  width: 600px;
+}
+
+.egyszer1 {
+  color: #f99417;
+  font-size: 24px;
+  font-weight: 600;
+  height: 40px;
+  left: 500px;
+  position: absolute;
+  top: 90px;
+  white-space: nowrap;
+  width: 125px;
+  transform: rotate(-32.8deg);
+}
+
+.volt1 {
+  color: #d88420;
+  font-size: 26px;
+  font-weight: 600;
+  height: 60px;
+  left: 615px;
+  position: absolute;
+  bottom: 727px;
+  white-space: nowrap;
+  width: 64px;
+  transform: rotate(-18.59deg);
+}
+
+.hol {
+  color: #b37329;
+  font-size: 28px;
+  font-weight: 600;
+  height: 48px;
+  left: 690px;
+  position: absolute;
+  white-space: nowrap;
+  width: 58px;
+  bottom: 755px;
+}
+
+.nem {
+  color: #9e6f38;
+  font-size: 30px;
+  font-weight: 600;
+  height: 51px;
+  left: 752px;
+  position: absolute;
+  white-space: nowrap;
+  width: 88px;
+  bottom: 747px;
+  transform: rotate(10.42deg);
+}
+
+.volt2 {
+  color: #816443;
+  font-size: 32px;
+  font-weight: 600;
+  height: 54px;
+  left: 820px;
+  position: absolute;
+  white-space: nowrap;
+  width: 94px;
+  bottom: 727px;
+  transform: rotate(15.84deg);
+}
+
+.volt3 {
+  color: #4e435d;
+  font-size: 34px;
+  font-weight: 600;
+  height: 62px;
+  left: 920px;
+  position: absolute;
+  top: 90px;
+  white-space: nowrap;
+  width: 99px;
+  transform: rotate(26.8deg);
+}
+
+.keret2 {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 205px;
+}
+
+.page-not {
+  color: #7000ff;
+  font-size: 44px;
+  font-weight: 600;
+  margin: 0px 0px 39px 365px;
+  max-width: 390px;
+  top: 90px;
+  transform: rotate(-17.39deg);
+}
+
+.utolso {
+  height: 78px;
+  margin-bottom: 500px;
+  margin-right: 100px;
+  margin-left: 47px;
+  position: relative;
+  width: 392px;
+}
+
+.egyszer2 {
+  color: #775d90;
+  font-size: 36px;
+  font-weight: 600;
+  height: 70px;
+  left: 33px;
+  position: absolute;
+  top: 60px;
+  white-space: nowrap;
+  width: 224px;
+  transform: rotate(8.25deg);
+}
+
+.egy {
+  color: #7846b8;
+  font-size: 38px;
+  font-weight: 600;
+  height: 78px;
+  left: 222px;
+  position: absolute;
+  white-space: nowrap;
+  width: 169px;
+  top: 54px;
+  transform: rotate(-9.88deg);
+}
+
+.vissza {
+  align-items: center;
+  background-color: #f99417;
+  border-radius: 4rem;
+  border: none;
+  font-weight: 600;
+}
+
 /*BUTTONS*/
 button {
   padding: 17px 40px;
