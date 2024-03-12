@@ -559,9 +559,9 @@ const User = () => {
                 viewKovetoimListKep.map((item, index) => (
                   <div className="egyKoveto" key={index}>
                     <img src={item} alt="" />
-                    <a href={"/profil/" + viewKovetoimList[index]}>
+                    <Link to={`/profil/${viewKovetoimList[index]}`}>
                       <h4>{viewKovetoimList[index]}</h4>
-                    </a>
+                    </Link>
                   </div>
                 ))}
             </div>
@@ -581,9 +581,9 @@ const User = () => {
                 viewKoveteseimListKep.map((item, index) => (
                   <div className="egyKoveto" key={index}>
                     <img src={item} alt="" />
-                    <a href={"/profil/" + viewKoveteseimList[index]}>
+                    <Link to={`/profil/${viewKoveteseimList[index]}`}>
                       <h4>{viewKoveteseimList[index]}</h4>
-                    </a>
+                    </Link>
                   </div>
                 ))}
             </div>

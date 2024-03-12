@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useAuthContext } from "../../hooks/useAuthContext";
+import Modal from "react-modal";
 import config from "../../components/config";
 import { io } from "socket.io-client";
 
@@ -13,7 +14,11 @@ const Onestory = () => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [felhasznalonev, setFelhasznalonev] = useState("");
+  const [email, setEmail] = useState("");
   const [isLoading, SetIsLoading] = useState(false);
+
+  const [showModal, setShowModal] = useState(false);
+  const [jelentesSzoveg, setJelentesSzoveg] = useState("");
 
   const [cim, setCim] = useState("");
   const [szerzo, setSzerzo] = useState("");
@@ -52,7 +57,9 @@ const Onestory = () => {
           const data = await response.json();
           const isAdmin = data.isAdmin;
           const felhasznalonev = data.felhasznalonev;
+          const email = data.email;
           setFelhasznalonev(felhasznalonev);
+          setEmail(email);
         }
       } catch (error) {
         console.log("Fetch error:", error);
@@ -222,6 +229,73 @@ const Onestory = () => {
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
+  };
+
+  //MODAL
+  const jelentesKuld = (event) => {
+    event.preventDefault();
+
+    const adatok = {
+      email,
+      felhasznalonev,
+      jelentesSzoveg,
+      cim,
+      id,
+    };
+
+    const elkuld = async () => {
+      SetIsLoading(true);
+      setError(null);
+      setSuccess(null);
+
+      const adat = await fetch(url + "/jelent", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+        body: JSON.stringify(adatok),
+      });
+
+      if (adat.ok) {
+        SetIsLoading(false);
+        setJelentesSzoveg("");
+        closeModal();
+      } else {
+        const response = await adat.json();
+        setError(response.msg);
+        SetIsLoading(false);
+      }
+    };
+
+    elkuld();
+  };
+
+  const openModal = () => {
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
+  const modalStyles = {
+    overlay: {
+      backgroundColor: "rgba(0, 0, 0, 0.5)",
+      zIndex: 9999,
+    },
+    content: {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+      maxWidth: "450px",
+      maxHeight: "450px",
+      margin: "auto",
+      padding: "20px",
+      backgroundColor: "fff",
+      borderRadius: "2rem",
+    },
   };
 
   return (
@@ -403,6 +477,9 @@ const Onestory = () => {
               </button>
             </div>
           </div>
+          <div>
+            <button onClick={openModal}>Jelent</button>
+          </div>
         </div>
         <div className="onlystory">
           <h1>{cim}</h1>
@@ -424,6 +501,28 @@ const Onestory = () => {
             </div>
           )}
         </div>
+        <Modal
+          isOpen={showModal}
+          onRequestClose={closeModal}
+          contentLabel="Megerősítés"
+          style={modalStyles}
+          id="deleteModal"
+        >
+          <h2 id="deleteText">Írd le röviden mi a probléma!</h2>
+          <textarea
+            maxLength="100"
+            value={jelentesSzoveg}
+            type="text"
+            className="input"
+            id="jelentesText"
+            onChange={(e) => setJelentesSzoveg(e.target.value)}
+          />
+          <div className="modal-buttons">
+            <button onClick={jelentesKuld}>Küldés</button>
+            <button onClick={closeModal}>Mégsem</button>
+          </div>
+          {error && <div className="error">{error}</div>}
+        </Modal>
       </div>
     </div>
   );
