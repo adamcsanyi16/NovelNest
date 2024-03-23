@@ -482,7 +482,7 @@ const Onestory = () => {
           </div>
         </div>
         <div className="onlystory">
-          <h1>{cim}</h1>
+          <h1 id="storyCim">{cim}</h1>
           <p>{paginateStory(story)}</p>
           {story.length > wordsPerPage && (
             <div className="paginationStory">
