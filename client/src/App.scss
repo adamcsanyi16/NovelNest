@@ -2074,6 +2074,36 @@ body.active-modal {
   }
 }
 
+@media only screen and (max-width: 1080px) {
+  /*ONESTORY RESPONSIVE*/
+  .oneStory-container {
+    display: block;
+    margin: auto;
+  }
+
+  .oneStory-container .boritokep img {
+    width: 50vw;
+  }
+
+  .oneStory-container .oneStoryTable {
+    width: 100%;
+    font-size: 2.5vw;
+  }
+
+  .oneStory-container .rating {
+    width: 100%;
+  }
+
+  .oneStory-container .comments {
+    width: 100%;
+    font-size: 2.5vw;
+  }
+
+  #commentButton {
+    text-align: left;
+  }
+}
+
 @media only screen and (max-width: 880px) {
   .storyContainer {
     grid-template-columns: 100%;
